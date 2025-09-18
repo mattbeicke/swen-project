@@ -6,7 +6,7 @@ An online U-Fund system built in Java **24** and ___ _replace with other platfor
 ## Team
 
 - MEMBER1
-- MEMBER2
+- Matthew Beicke
 - MEMBER3
 - MEMBER4
 
