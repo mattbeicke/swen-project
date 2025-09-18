@@ -8,7 +8,7 @@ An online U-Fund system built in Java **24** and ___ _replace with other platfor
 - Anthony Ficalora
 - Matthew Beicke
 - Ricardo Lopez
-- MEMBER4
+- Zachary Coy
 - MEMBER5
 
 ## Prerequisites
