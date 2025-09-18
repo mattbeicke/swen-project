@@ -5,11 +5,11 @@ An online U-Fund system built in Java **24** and ___ _replace with other platfor
   
 ## Team
 
-- MEMBER1
+Anthony Ficalora
 - MEMBER2
 - MEMBER3
 - MEMBER4
-
+- MEMBER5
 
 ## Prerequisites
 
