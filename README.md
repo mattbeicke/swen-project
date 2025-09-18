@@ -5,9 +5,9 @@ An online U-Fund system built in Java **24** and ___ _replace with other platfor
   
 ## Team
 
-Anthony Ficalora
-- MEMBER2
-- MEMBER3
+- Anthony Ficalora
+- 
+- Ricardo Lopez
 - MEMBER4
 - MEMBER5
 
