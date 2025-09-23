@@ -37,7 +37,7 @@ public class CupboardController {
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param heroDao The {@link HeroDAO Hero Data Access Object} to perform CRUD operations
+     * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to perform CRUD operations
      * <br>
      * This dependency is injected by the Spring Framework
      */
@@ -56,9 +56,149 @@ public class CupboardController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
-        LOG.info("GET /heroes/" + id);
+        LOG.info("GET /cupboard/" + id);
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            Need need = cupboardDAO.getNeed(id);
+            if (need != null)
+                return new ResponseEntity<Need>(need,HttpStatus.OK);
+            else
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Responds to the GET request for all {@linkplain Need needs}
+     * 
+     * @return ResponseEntity with array of {@link Need need} objects (may be empty) and
+     * HTTP status of OK<br>
+     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @GetMapping("")
+    public ResponseEntity<Need[]> getNeeds() {
+        LOG.info("GET /needs");
+        
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            return new ResponseEntity<Need[]>(cupboardDAO.getNeeds(), HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Responds to the GET request for all {@linkplain Need needs} whose name contains
+     * the text in name
+     * 
+     * @param name The name parameter which contains the text used to find the {@link Need needes}
+     * 
+     * @return ResponseEntity with array of {@link Need need} objects (may be empty) and
+     * HTTP status of OK<br>
+     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     * <p>
+     * Example: Find all needs that contain the text "ma"
+     * GET http://localhost:8080/needs/?name=ma
+     */
+    @GetMapping("/")
+    public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
+        LOG.info("GET /needs/?name="+name);
+        
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            return new ResponseEntity<Need[]>(cupboardDAO.findNeeds(name), HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Creates a {@linkplain Need need} with the provided need object
+     * 
+     * @param need - The {@link Need need} to create
+     * 
+     * @return ResponseEntity with created {@link Need need} object and HTTP status of CREATED<br>
+     * ResponseEntity with HTTP status of CONFLICT if {@link Need need} object already exists<br>
+     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @PostMapping("")
+    public ResponseEntity<Need> createNeed(@RequestBody Need need) {
+        LOG.info("POST /needs " + need);
+        
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            Need new_need = cupboardDAO.createNeed(need);
+                if(new_need == null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+            return new ResponseEntity<Need>(need, HttpStatus.CREATED);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Updates the {@linkplain Need need} with the provided {@linkplain Need need} object, if it exists
+     * 
+     * @param need The {@link Need need} to update
+     * 
+     * @return ResponseEntity with updated {@link Need need} object and HTTP status of OK if updated<br>
+     * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
+     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @PutMapping("")
+    public ResponseEntity<Need> updateNeed(@RequestBody Need need) {
+        LOG.info("PUT /needs " + need);
+
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            Need update = cupboardDAO.updateNeed(need);
+            if(update == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(update, HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Deletes a {@linkplain Need need} with the given id
+     * 
+     * @param id The id of the {@link Need need} to deleted
+     * 
+     * @return ResponseEntity HTTP status of OK if deleted<br>
+     * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
+     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Need> deleteNeeds(@PathVariable int id) {
+        LOG.info("DELETE /needs/" + id);
+
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            boolean deleted = cupboardDAO.deleteNeed(id);
+            if(!deleted) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
