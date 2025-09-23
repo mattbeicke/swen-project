@@ -81,7 +81,7 @@ public class CupboardController {
      */
     @GetMapping("")
     public ResponseEntity<Need[]> getNeeds() {
-        LOG.info("GET /needs");
+        LOG.info("GET /cupboard");
         
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -105,16 +105,16 @@ public class CupboardController {
      * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      * <p>
      * Example: Find all needs that contain the text "ma"
-     * GET http://localhost:8080/needs/?name=ma
+     * GET http://localhost:8080/cupboard/?name=ma
      */
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
-        LOG.info("GET /needs/?name="+name);
+        LOG.info("GET /cupboard/?name="+name);
         
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
-            return new ResponseEntity<Need[]>(cupboardDAO.findNeeds(name), HttpStatus.OK);
+            return new ResponseEntity<Need[]>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
@@ -133,7 +133,7 @@ public class CupboardController {
      */
     @PostMapping("")
     public ResponseEntity<Need> createNeed(@RequestBody Need need) {
-        LOG.info("POST /needs " + need);
+        LOG.info("POST /cupboard " + need);
         
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -161,7 +161,7 @@ public class CupboardController {
      */
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need) {
-        LOG.info("PUT /needs " + need);
+        LOG.info("PUT /cupboard " + need);
 
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -189,7 +189,7 @@ public class CupboardController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteNeeds(@PathVariable int id) {
-        LOG.info("DELETE /needs/" + id);
+        LOG.info("DELETE /cupboard/" + id);
 
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
