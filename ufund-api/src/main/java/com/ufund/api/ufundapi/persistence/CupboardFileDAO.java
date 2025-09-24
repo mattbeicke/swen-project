@@ -136,7 +136,7 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
         synchronized(needs) {
             return getNeeds(containsText);
         }
-    }
+    } 
 
     /**
     ** {@inheritDoc}
