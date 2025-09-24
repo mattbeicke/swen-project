@@ -58,8 +58,6 @@ public class CupboardController {
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
         LOG.info("GET /cupboard/" + id);
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
                 return new ResponseEntity<Need>(need,HttpStatus.OK);
@@ -84,8 +82,6 @@ public class CupboardController {
         LOG.info("GET /cupboard");
         
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             return new ResponseEntity<Need[]>(cupboardDAO.getNeeds(), HttpStatus.OK);
         }
         catch(IOException e) {
@@ -112,8 +108,6 @@ public class CupboardController {
         LOG.info("GET /cupboard/?name="+name);
         
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             return new ResponseEntity<Need[]>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
         }
         catch(IOException e) {
@@ -136,8 +130,6 @@ public class CupboardController {
         LOG.info("POST /cupboard " + need);
         
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             Need new_need = cupboardDAO.createNeed(need);
                 if(new_need == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -164,8 +156,6 @@ public class CupboardController {
         LOG.info("PUT /cupboard " + need);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             Need update = cupboardDAO.updateNeed(need);
             if(update == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -192,8 +182,6 @@ public class CupboardController {
         LOG.info("DELETE /cupboard/" + id);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             boolean deleted = cupboardDAO.deleteNeed(id);
             if(!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
