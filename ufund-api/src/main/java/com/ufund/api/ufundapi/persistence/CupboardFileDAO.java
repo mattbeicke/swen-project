@@ -53,6 +53,7 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
      * 
      * @return  The array of {@link Hero heroes}, may be empty
      */
+@Override
     public Need[] getNeeds() {
         return getNeeds(null);
     }
@@ -75,9 +76,9 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
             }
         }
 
-        Need[] heroArray = new Need[needArrayList.size()];
-        needArrayList.toArray(heroArray);
-        return heroArray;
+        Need[] needArray = new Need[needArrayList.size()];
+        needArrayList.toArray(needArray);
+        return needArray;
     }
 
     /**
@@ -113,13 +114,13 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
         // Deserializes the JSON objects from the file into an array of heroes
         // readValue will throw an IOException if there's an issue with the file
         // or reading from the file
-        Hero[] heroArray = objectMapper.readValue(new File(filename),Hero[].class);
+        Need[] needArray = objectMapper.readValue(new File(filename),Need[].class);
 
         // Add each hero to the tree map and keep track of the greatest id
-        for (Hero hero : heroArray) {
-            heroes.put(hero.getId(),hero);
-            if (hero.getId() > nextId)
-                nextId = hero.getId();
+        for (Need need : needArray) {
+            needs.put(need.getId(),need);
+            if (need.getId() > nextId)
+                nextId = need.getId();
         }
         // Make the next id one greater than the maximum from the file
         ++nextId;
@@ -130,9 +131,9 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
     ** {@inheritDoc}
      */
     @Override
-    public Hero[] getHeroes() {
-        synchronized(heroes) {
-            return getHeroesArray();
+    public Need[] searchNeeds(String containsText) {
+        synchronized(needs) {
+            return getNeeds(containsText);
         }
     }
 
@@ -140,20 +141,10 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
     ** {@inheritDoc}
      */
     @Override
-    public Hero[] findHeroes(String containsText) {
-        synchronized(heroes) {
-            return getHeroesArray(containsText);
-        }
-    }
-
-    /**
-    ** {@inheritDoc}
-     */
-    @Override
-    public Hero getHero(int id) {
-        synchronized(heroes) {
-            if (heroes.containsKey(id))
-                return heroes.get(id);
+    public Need getNeed(int id) {
+        synchronized(needs) {
+            if (needs.containsKey(id))
+                return needs.get(id);
             else
                 return null;
         }
@@ -163,14 +154,14 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
     ** {@inheritDoc}
      */
     @Override
-    public Hero createHero(Hero hero) throws IOException {
-        synchronized(heroes) {
+    public Need createNeed(Need need) throws IOException {
+        synchronized(needs) {
             // We create a new hero object because the id field is immutable
             // and we need to assign the next unique id
-            Hero newHero = new Hero(nextId(),hero.getName());
-            heroes.put(newHero.getId(),newHero);
+            Need newNeed = new Need(need.getName(),need.getId(),need.getDescription());
+            needs.put(newNeed.getId(),newNeed);
             save(); // may throw an IOException
-            return newHero;
+            return newNeed;
         }
     }
 
@@ -178,14 +169,14 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
     ** {@inheritDoc}
      */
     @Override
-    public Hero updateHero(Hero hero) throws IOException {
-        synchronized(heroes) {
-            if (heroes.containsKey(hero.getId()) == false)
+    public Need updateNeed(Need need) throws IOException {
+        synchronized(needs) {
+            if (needs.containsKey(need.getId()) == false)
                 return null;  // hero does not exist
 
-            heroes.put(hero.getId(),hero);
+            needs.put(need.getId(),need);
             save(); // may throw an IOException
-            return hero;
+            return need;
         }
     }
 
@@ -193,10 +184,10 @@ private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName
     ** {@inheritDoc}
      */
     @Override
-    public boolean deleteHero(int id) throws IOException {
-        synchronized(heroes) {
-            if (heroes.containsKey(id)) {
-                heroes.remove(id);
+    public boolean deleteNeed(int id) throws IOException {
+        synchronized(needs) {
+            if (needs.containsKey(id)) {
+                needs.remove(id);
                 return save();
             }
             else
