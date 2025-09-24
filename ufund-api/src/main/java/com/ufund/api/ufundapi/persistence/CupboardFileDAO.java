@@ -15,17 +15,17 @@ import com.ufund.api.ufundapi.model.Need;
 public class CupboardFileDAO implements CupboardDAO {
 
     private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName());
-    Map<Integer, Need> needs;   // Provides a local cache of the hero objects
+    Map<Integer, Need> needs;   // Provides a local cache of the need objects
     // so that we don't need to read from the file
     // each time
-    private ObjectMapper objectMapper;  // Provides conversion between Hero
+    private ObjectMapper objectMapper;  // Provides conversion between Need
     // objects and JSON text format written
     // to the file
-    private static int nextId;  // The next Id to assign to a new hero
+    private static int nextId;  // The next Id to assign to a new Need
     private String filename;    // Filename to read from and write to
 
     /**
-     * Creates a Hero File Data Access Object
+     * Creates a Need File Data Access Object
      *
      * @param filename Filename to read from and write to
      * @param objectMapper Provides JSON Object to/from Java Object
@@ -40,7 +40,7 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Generates the next id for a new {@linkplain Hero hero}
+     * Generates the next id for a new @Need
      *
      * @return The next id
      */
@@ -51,9 +51,9 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Generates an array of {@linkplain Hero heroes} from the tree map
+     * Generates an array of @Needs from the tree map
      *
-     * @return The array of {@link Hero heroes}, may be empty
+     * @return The array of @Needs, may be empty
      */
     @Override
     public Need[] getNeeds() {
@@ -61,13 +61,13 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Generates an array of {@linkplain Hero heroes} from the tree map for any
-     * {@linkplain Hero heroes} that contains the text specified by containsText
+     * Generates an array of @Needs from the tree map for any
+     * @Need that contains the text specified by containsText
      * <br>
      * If containsText is null, the array contains all of the
-     * {@linkplain Hero heroes} in the tree map
+     * @Needs in the tree map
      *
-     * @return The array of {@link Hero heroes}, may be empty
+     * @return The array of @Needs, may be empty
      */
     public Need[] getNeeds(String containsText) { // if containsText == null, no filter
         ArrayList<Need> needArrayList = new ArrayList<>();
@@ -84,10 +84,10 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Saves the {@linkplain Hero heroes} from the map into the file as an array
+     * Saves the @Need from the map into the file as an array
      * of JSON objects
      *
-     * @return true if the {@link Hero heroes} were written successfully
+     * @return true if the @Needs were written successfully
      *
      * @throws IOException when file cannot be accessed or written to
      */
@@ -102,7 +102,7 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Loads {@linkplain Hero heroes} from the JSON file into the map
+     * Loads @Need from the JSON file into the map
      * <br>
      * Also sets next id to one more than the greatest id found in the file
      *
