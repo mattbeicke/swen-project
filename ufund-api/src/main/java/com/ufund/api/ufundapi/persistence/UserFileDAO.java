@@ -1,5 +1,5 @@
 package com.ufund.api.ufundapi.persistence;
 
-public class UserFileDAO {
-    
+public class UserFileDAO implements CupboardDAO {
+
 }

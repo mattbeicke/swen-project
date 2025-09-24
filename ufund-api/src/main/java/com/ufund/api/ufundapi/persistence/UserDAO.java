@@ -1,5 +1,5 @@
 package com.ufund.api.ufundapi.persistence;
 
-public class UserDAO {
-    
+public interface UserDAO {
+
 }
