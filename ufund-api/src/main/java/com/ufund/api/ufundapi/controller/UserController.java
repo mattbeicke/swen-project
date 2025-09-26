@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
@@ -37,51 +39,172 @@ public class UserController {
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to perform CRUD operations
-     * <br>
-     * This dependency is injected by the Spring Framework
+     * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
+     *                    perform CRUD operations
+     *                    <br>
+     *                    This dependency is injected by the Spring Framework
      */
     public UserController(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    
     /**
-     * Creates a {@linkplain User user} with the provided user object
+     * Updates a {@linkplain User user} to add a need to their basket
      * 
-     * @param user - The {@link User user} to create
+     * @param user - The {@link User user} to update
+     * @param id   - The id of the {@link Need need} to add to basket
      * 
-     * @return ResponseEntity with created {@link User user} object and HTTP status of CREATED<br>
-     * ResponseEntity with HTTP status of CONFLICT if {@link User user} object already exists<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     * @return ResponseEntity with updated {@link User user} object and HTTP status
+     *         of OK<br>
+     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
+     *         object does not exist or {@link Need need} does not exist<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
-    @PostMapping("")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        LOG.info("POST /user " + user);
-        
+    @PostMapping("basket/add")
+    public ResponseEntity<User> addNeedToBasket(@RequestBody User user, @RequestBody int id) {
+        LOG.info("POST /user/basket/add " + user);
+
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
-            User newuser = userDAO.createUser(user);
-                if(newuser == null) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            User newuser = userDAO.addToBasket(user, id);
+            if (newuser == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<User>(user, HttpStatus.CREATED);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Updates the {@linkplain User user} with the provided {@linkplain User user} object, if it exists
+     * Updates a {@linkplain User user} to remove a need from their basket
+     * 
+     * @param user - The {@link User user} to update
+     * @param id   - The id of the {@link Need need} to remove from basket
+     * 
+     * @return ResponseEntity with updated {@link User user} object and HTTP status
+     *         of OK<br>
+     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
+     *         object does not exist or {@link Need need} does not exist<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @PostMapping("basket/remove")
+    public ResponseEntity<User> removeNeedFromBasket(@RequestBody User user, @RequestBody int id) {
+        LOG.info("POST /user/basket/remove " + user);
+
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            User newuser = userDAO.removeFromBasket(user, id);
+            if (newuser == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Checks out a {@linkplain User user}'s basket
+     * 
+     * @param user - The {@link User user} to checkout
+     * 
+     * @return ResponseEntity with updated {@link User user} object and HTTP status
+     *         of OK<br>
+     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
+     *         object does not exist<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @PostMapping("basket/checkout")
+    public ResponseEntity<User> checkout(@RequestBody User user) {
+        LOG.info("POST /user/basket/checkout " + user);
+
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            if (userDAO.checkout(user)) {
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Shows the list of all {@linkplain Need needs} in a {@linkplain User user's}
+     * basket
+     * 
+     * @param user - The {@link User user} with needs to view
+     * 
+     * @return ResponseEntity with list of {@link Need need} objects and HTTP status
+     *         of OK<br>
+     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
+     *         object does not exist<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @GetMapping("basket/id")
+    public ResponseEntity<ArrayList<Need>> viewBasket(@RequestBody User user) {
+        LOG.info("GET /user/basket/id " + user);
+
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            ArrayList<Need> basket = userDAO.viewBasket(user);
+            if (basket == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(basket, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Creates a {@linkplain User user} with the provided user object
+     * 
+     * @param user - The {@link User user} to create
+     * 
+     * @return ResponseEntity with created {@link User user} object and HTTP status
+     *         of CREATED<br>
+     *         ResponseEntity with HTTP status of CONFLICT if {@link User user}
+     *         object already exists<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     */
+    @PostMapping("")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        LOG.info("POST /user " + user);
+
+        try {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+            User newuser = userDAO.createUser(user);
+            if (newuser == null) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+            return new ResponseEntity<User>(user, HttpStatus.CREATED);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Updates the {@linkplain User user} with the provided {@linkplain User user}
+     * object, if it exists
      * 
      * @param user The {@link User user} to update
      * 
-     * @return ResponseEntity with updated {@link User user} object and HTTP status of OK if updated<br>
-     * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     * @return ResponseEntity with updated {@link User user} object and HTTP status
+     *         of OK if updated<br>
+     *         ResponseEntity with HTTP status of NOT_FOUND if not found<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
@@ -91,13 +214,12 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
             User update = userDAO.updateUser(user);
-            if(update == null) {
+            if (update == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(update, HttpStatus.OK);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -108,24 +230,23 @@ public class UserController {
      * @param id The id of the {@link User user} to deleted
      * 
      * @return ResponseEntity HTTP status of OK if deleted<br>
-     * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         ResponseEntity with HTTP status of NOT_FOUND if not found<br>
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUsers(@PathVariable int id) {
+    public ResponseEntity<User> deleteUser(@PathVariable int id) {
         LOG.info("DELETE /user/" + id);
 
         try {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
             boolean deleted = userDAO.deleteUser(id);
-            if(!deleted) {
+            if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
