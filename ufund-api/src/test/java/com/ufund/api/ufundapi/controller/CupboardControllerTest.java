@@ -83,7 +83,7 @@ public class CupboardControllerTest {
     @Test
     public void testCreateNeed() throws IOException { // createNeed may throw IOException
         // Setup
-        Need need = new Need("Cookies",99, "chocolate chip");
+        Need need = new Need("Cookies", 99, "chocolate chip");
         // when createNeed is called, return true simulating successful
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(need);
@@ -99,7 +99,7 @@ public class CupboardControllerTest {
     @Test
     public void testCreateNeedFailed() throws IOException { // createNeed may throw IOException
         // Setup
-        Need need = new Need("Plates",99, "paper");
+        Need need = new Need("Plates", 99, "paper");
         // when createNeed is called, return false simulating failed
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(null);
@@ -114,7 +114,7 @@ public class CupboardControllerTest {
     @Test
     public void testCreateNeedHandleException() throws IOException { // createNeed may throw IOException
         // Setup
-        Need need = new Need("Bread",99, "Whole grain loaf");
+        Need need = new Need("Bread", 99, "Whole grain loaf");
 
         // When createNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).createNeed(need);
@@ -129,12 +129,12 @@ public class CupboardControllerTest {
     @Test
     public void testUpdateNeed() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need("Slop",99, "canned please!");
+        Need need = new Need("Slop", 99, "canned please!");
         // when updateNeed is called, return true simulating successful
         // update and save
         when(mockCupboardDAO.updateNeed(need)).thenReturn(need);
         ResponseEntity<Need> response = cupboardController.updateNeed(need);
-        need.updateNeed("Soup",null);
+        need.updateNeed("Soup", null);
 
         // Invoke
         response = cupboardController.updateNeed(need);
@@ -147,7 +147,7 @@ public class CupboardControllerTest {
     @Test
     public void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need("Cheerios",99, "Family sized");
+        Need need = new Need("Cheerios", 99, "Family sized");
         // when updateNeed is called, return true simulating successful
         // update and save
         when(mockCupboardDAO.updateNeed(need)).thenReturn(null);
@@ -162,7 +162,7 @@ public class CupboardControllerTest {
     @Test
     public void testUpdateNeedHandleException() throws IOException { // updateNeed may throw IOException
         // Setup
-        Need need = new Need("Sadness",99, "More Sadness");
+        Need need = new Need("Sadness", 99, "More Sadness");
         // When updateNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).updateNeed(need);
 
@@ -177,8 +177,8 @@ public class CupboardControllerTest {
     public void testGetNeeds() throws IOException { // getNeeds may throw IOException
         // Setup
         Need[] needs = new Need[2];
-        needs[0] = new Need("Pop culture reference 1",99, "67");
-        needs[1] = new Need("Pop culture reference 2",100, "The rock");
+        needs[0] = new Need("Pop culture reference 1", 99, "67");
+        needs[1] = new Need("Pop culture reference 2", 100, "The rock");
         // When getNeeds is called return the needes created above
         when(mockCupboardDAO.getNeeds()).thenReturn(needs);
 
@@ -208,8 +208,8 @@ public class CupboardControllerTest {
         // Setup
         String searchString = "ay";
         Need[] needes = new Need[2];
-        needes[0] = new Need("Taylor Swift",99, "i know who this is");
-        needes[1] = new Need("lil tay",100, "never heard of this one");
+        needes[0] = new Need("Taylor Swift", 99, "i know who this is");
+        needes[1] = new Need("lil tay", 100, "never heard of this one");
         // When serachNeeds is called with the search string, return the two
         /// needes above
         when(mockCupboardDAO.searchNeeds(searchString)).thenReturn(needes);
