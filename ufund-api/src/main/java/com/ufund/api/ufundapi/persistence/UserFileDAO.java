@@ -77,16 +77,13 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean checkout(User user) throws IOException {
         
-        ArrayList<Integer> basket = user.getBasket();
-
-        for (int need: basket) {
-            CupboardDAO.deleteNeed(need) ;
-        }
         return user.checkout();
+
     }
 
     @Override
     public User getUser(int id) throws IOException {
+        
         return users.get(id) ;
         
     }
