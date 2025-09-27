@@ -54,8 +54,13 @@ public class User {
         }
     }
 
-    public void checkout() {
-        basket.clear();
+    public boolean checkout() {
+        if (basket.isEmpty()) {
+            return false;
+        } else {
+            basket.clear();
+            return true;
+        }
     }
 
     public void removeFromBasket(int needId) {
