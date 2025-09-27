@@ -49,7 +49,13 @@ public class User {
     }
 
     public void addToBasket(int needId) {
-        basket.add(needId);
+        if (!inBasket(needId)) {
+            basket.add(needId);
+        }
+    }
+
+    public void checkout() {
+        basket.clear();
     }
 
     public void removeFromBasket(int needId) {
