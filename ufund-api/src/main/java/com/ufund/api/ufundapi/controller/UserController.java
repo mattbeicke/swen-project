@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
+import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
 /**
@@ -35,6 +36,7 @@ import com.ufund.api.ufundapi.persistence.UserDAO;
 public class UserController {
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
     private UserDAO userDAO;
+    private CupboardDAO cupboardDAO;
 
     /**
      * Creates a REST API controller to reponds to requests
@@ -44,8 +46,9 @@ public class UserController {
      *                    <br>
      *                    This dependency is injected by the Spring Framework
      */
-    public UserController(UserDAO userDAO) {
+    public UserController(UserDAO userDAO, CupboardDAO cupboardDAO) {
         this.userDAO = userDAO;
+        this.cupboardDAO = cupboardDAO;
     }
 
     /**
@@ -65,13 +68,14 @@ public class UserController {
         LOG.info("POST /user/basket/add " + user);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-            User newuser = userDAO.addToBasket(user, id);
-            if (newuser == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (cupboardDAO.getNeed(id) != null) {
+                User newuser = userDAO.addToBasket(user, id);
+                if (newuser == null) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<User>(user, HttpStatus.OK);
             }
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -95,13 +99,14 @@ public class UserController {
         LOG.info("POST /user/basket/remove " + user);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-            User newuser = userDAO.removeFromBasket(user, id);
-            if (newuser == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (cupboardDAO.getNeed(id) != null) {
+                User newuser = userDAO.removeFromBasket(user, id);
+                if (newuser == null) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                return new ResponseEntity<User>(user, HttpStatus.OK);
             }
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -124,8 +129,10 @@ public class UserController {
         LOG.info("POST /user/basket/checkout " + user);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
+            ArrayList<Integer> basket = user.getBasket();
+            for (int need : basket) {
+                cupboardDAO.deleteNeed(need);
+            }
             if (userDAO.checkout(user)) {
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             }
@@ -149,13 +156,11 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("basket/id")
-    public ResponseEntity<ArrayList<Need>> viewBasket(@RequestBody User user) {
+    public ResponseEntity<ArrayList<Integer>> viewBasket(@RequestBody User user) {
         LOG.info("GET /user/basket/id " + user);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-            ArrayList<Need> basket = userDAO.viewBasket(user);
+            ArrayList<Integer> basket = userDAO.viewBasket(user);
             if (basket == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -182,8 +187,6 @@ public class UserController {
         LOG.info("POST /user " + user);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             User newuser = userDAO.createUser(user);
             if (newuser == null) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -211,8 +214,6 @@ public class UserController {
         LOG.info("PUT /user " + user);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             User update = userDAO.updateUser(user);
             if (update == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -238,8 +239,6 @@ public class UserController {
         LOG.info("DELETE /user/" + id);
 
         try {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
             boolean deleted = userDAO.deleteUser(id);
             if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
