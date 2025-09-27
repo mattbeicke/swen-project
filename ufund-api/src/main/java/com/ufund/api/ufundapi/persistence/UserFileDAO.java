@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.yaml.snakeyaml.internal.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
 public class UserFileDAO implements UserDAO {
@@ -70,11 +69,9 @@ public class UserFileDAO implements UserDAO {
     }
 
     @Override
-    public ArrayList<Need> viewBasket(User user) throws IOException {
+    public ArrayList<Integer> viewBasket(User user) throws IOException {
         
         return user.getBasket();
-
-        throw new UnsupportedOperationException("Unimplemented method 'viewBasket'");
     }
 
     @Override
