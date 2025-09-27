@@ -79,9 +79,10 @@ public class UserFileDAO implements UserDAO {
         
         ArrayList<Integer> basket = user.getBasket();
 
-        cupbo
-
-        return !basket.isEmpty();
+        for (int need: basket) {
+            CupboardDAO.deleteNeed(need) ;
+        }
+        return user.checkout();
     }
 
     @Override
