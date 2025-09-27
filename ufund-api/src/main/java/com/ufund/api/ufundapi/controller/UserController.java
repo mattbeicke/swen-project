@@ -41,6 +41,10 @@ public class UserController {
     /**
      * Creates a REST API controller to reponds to requests
      * 
+     * @param userDAO     The {@link userDAO User Data Access Object} to
+     *                    perform CRUD operations
+     *                    <br>
+     *                    This dependency is injected by the Spring Framework
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
      *                    <br>
@@ -73,6 +77,13 @@ public class UserController {
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
+
+                ArrayList<Integer> basket = newuser.getBasket();
+                for (int need : basket) {
+                    if (cupboardDAO.getNeed(need) == null) {
+                        newuser.removeFromBasket(need);
+                    }
+                }
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -103,6 +114,13 @@ public class UserController {
                 User newuser = userDAO.removeFromBasket(user, id);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+
+                ArrayList<Integer> basket = newuser.getBasket();
+                for (int need : basket) {
+                    if (cupboardDAO.getNeed(need) == null) {
+                        newuser.removeFromBasket(need);
+                    }
                 }
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             }
@@ -160,6 +178,13 @@ public class UserController {
         LOG.info("GET /user/basket/id " + user);
 
         try {
+            ArrayList<Integer> oldBasket = user.getBasket();
+            for (int need : oldBasket) {
+                if (cupboardDAO.getNeed(need) == null) {
+                    user.removeFromBasket(need);
+                }
+            }
+
             ArrayList<Integer> basket = userDAO.viewBasket(user);
             if (basket == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
