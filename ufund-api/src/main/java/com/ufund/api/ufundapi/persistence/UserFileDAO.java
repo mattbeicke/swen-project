@@ -79,6 +79,8 @@ public class UserFileDAO implements UserDAO {
         
         ArrayList<Integer> basket = user.getBasket();
 
+        cupbo
+
         return !basket.isEmpty();
     }
 
