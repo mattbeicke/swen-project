@@ -8,7 +8,6 @@ public interface CupboardDAO {
         /**
      * Retrieves all {@linkplain Need needs}
      * 
-     * 
      * @return An array of {@link Need need} objects, may be empty
      * 
      * @throws IOException if an issue with underlying storage
