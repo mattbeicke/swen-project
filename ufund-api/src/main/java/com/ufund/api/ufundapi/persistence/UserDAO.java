@@ -1,9 +1,10 @@
 package com.ufund.api.ufundapi.persistence;
 
 import java.io.IOException;
-import com.ufund.api.ufundapi.model.User;
-import com.ufund.api.ufundapi.model.Need;
 import java.util.ArrayList;
+
+import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 
 public interface UserDAO {
     /**
@@ -31,7 +32,7 @@ public interface UserDAO {
      * 
      * @throws IOException if an issue with underlying storage
      */
-    ArrayList<Need> viewBasket(User user) throws IOException;
+    ArrayList<Integer> viewBasket(User user) throws IOException;
 
     /**
      * "Checks out" all {@linkplain Need needs} in basket

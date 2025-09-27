@@ -1,11 +1,13 @@
 package com.ufund.api.ufundapi.persistence;
 
 import java.io.IOException;
+
 import com.ufund.api.ufundapi.model.Need;
 
 public interface CupboardDAO {
         /**
      * Retrieves all {@linkplain Need needs}
+     * 
      * 
      * @return An array of {@link Need need} objects, may be empty
      * 
