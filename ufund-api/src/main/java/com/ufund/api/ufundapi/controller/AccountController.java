@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,13 +38,15 @@ public class AccountController {
 
     private String generateKey() {
         Random rand = new Random();
-        int myRandomNumber = rand.nextInt(0x10) + 0x10;
+        int myRandomNumber = rand.nextInt(0x69999999) + 0x10000000;
         return Integer.toHexString(myRandomNumber);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody String username, @RequestBody String password) {
+    public ResponseEntity<String> login(@RequestBody Map<String,String> input) {
         try {
+            String username = input.get("username");
+            String password = input.get("password");
             boolean validLogin = userDAO.verifyLogin(username, password);
             if(!validLogin) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 

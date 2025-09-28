@@ -126,6 +126,7 @@ public class UserFileDAO implements UserDAO {
 
     @Override
     public boolean verifyLogin(String username, String password) throws IOException {
-        return (getUserByUsername(username).getPassword() == password);
+        if (getUserByUsername(username) == null) return false;
+        return (getUserByUsername(username).getPassword().equals(password));
     }
 }
