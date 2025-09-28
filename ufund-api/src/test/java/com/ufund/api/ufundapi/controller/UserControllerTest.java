@@ -227,7 +227,35 @@ public class UserControllerTest {
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
+        user2.addToBasket(needId);
+
+        // when addNeedToBasket is called, return a Need object simulating successful
+        // update and save
+        when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
+        when(mockUserDAO.addToBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
+
+        // Invoke
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.addNeedToBasket(map, header);
+
+        // Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
+    }
+
+    @Test
+    public void testAddNeedToBasketNoAuth() throws IOException { // addNeedToBasket may throw IOException
+        // Setup
+        int needId = 10;
+        User user = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return a Need object simulating successful
@@ -240,11 +268,12 @@ public class UserControllerTest {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("userID", user.getId());
         map.put("needID", needId);
-        ResponseEntity<User> response = userController.addNeedToBasket(map);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
+        ResponseEntity<User> response = userController.addNeedToBasket(map, header);
 
         // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(user, response.getBody());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
@@ -252,19 +281,22 @@ public class UserControllerTest {
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return null simulating failure
         // update and save
         when(mockCupboardDAO.getNeed(needId)).thenReturn(null);
         when(mockUserDAO.addToBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
         // Invoke
         HashMap<String, Integer> map = new HashMap<>();
         map.put("userID", user.getId());
         map.put("needID", needId);
-        ResponseEntity<User> response = userController.addNeedToBasket(map);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.addNeedToBasket(map, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -275,7 +307,7 @@ public class UserControllerTest {
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called on the Mock User DAO, throw an IOException
@@ -284,12 +316,15 @@ public class UserControllerTest {
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
         // Invoke
         HashMap<String, Integer> map = new HashMap<>();
         map.put("userID", user.getId());
         map.put("needID", needId);
-        ResponseEntity<User> response = userController.addNeedToBasket(map);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.addNeedToBasket(map, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -301,7 +336,35 @@ public class UserControllerTest {
         int needId = 10;
         User user = new User(99, "uname", "pword");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
+
+        // when removeNeedFromBasket is called, return a Need object simulating success
+        // update and save
+        when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
+        when(mockUserDAO.removeFromBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
+
+        // Invoke
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map, header);
+
+        // Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
+    }
+
+    @Test
+    public void testRemoveNeedFromBasketNoAuth() throws IOException { // removeNeedFromBasket may throw IOException
+        // Setup
+        int needId = 10;
+        User user = new User(99, "uname", "pword");
+        user.addToBasket(needId);
+        User user2 = new User(99, "uname2", "pword");
 
         // when removeNeedFromBasket is called, return a Need object simulating success
         // update and save
@@ -313,11 +376,12 @@ public class UserControllerTest {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("userID", user.getId());
         map.put("needID", needId);
-        ResponseEntity<User> response = userController.removeNeedFromBasket(map);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map, header);
 
         // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(user, response.getBody());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
@@ -326,22 +390,26 @@ public class UserControllerTest {
         int needId = 10;
         User user = new User(99, "uname", "pword");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
 
         // when removeNeedFromBasket is called, return null simulating failure
         // update and save
         when(mockCupboardDAO.getNeed(needId)).thenReturn(null);
         when(mockUserDAO.removeFromBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
         // Invoke
         HashMap<String, Integer> map = new HashMap<>();
         map.put("userID", user.getId());
         map.put("needID", needId);
-        ResponseEntity<User> response = userController.removeNeedFromBasket(map);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+    
 
     @Test
     public void testRemoveNeedFromBasketHandleException() throws IOException { // removeNeedFromBasket may throw
@@ -349,7 +417,7 @@ public class UserControllerTest {
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname", "pword");
+        User user2 = new User(99, "uname2", "pword");
         user2.addToBasket(needId);
 
         // when removeNeedFromBasket is called on the Mock User DAO, throw an
@@ -357,6 +425,7 @@ public class UserControllerTest {
         // update and save
         doThrow(new IOException()).when(mockUserDAO).removeFromBasket(user, needId);
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
 
@@ -364,7 +433,9 @@ public class UserControllerTest {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("userID", user.getId());
         map.put("needID", needId);
-        ResponseEntity<User> response = userController.removeNeedFromBasket(map);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -381,13 +452,37 @@ public class UserControllerTest {
         // update and save
         when(mockUserDAO.checkout(user)).thenReturn(true);
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
         // Invoke
-        ResponseEntity<User> response = userController.checkout(user.getId());
+        ResponseEntity<User> response = userController.checkout(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
+    }
+
+    @Test
+    public void testCheckoutNoAuth() throws IOException { // checkout may throw IOException
+        // Setup
+        int needId = 10;
+        User user = new User(99, "uname", "pword");
+        user.addToBasket(needId);
+
+        // when checkout is called, return true simulating successful
+        // update and save
+        when(mockUserDAO.checkout(user)).thenReturn(true);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
+        // Invoke
+        ResponseEntity<User> response = userController.checkout(user.getId(), header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
@@ -400,9 +495,12 @@ public class UserControllerTest {
         // when checkout is called, return false simulating failure
         // update and save
         when(mockUserDAO.checkout(user)).thenReturn(false);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
         // Invoke
-        ResponseEntity<User> response = userController.checkout(user.getId());
+        ResponseEntity<User> response = userController.checkout(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -419,9 +517,12 @@ public class UserControllerTest {
         // update and save
         doThrow(new IOException()).when(mockUserDAO).checkout(user);
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
         // Invoke
-        ResponseEntity<User> response = userController.checkout(user.getId());
+        ResponseEntity<User> response = userController.checkout(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -430,7 +531,27 @@ public class UserControllerTest {
     @Test
     public void testViewBasket() throws IOException { // viewBasket may throw IOException
         // Setup
-        int needId = 10;
+        User user = new User(99, "uname", "pword");
+
+        // when viewBasket is called, return an ArrayList simulating success
+        // update and save
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.viewBasket(user)).thenReturn(new ArrayList<>());
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        // Invoke
+        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
+
+        // Analyze
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(new ArrayList<>(), response.getBody());
+    }    
+    
+    @Test
+    public void testViewBasketNoAuth() throws IOException { // viewBasket may throw IOException
+        // Setup
         User user = new User(99, "uname", "pword");
 
         // when viewBasket is called, return an ArrayList simulating success
@@ -438,27 +559,30 @@ public class UserControllerTest {
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
         when(mockUserDAO.viewBasket(user)).thenReturn(new ArrayList<>());
 
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId());
+        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(new ArrayList<>(), response.getBody());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
     public void testViewBasketFailed() throws IOException { // viewBasket may throw IOException
         // Setup
-        int needId = 10;
         User user = new User(99, "uname", "pword");
 
         // when viewBasket is called, return null simulating failure (empty basket)
         // update and save
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
         when(mockUserDAO.viewBasket(user)).thenReturn(null);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
 
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId());
+        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -467,16 +591,18 @@ public class UserControllerTest {
     @Test
     public void testViewBasketHandleException() throws IOException { // viewBasket may throw IOException
         // Setup
-        int needId = 10;
         User user = new User(99, "uname", "pword");
 
         // when viewBasket is called on the Mock User DAO, throw an IOException
         // update and save
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
         doThrow(new IOException()).when(mockUserDAO).viewBasket(user);
 
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId());
+        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
