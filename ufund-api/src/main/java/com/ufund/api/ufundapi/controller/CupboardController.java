@@ -104,7 +104,7 @@ public class CupboardController {
      * GET http://localhost:8080/cupboard/?name=ma
      */
     @GetMapping("/")
-    public ResponseEntity<Need[]> searchNeeds(@PathVariable String name) {
+    public ResponseEntity<Need[]> searchNeeds(@RequestBody String name) {
         LOG.info("GET /cupboard/?name="+name);
         
         try {
