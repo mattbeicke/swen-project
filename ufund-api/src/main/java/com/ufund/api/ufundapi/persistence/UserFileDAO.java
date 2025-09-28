@@ -166,6 +166,14 @@ public class UserFileDAO implements UserDAO {
     }
 
     @Override
+    public boolean verifyKey(int id, String key) throws IOException {
+        User user = getUser(id);
+        if(user == null) return false;
+        if(!activeLogins.containsKey(user.getId())) return false;
+        return activeLogins.get(user.getId()).equals(key);
+    }
+
+    @Override
     public void attemptLogout(String username) throws IOException {
         User user = getUserByUsername(username);
         if(user == null) return;

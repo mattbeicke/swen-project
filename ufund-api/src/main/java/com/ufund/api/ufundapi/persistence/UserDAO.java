@@ -126,5 +126,7 @@ public interface UserDAO {
 
     boolean verifyKey(String username, String key) throws IOException;
 
+    boolean verifyKey(int id, String key) throws IOException;
+
     void attemptLogout(String username) throws IOException;
 }

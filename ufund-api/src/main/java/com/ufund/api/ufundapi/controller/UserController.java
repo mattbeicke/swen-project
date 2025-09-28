@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,6 +60,7 @@ public class UserController {
      * Updates a {@linkplain User user} to add a need to their basket
      * 
      * @param data Map containing data {needID: int, userID: int}
+     * @param headers Map of all headers, must include key 
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -67,12 +69,18 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/add")
-    public ResponseEntity<User> addNeedToBasket(@RequestBody Map<String, Integer> data) {
+    public ResponseEntity<User> addNeedToBasket(@RequestBody Map<String, Integer> data, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /user/basket/add");
 
         try {
             int needID = data.get("needID");
             int userID = data.get("userID");
+
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(userID, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
                 if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,6 +108,7 @@ public class UserController {
      * Updates a {@linkplain User user} to remove a need from their basket
      * 
      * @param data Map containing data {needID: int, userID: int}
+     * @param headers Map of all headers, must include key 
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -108,12 +117,18 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/remove")
-    public ResponseEntity<User> removeNeedFromBasket(@RequestBody Map<String, Integer> data) {
+    public ResponseEntity<User> removeNeedFromBasket(@RequestBody Map<String, Integer> data, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /user/basket/remove");
 
         try {
             int needID = data.get("needID");
             int userID = data.get("userID");
+
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(userID, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
                 if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -141,6 +156,7 @@ public class UserController {
      * Checks out a {@linkplain User user}'s basket
      * 
      * @param id - The ID of the user to checkout
+     * @param headers Map of all headers, must include key 
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -149,11 +165,17 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/checkout")
-    public ResponseEntity<User> checkout(@PathVariable int id) {
+    public ResponseEntity<User> checkout(@PathVariable int id, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /user/basket/checkout " + id);
 
         try {
             User user = userDAO.getUser(id);
+
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(id, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
@@ -200,6 +222,7 @@ public class UserController {
      * basket
      * 
      * @param id - The ID of the user with needs to view
+     * @param headers Map of all headers, must include key 
      * 
      * @return ResponseEntity with list of {@link Need need} objects and HTTP status
      *         of OK<br>
@@ -208,11 +231,17 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @GetMapping("/basket/{id}")
-    public ResponseEntity<ArrayList<Integer>> viewBasket(@PathVariable int id) {
+    public ResponseEntity<ArrayList<Integer>> viewBasket(@PathVariable int id, @RequestHeader Map<String, String> headers) {
         LOG.info("GET /user/basket/" + id);
 
         try {
             User user = userDAO.getUser(id);
+            
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(id, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             ArrayList<Integer> oldBasket = user.getBasket();
             for (int need : oldBasket) {
                 if (cupboardDAO.getNeed(need) == null) {
