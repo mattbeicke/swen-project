@@ -234,9 +234,10 @@ public class UserControllerTest {
         // update and save
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
         when(mockUserDAO.addToBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         // Invoke
-        ResponseEntity<User> response = userController.addNeedToBasket(user, needId);
+        ResponseEntity<User> response = userController.addNeedToBasket(user.getId(), needId);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -257,7 +258,7 @@ public class UserControllerTest {
         when(mockUserDAO.addToBasket(user, needId)).thenReturn(user2);
 
         // Invoke
-        ResponseEntity<User> response = userController.addNeedToBasket(user, needId);
+        ResponseEntity<User> response = userController.addNeedToBasket(user.getId(), needId);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -274,11 +275,12 @@ public class UserControllerTest {
         // when addNeedToBasket is called on the Mock User DAO, throw an IOException
         // update and save
         doThrow(new IOException()).when(mockUserDAO).addToBasket(user, needId);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
 
         // Invoke
-        ResponseEntity<User> response = userController.addNeedToBasket(user, needId);
+        ResponseEntity<User> response = userController.addNeedToBasket(user.getId(), needId);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -296,9 +298,10 @@ public class UserControllerTest {
         // update and save
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
         when(mockUserDAO.removeFromBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         // Invoke
-        ResponseEntity<User> response = userController.removeNeedFromBasket(user, needId);
+        ResponseEntity<User> response = userController.removeNeedFromBasket(user.getId(), needId);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -319,7 +322,7 @@ public class UserControllerTest {
         when(mockUserDAO.removeFromBasket(user, needId)).thenReturn(user2);
 
         // Invoke
-        ResponseEntity<User> response = userController.removeNeedFromBasket(user, needId);
+        ResponseEntity<User> response = userController.removeNeedFromBasket(user.getId(), needId);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -336,11 +339,12 @@ public class UserControllerTest {
         // when removeNeedFromBasket is called on the Mock User DAO, throw an IOException
         // update and save
         doThrow(new IOException()).when(mockUserDAO).removeFromBasket(user, needId);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
 
         // Invoke
-        ResponseEntity<User> response = userController.removeNeedFromBasket(user, needId);
+        ResponseEntity<User> response = userController.removeNeedFromBasket(user.getId(), needId);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -356,9 +360,10 @@ public class UserControllerTest {
         // when checkout is called, return true simulating successful
         // update and save
         when(mockUserDAO.checkout(user)).thenReturn(true);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         // Invoke
-        ResponseEntity<User> response = userController.checkout(user);
+        ResponseEntity<User> response = userController.checkout(user.getId());
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -377,7 +382,7 @@ public class UserControllerTest {
         when(mockUserDAO.checkout(user)).thenReturn(false);
 
         // Invoke
-        ResponseEntity<User> response = userController.checkout(user);
+        ResponseEntity<User> response = userController.checkout(user.getId());
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -393,9 +398,10 @@ public class UserControllerTest {
         // when checkout is called on the Mock User DAO, throw an IOException
         // update and save
         doThrow(new IOException()).when(mockUserDAO).checkout(user);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         // Invoke
-        ResponseEntity<User> response = userController.checkout(user);
+        ResponseEntity<User> response = userController.checkout(user.getId());
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
