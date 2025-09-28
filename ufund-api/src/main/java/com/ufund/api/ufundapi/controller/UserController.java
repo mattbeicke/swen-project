@@ -32,7 +32,7 @@ import com.ufund.api.ufundapi.persistence.UserDAO;
  */
 
 @RestController
-@RequestMapping("cupboard")
+@RequestMapping("user")
 public class UserController {
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
     private UserDAO userDAO;
@@ -58,8 +58,8 @@ public class UserController {
     /**
      * Updates a {@linkplain User user} to add a need to their basket
      * 
-     * @param user - The {@link User user} to update
-     * @param id   - The id of the {@link Need need} to add to basket
+     * @param userID - The ID of the user to update
+     * @paran needID   - The id of the {@link Need need} to add to basket
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -68,12 +68,14 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/add")
-    public ResponseEntity<User> addNeedToBasket(@RequestBody User user, @RequestBody int id) {
-        LOG.info("POST /user/basket/add " + user);
+    public ResponseEntity<User> addNeedToBasket(@RequestBody int userID, @RequestBody int needID) {
+        LOG.info("POST /user/basket/add " + userID);
 
         try {
-            if (cupboardDAO.getNeed(id) != null) {
-                User newuser = userDAO.addToBasket(user, id);
+            if (cupboardDAO.getNeed(needID) != null) {
+                User user = userDAO.getUser(userID);
+                if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                User newuser = userDAO.addToBasket(user, needID);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
@@ -96,8 +98,8 @@ public class UserController {
     /**
      * Updates a {@linkplain User user} to remove a need from their basket
      * 
-     * @param user - The {@link User user} to update
-     * @param id   - The id of the {@link Need need} to remove from basket
+     * @param userID - The ID of the user to update
+     * @param needID   - The id of the {@link Need need} to remove from basket
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -106,12 +108,14 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/remove")
-    public ResponseEntity<User> removeNeedFromBasket(@RequestBody User user, @RequestBody int id) {
-        LOG.info("POST /user/basket/remove " + user);
+    public ResponseEntity<User> removeNeedFromBasket(@RequestBody int userID, @RequestBody int needID) {
+        LOG.info("POST /user/basket/remove " + userID);
 
         try {
-            if (cupboardDAO.getNeed(id) != null) {
-                User newuser = userDAO.removeFromBasket(user, id);
+            if (cupboardDAO.getNeed(needID) != null) {
+                User user = userDAO.getUser(userID);
+                if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                User newuser = userDAO.removeFromBasket(user, needID);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
@@ -134,7 +138,7 @@ public class UserController {
     /**
      * Checks out a {@linkplain User user}'s basket
      * 
-     * @param user - The {@link User user} to checkout
+     * @param id - The ID of the user to checkout
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -143,10 +147,12 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/checkout")
-    public ResponseEntity<User> checkout(@RequestBody User user) {
-        LOG.info("POST /user/basket/checkout " + user);
+    public ResponseEntity<User> checkout(@PathVariable int id) {
+        LOG.info("POST /user/basket/checkout " + id);
 
         try {
+            User user = userDAO.getUser(id);
+            if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
                 cupboardDAO.deleteNeed(need);
@@ -163,6 +169,7 @@ public class UserController {
 
     /**
      * Responds to the GET request for a {@linkplain Need need} for the given id
+     * TODO: fix and rework with login requirements
      * 
      * @param id The id used to locate the {@link Need need}
      * 
@@ -190,7 +197,7 @@ public class UserController {
      * Shows the list of all {@linkplain Need needs} in a {@linkplain User user's}
      * basket
      * 
-     * @param user - The {@link User user} with needs to view
+     * @param id - The ID of the user with needs to view
      * 
      * @return ResponseEntity with list of {@link Need need} objects and HTTP status
      *         of OK<br>
@@ -198,11 +205,12 @@ public class UserController {
      *         object does not exist<br>
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
-    @GetMapping("basket/id")
-    public ResponseEntity<ArrayList<Integer>> viewBasket(@RequestBody User user) {
-        LOG.info("GET /user/basket/id " + user);
+    @GetMapping("/basket/{id}")
+    public ResponseEntity<ArrayList<Integer>> viewBasket(@PathVariable int id) {
+        LOG.info("GET /user/basket/" + id);
 
         try {
+            User user = userDAO.getUser(id);
             ArrayList<Integer> oldBasket = user.getBasket();
             for (int need : oldBasket) {
                 if (cupboardDAO.getNeed(need) == null) {
@@ -214,6 +222,7 @@ public class UserController {
             if (basket == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+            LOG.info(basket.toString());
             return new ResponseEntity<>(basket, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
