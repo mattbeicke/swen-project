@@ -1,29 +1,20 @@
 package com.ufund.api.ufundapi.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.text.html.HTML;
-
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufund.api.ufundapi.model.Need;
-import com.ufund.api.ufundapi.model.User;
-import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
 @RestController
@@ -36,25 +27,47 @@ public class AccountController {
         this.userDAO = userDAO;
     }
 
-    private String generateKey() {
-        Random rand = new Random();
-        int myRandomNumber = rand.nextInt(0x69999999) + 0x10000000;
-        return Integer.toHexString(myRandomNumber);
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String,String> input) {
+    public ResponseEntity<String> login(@RequestBody Map<String, String> input) {
         try {
             String username = input.get("username");
             String password = input.get("password");
-            boolean validLogin = userDAO.verifyLogin(username, password);
-            if(!validLogin) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-            String new_key = generateKey();
-            return new ResponseEntity<>(new_key, HttpStatus.OK);
+            if (!userDAO.verifyLogin(username, password))
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        } catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            String key = userDAO.attemptLogin(username, password);
+            return new ResponseEntity<>(key, HttpStatus.OK);
+
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody String username) {
+        try {
+            userDAO.attemptLogout(username);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test(@RequestBody String username, @RequestHeader Map<String, String> headers) {
+        try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(username, key)) {
+                return new ResponseEntity<>("Invalid API key.", HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>("API key is valid.", HttpStatus.OK);
+
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
