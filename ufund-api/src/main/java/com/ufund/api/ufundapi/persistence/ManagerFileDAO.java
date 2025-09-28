@@ -6,14 +6,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.yaml.snakeyaml.internal.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 
 public class ManagerFileDAO implements ManagerDAO{
-    private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName());
     Map<Integer, Need> needs;   // Provides a local cache of the need objects
     // so that we don't need to read from the file
     // each time

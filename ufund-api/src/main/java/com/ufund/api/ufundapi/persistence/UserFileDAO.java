@@ -10,7 +10,6 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.internal.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.User;
@@ -18,7 +17,6 @@ import com.ufund.api.ufundapi.model.User;
 @Component
 public class UserFileDAO implements UserDAO {
 
-    private static final Logger LOG = Logger.getLogger(UserFileDAO.class.getName());
     private static final int KEY_CHARACTERS = 32;
 
     Map<Integer, User> users; // Provides a local cache of the need objects
@@ -162,6 +160,14 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean verifyKey(String username, String key) throws IOException {
         User user = getUserByUsername(username);
+        if(user == null) return false;
+        if(!activeLogins.containsKey(user.getId())) return false;
+        return activeLogins.get(user.getId()).equals(key);
+    }
+
+    @Override
+    public boolean verifyKey(int id, String key) throws IOException {
+        User user = getUser(id);
         if(user == null) return false;
         if(!activeLogins.containsKey(user.getId())) return false;
         return activeLogins.get(user.getId()).equals(key);
