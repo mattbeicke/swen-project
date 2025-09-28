@@ -14,21 +14,20 @@ import com.ufund.api.ufundapi.model.User;
 
 public class UserFileDAO implements UserDAO {
 
-    
     private static final Logger LOG = Logger.getLogger(UserFileDAO.class.getName());
-    Map<Integer, User> users;   // Provides a local cache of the need objects
+    Map<Integer, User> users; // Provides a local cache of the need objects
     // so that we don't need to read from the file
     // each time
-    private ObjectMapper objectMapper;  // Provides conversion between Need
+    private ObjectMapper objectMapper; // Provides conversion between Need
     // objects and JSON text format written
     // to the file
-    private static int nextId ;
-    private String filename;    // Filename to read from and write to
+    private static int nextId;
+    private String filename; // Filename to read from and write to
 
     public UserFileDAO(@Value("${users.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
-        load() ;
+        load();
     }
 
     private boolean load() throws IOException {
@@ -62,7 +61,7 @@ public class UserFileDAO implements UserDAO {
 
     @Override
     public User removeFromBasket(User user, int needId) throws IOException {
-        
+
         user.removeFromBasket(needId);
 
         return user;
@@ -70,38 +69,48 @@ public class UserFileDAO implements UserDAO {
 
     @Override
     public ArrayList<Integer> viewBasket(User user) throws IOException {
-        
+
         return user.getBasket();
     }
 
     @Override
     public boolean checkout(User user) throws IOException {
-        
+
         return user.checkout();
 
     }
 
     @Override
     public User getUser(int id) throws IOException {
-        
-        return users.get(id) ;
-        
+
+        return users.get(id);
+
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws IOException {
+        for (User user : users.values()) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     @Override
     public User createUser(User user) throws IOException {
-        User newUser = new User(user.getId(), user.getUsername(), user.getPassword()) ;
+        User newUser = new User(user.getId(), user.getUsername(), user.getPassword());
         users.put(newUser.getId(), newUser);
-        return newUser ;
+        return newUser;
     }
 
     @Override
     public User updateUser(User user) throws IOException {
-        int id = user.getId() ;
-        User oldUser = users.get(id) ;
-        oldUser.updateUser(user.getUsername(), user.getPassword()) ;
-        users.put(id, oldUser) ;
-        return oldUser ;
+        int id = user.getId();
+        User oldUser = users.get(id);
+        oldUser.updateUser(user.getUsername(), user.getPassword());
+        users.put(id, oldUser);
+        return oldUser;
     }
 
     @Override

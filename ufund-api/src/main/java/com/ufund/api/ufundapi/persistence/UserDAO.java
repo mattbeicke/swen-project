@@ -44,6 +44,19 @@ public interface UserDAO {
     boolean checkout(User user) throws IOException;
 
     /**
+     * Retrieves a {@linkplain User user} with the given username
+     * 
+     * @param username username of the user to find
+     * 
+     * @return the {@linkplain User user} with the username if it exists
+     *         <br>
+     *         null if no {@linkplain User user} with given username can be found
+     * 
+     * @throws IOException if an issue with underlying storage
+     */
+    User getUserByUsername(String username) throws IOException;
+
+    /**
      * Retrieves a {@linkplain User user} with the given id
      * 
      * @param id The id of the {@link User user} to get
