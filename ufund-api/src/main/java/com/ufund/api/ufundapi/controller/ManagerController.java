@@ -5,20 +5,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
-import com.ufund.api.ufundapi.persistence.ManagerDAO;
 
 /**
  * Handles the REST API requests for the Manager resource
@@ -35,6 +32,9 @@ public class ManagerController {
     private static final Logger LOG = Logger.getLogger(ManagerController.class.getName());
     private CupboardDAO cupboardDAO;
 
+    public ManagerController(CupboardDAO cupboardDAO){
+        this.cupboardDAO = cupboardDAO;
+    }
     /**
      * Responds to the GET request for a {@linkplain Need need} for the given id
      * 
@@ -93,7 +93,7 @@ public class ManagerController {
         LOG.info("POST /delete/" + id);
         try {
             boolean del = cupboardDAO.deleteNeed(id);
-            if (!del){
+            if (del){
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -105,13 +105,12 @@ public class ManagerController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Need> editNeed(@PathVariable int id){
-        LOG.info("POST /edit/" + id);
+    public ResponseEntity<Need> editNeed(@PathVariable Need need){
+        LOG.info("POST /edit/" + need.getId());
         try {
-            Need need1 = cupboardDAO.getNeed(id);
-            Need need2 = cupboardDAO.updateNeed(need1);
+            Need need2 = cupboardDAO.updateNeed(need);
             if (need2 != null){
-                return new ResponseEntity<Need>(HttpStatus.OK);
+                return new ResponseEntity<Need>(need2, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
