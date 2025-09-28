@@ -88,7 +88,7 @@ public class ManagerController {
         }
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<Manager> deleteNeed(@PathVariable int id){
         LOG.info("POST /delete/" + id);
         try {
@@ -104,7 +104,7 @@ public class ManagerController {
         }
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/edit/{id}")
     public ResponseEntity<Need> editNeed(@PathVariable Need need){
         LOG.info("POST /edit/" + need.getId());
         try {
