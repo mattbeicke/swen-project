@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.ManagerDAO;
@@ -60,6 +62,7 @@ public class ManagerController {
 
     @PostMapping("")
     public ResponseEntity<Need> addNeed(@RequestBody Need need){
+        LOG.info("POST /add" + need.getId());
         try {
             Need newNeed = cupboardDAO.createNeed(need);
             if (newNeed != null){
@@ -68,6 +71,34 @@ public class ManagerController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/browse")
+    public ResponseEntity<Need[]> browseNeeds(){
+        LOG.info("GET /browse");
+        try {
+            Need[] needs = cupboardDAO.getNeeds();
+            return new ResponseEntity<>(needs, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Manager> deleteNeed(@PathVariable int id){
+        LOG.info("POST /delete/" + id);
+        try {
+            boolean del = cupboardDAO.deleteNeed(id);
+            if (!del){
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
