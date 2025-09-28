@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
@@ -16,8 +17,6 @@ import com.ufund.api.ufundapi.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,7 +32,8 @@ public class UserControllerTest {
     private CupboardDAO mockCupboardDAO;
 
     /**
-     * Before each test, create new UserController and CupboardController objects and inject
+     * Before each test, create new UserController and CupboardController objects
+     * and inject
      * a mock User DAO
      */
     @BeforeEach
@@ -237,7 +237,10 @@ public class UserControllerTest {
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         // Invoke
-        ResponseEntity<User> response = userController.addNeedToBasket(user.getId(), needId);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        ResponseEntity<User> response = userController.addNeedToBasket(map);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -258,7 +261,10 @@ public class UserControllerTest {
         when(mockUserDAO.addToBasket(user, needId)).thenReturn(user2);
 
         // Invoke
-        ResponseEntity<User> response = userController.addNeedToBasket(user.getId(), needId);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        ResponseEntity<User> response = userController.addNeedToBasket(map);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -280,7 +286,10 @@ public class UserControllerTest {
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
 
         // Invoke
-        ResponseEntity<User> response = userController.addNeedToBasket(user.getId(), needId);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        ResponseEntity<User> response = userController.addNeedToBasket(map);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -301,7 +310,10 @@ public class UserControllerTest {
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
 
         // Invoke
-        ResponseEntity<User> response = userController.removeNeedFromBasket(user.getId(), needId);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -322,21 +334,26 @@ public class UserControllerTest {
         when(mockUserDAO.removeFromBasket(user, needId)).thenReturn(user2);
 
         // Invoke
-        ResponseEntity<User> response = userController.removeNeedFromBasket(user.getId(), needId);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    public void testRemoveNeedFromBasketHandleException() throws IOException { // removeNeedFromBasket may throw IOException
+    public void testRemoveNeedFromBasketHandleException() throws IOException { // removeNeedFromBasket may throw
+                                                                               // IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword");
         User user2 = new User(99, "uname", "pword");
         user2.addToBasket(needId);
 
-        // when removeNeedFromBasket is called on the Mock User DAO, throw an IOException
+        // when removeNeedFromBasket is called on the Mock User DAO, throw an
+        // IOException
         // update and save
         doThrow(new IOException()).when(mockUserDAO).removeFromBasket(user, needId);
         when(mockUserDAO.getUser(user.getId())).thenReturn(user);
@@ -344,7 +361,10 @@ public class UserControllerTest {
         when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
 
         // Invoke
-        ResponseEntity<User> response = userController.removeNeedFromBasket(user.getId(), needId);
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -406,7 +426,6 @@ public class UserControllerTest {
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
-
 
     @Test
     public void testViewBasket() throws IOException { // viewBasket may throw IOException
