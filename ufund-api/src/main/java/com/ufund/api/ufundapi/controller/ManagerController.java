@@ -103,4 +103,21 @@ public class ManagerController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Need> editNeed(@PathVariable int id){
+        LOG.info("POST /edit/" + id);
+        try {
+            Need need1 = cupboardDAO.getNeed(id);
+            Need need2 = cupboardDAO.updateNeed(need1);
+            if (need2 != null){
+                return new ResponseEntity<Need>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
