@@ -121,4 +121,10 @@ public interface UserDAO {
      * @throws IOException if underlying storage cannot be accessed
      */
     boolean verifyLogin(String username, String password) throws IOException;
+
+    String attemptLogin(String username, String password) throws IOException;
+
+    boolean verifyKey(String username, String key) throws IOException;
+
+    void attemptLogout(String username) throws IOException;
 }
