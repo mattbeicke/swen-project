@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Need;
@@ -58,8 +60,7 @@ public class UserController {
     /**
      * Updates a {@linkplain User user} to add a need to their basket
      * 
-     * @param userID - The ID of the user to update
-     * @paran needID   - The id of the {@link Need need} to add to basket
+     * @param data Map containing data {needID: int, userID: int}
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -68,10 +69,12 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/add")
-    public ResponseEntity<User> addNeedToBasket(@RequestBody int userID, @RequestBody int needID) {
-        LOG.info("POST /user/basket/add " + userID);
+    public ResponseEntity<User> addNeedToBasket(@RequestBody Map<String, Integer> data) {
+        LOG.info("POST /user/basket/add");
 
         try {
+            int needID = data.get("needID");
+            int userID = data.get("userID");
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
                 if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -98,8 +101,7 @@ public class UserController {
     /**
      * Updates a {@linkplain User user} to remove a need from their basket
      * 
-     * @param userID - The ID of the user to update
-     * @param needID   - The id of the {@link Need need} to remove from basket
+     * @param data Map containing data {needID: int, userID: int}
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK<br>
@@ -108,10 +110,12 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
      */
     @PostMapping("basket/remove")
-    public ResponseEntity<User> removeNeedFromBasket(@RequestBody int userID, @RequestBody int needID) {
-        LOG.info("POST /user/basket/remove " + userID);
+    public ResponseEntity<User> removeNeedFromBasket(@RequestBody Map<String, Integer> data) {
+        LOG.info("POST /user/basket/remove");
 
         try {
+            int needID = data.get("needID");
+            int userID = data.get("userID");
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
                 if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);

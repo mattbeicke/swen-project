@@ -101,6 +101,7 @@ public class UserFileDAO implements UserDAO {
 
     @Override
     public User createUser(User user) throws IOException {
+        if(getUserByUsername(user.getUsername()) != null) return null;
         User newUser = new User(user.getId(), user.getUsername(), user.getPassword());
         users.put(newUser.getId(), newUser);
         return newUser;
@@ -108,6 +109,9 @@ public class UserFileDAO implements UserDAO {
 
     @Override
     public User updateUser(User user) throws IOException {
+        User existingUser = getUserByUsername(user.getUsername());
+        if(existingUser != null && existingUser != user) return null; 
+        // only continues if the username is open (owned by the same user or not taken at all)
         int id = user.getId();
         User oldUser = users.get(id);
         oldUser.updateUser(user.getUsername(), user.getPassword());
@@ -118,5 +122,10 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean deleteUser(int id) throws IOException {
         return users.remove(id) != null;
+    }
+
+    @Override
+    public boolean verifyLogin(String username, String password) throws IOException {
+        return (getUserByUsername(username).getPassword() == password);
     }
 }

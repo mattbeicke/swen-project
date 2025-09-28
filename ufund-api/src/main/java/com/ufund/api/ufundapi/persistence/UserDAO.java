@@ -107,4 +107,18 @@ public interface UserDAO {
      * @throws IOException if underlying storage cannot be accessed
      */
     boolean deleteUser(int id) throws IOException;
+
+/**
+     * Deletes a {@linkplain User user} with the given id
+     * 
+     * @param username The username of the {@link User user}
+     * @param password The password of the {@link User user}
+     * 
+     * @return true if the user-password pairing is valid
+     *         <br>
+     *         false if user with the given username does not exist or if the password is incorrect
+     * 
+     * @throws IOException if underlying storage cannot be accessed
+     */
+    boolean verifyLogin(String username, String password) throws IOException;
 }
