@@ -22,6 +22,7 @@ import com.ufund.api.ufundapi.model.User;
  */
 @Component
 public class UserFileDAO implements UserDAO {
+
     private static final int KEY_CHARACTERS = 32;
 
     Map<Integer, User> users; // Provides a local cache of the user objects
@@ -228,19 +229,17 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean verifyKey(String username, String key) throws IOException {
         User user = getUserByUsername(username);
-        if (user == null)
-            return false;
-        if (!activeLogins.containsKey(user.getId()))
-            return false;
+        if (user == null) return false;
+        if (!activeLogins.containsKey(user.getId())) return false;
         return activeLogins.get(user.getId()).equals(key);
     }
 
-    /**
-     ** {@inheritDoc}
-     */
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
-        return false;
+        User user = getUser(id);
+        if(user == null) return false;
+        if(!activeLogins.containsKey(user.getId())) return false;
+        return activeLogins.get(user.getId()).equals(key);
     }
 
     /**

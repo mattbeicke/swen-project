@@ -19,7 +19,8 @@ import com.ufund.api.ufundapi.model.Need;
  */
 @Component
 public class CupboardFileDAO implements CupboardDAO {
-    Map<Integer, Need> needs; // Provides a local cache of the need objects
+
+    Map<Integer, Need> needs;   // Provides a local cache of the need objects
     // so that we don't need to read from the file
     // each time
     private ObjectMapper objectMapper; // Provides conversion between Need
