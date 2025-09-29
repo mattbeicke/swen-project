@@ -8,42 +8,44 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.internal.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.Need;
 
+/**
+ * Cupboard Data Access Object, interacts with storage to get Need objects
+ * 
+ * @author Zach Coy
+ */
 @Component
 public class CupboardFileDAO implements CupboardDAO {
-
-    private static final Logger LOG = Logger.getLogger(CupboardFileDAO.class.getName());
-    Map<Integer, Need> needs;   // Provides a local cache of the need objects
+    Map<Integer, Need> needs; // Provides a local cache of the need objects
     // so that we don't need to read from the file
     // each time
-    private ObjectMapper objectMapper;  // Provides conversion between Need
+    private ObjectMapper objectMapper; // Provides conversion between Need
     // objects and JSON text format written
     // to the file
-    private static int nextId;  // The next Id to assign to a new Need
-    private String filename;    // Filename to read from and write to
+    private static int nextId; // The next Id to assign to a new Need
+    private String filename; // Filename to read from and write to
 
     /**
      * Creates a Need File Data Access Object
      *
-     * @param filename Filename to read from and write to
+     * @param filename     Filename to read from and write to
      * @param objectMapper Provides JSON Object to/from Java Object
-     * serialization and deserialization
+     *                     serialization and deserialization
      *
      * @throws IOException when file cannot be accessed or read from
      */
     public CupboardFileDAO(@Value("${needs.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
-        load();  // load the heroes from the file
+        load(); // load the needs from the file
     }
 
     /**
-     * Generates the next id for a new @Need
-     *
+     * Generates the next id for a new {@link Need need}
+     * 
      * @return The next id
      */
     private synchronized static int nextId() {
@@ -53,9 +55,9 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Generates an array of @Needs from the tree map
+     * Generates an array of {@link Need needs} from the tree map
      *
-     * @return The array of @Needs, may be empty
+     * @return The array of {@link Need needs}, may be empty
      */
     @Override
     public Need[] getNeeds() {
@@ -63,13 +65,10 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Generates an array of @Needs from the tree map for any
-     * @Need that contains the text specified by containsText
-     * <br>
-     * If containsText is null, the array contains all of the
-     * @Needs in the tree map
-     *
-     * @return The array of @Needs, may be empty
+     * Generates an array of {@link Need needs} from the tree map
+     * 
+     * @param containsText filter text, if null then no filter
+     * @return The array of {@link Need needs}, may be empty
      */
     public Need[] getNeeds(String containsText) { // if containsText == null, no filter
         ArrayList<Need> needArrayList = new ArrayList<>();
@@ -86,10 +85,10 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Saves the @Need from the map into the file as an array
+     * Saves the {@link Need needs} from the map into the file as an array
      * of JSON objects
      *
-     * @return true if the @Needs were written successfully
+     * @return true if the {@link Need needs} were written successfully
      *
      * @throws IOException when file cannot be accessed or written to
      */
@@ -104,8 +103,7 @@ public class CupboardFileDAO implements CupboardDAO {
     }
 
     /**
-     * Loads @Need from the JSON file into the map
-     * <br>
+     * Loads {@link Need needs} from the JSON file into the map
      * Also sets next id to one more than the greatest id found in the file
      *
      * @return true if the file was read successfully
@@ -163,7 +161,7 @@ public class CupboardFileDAO implements CupboardDAO {
     @Override
     public Need createNeed(Need need) throws IOException {
         synchronized (needs) {
-            // We create a new hero object because the id field is immutable
+            // We create a new need object because the id field is immutable
             // and we need to assign the next unique id
             Need newNeed = new Need(need.getName(), need.getId(), need.getDescription());
             needs.put(newNeed.getId(), newNeed);
@@ -179,7 +177,7 @@ public class CupboardFileDAO implements CupboardDAO {
     public Need updateNeed(Need need) throws IOException {
         synchronized (needs) {
             if (needs.containsKey(need.getId()) == false) {
-                return null;  // hero does not exist
+                return null; // need does not exist
             }
             needs.put(need.getId(), need);
             save(); // may throw an IOException
