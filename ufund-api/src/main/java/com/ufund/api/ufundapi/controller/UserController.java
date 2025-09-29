@@ -25,9 +25,6 @@ import com.ufund.api.ufundapi.persistence.UserDAO;
 
 /**
  * Handles the REST API requests for the User resource
- * <p>
- * {@literal @}RestController Spring annotation identifies this class as a REST
- * API method handler to the Spring framework
  * 
  * @author Matthew Beicke
  */
@@ -44,12 +41,8 @@ public class UserController {
      * 
      * @param userDAO     The {@link userDAO User Data Access Object} to
      *                    perform CRUD operations
-     *                    <br>
-     *                    This dependency is injected by the Spring Framework
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
-     *                    <br>
-     *                    This dependency is injected by the Spring Framework
      */
     public UserController(UserDAO userDAO, CupboardDAO cupboardDAO) {
         this.userDAO = userDAO;
@@ -57,19 +50,19 @@ public class UserController {
     }
 
     /**
-     * Updates a {@linkplain User user} to add a need to their basket
+     * Updates a {@link User user} to add a need to their basket
      * 
-     * @param data Map containing data {needID: int, userID: int}
-     * @param headers Map of all headers, must include key 
+     * @param data    Map containing data {needID: int, userID: int}
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
-     *         of OK<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
-     *         object does not exist or {@link Need need} does not exist<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         of OK. ResponseEntity with HTTP status of NOT_FOUND if {@link User
+     *         user} object does not exist or {@link Need need} does not exist.
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("basket/add")
-    public ResponseEntity<User> addNeedToBasket(@RequestBody Map<String, Integer> data, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<User> addNeedToBasket(@RequestBody Map<String, Integer> data,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("POST /user/basket/add");
 
         try {
@@ -83,7 +76,8 @@ public class UserController {
 
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
-                if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                if (user == null)
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 User newuser = userDAO.addToBasket(user, needID);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -105,19 +99,19 @@ public class UserController {
     }
 
     /**
-     * Updates a {@linkplain User user} to remove a need from their basket
+     * Updates a {@link User user} to remove a {@link Need need} from their basket
      * 
-     * @param data Map containing data {needID: int, userID: int}
-     * @param headers Map of all headers, must include key 
+     * @param data    Map containing data {needID: int, userID: int}
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
-     *         of OK<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
-     *         object does not exist or {@link Need need} does not exist<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         of OK. ResponseEntity with HTTP status of NOT_FOUND if {@link User
+     *         user} object does not exist or {@link Need need} does not exist.
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("basket/remove")
-    public ResponseEntity<User> removeNeedFromBasket(@RequestBody Map<String, Integer> data, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<User> removeNeedFromBasket(@RequestBody Map<String, Integer> data,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("POST /user/basket/remove");
 
         try {
@@ -131,7 +125,8 @@ public class UserController {
 
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
-                if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                if (user == null)
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 User newuser = userDAO.removeFromBasket(user, needID);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -153,16 +148,15 @@ public class UserController {
     }
 
     /**
-     * Checks out a {@linkplain User user}'s basket
+     * Checks out a {@link User user}'s basket
      * 
-     * @param id - The ID of the user to checkout
-     * @param headers Map of all headers, must include key 
+     * @param id      The ID of the user to checkout
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
-     *         of OK<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
-     *         object does not exist<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         of OK. ResponseEntity with HTTP status of NOT_FOUND if {@link User
+     *         user} object does not exist. ResponseEntity with HTTP status of
+     *         INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("basket/checkout")
     public ResponseEntity<User> checkout(@PathVariable int id, @RequestHeader Map<String, String> headers) {
@@ -176,7 +170,8 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            if(user == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (user == null)
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
                 cupboardDAO.deleteNeed(need);
@@ -192,15 +187,13 @@ public class UserController {
     }
 
     /**
-     * Responds to the GET request for a {@linkplain Need need} for the given id
-     * TODO: fix and rework with login requirements
+     * Responds to the GET request for a {@link Need need} for the given id
      * 
      * @param id The id used to locate the {@link Need need}
      * 
      * @return ResponseEntity with {@link Need need} object and HTTP status of OK if
-     *         found<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if not found<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         found. ResponseEntity with HTTP status of NOT_FOUND if not found.
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
@@ -218,25 +211,24 @@ public class UserController {
     }
 
     /**
-     * Shows the list of all {@linkplain Need needs} in a {@linkplain User user's}
-     * basket
+     * Shows the list of all {@link Need needs} in a {@link User user's} basket
      * 
-     * @param id - The ID of the user with needs to view
-     * @param headers Map of all headers, must include key 
+     * @param id      The ID of the user with needs to view
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with list of {@link Need need} objects and HTTP status
-     *         of OK<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if {@link User user}
-     *         object does not exist<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         of OK. ResponseEntity with HTTP status of NOT_FOUND if {@link User
+     *         user} object does not exist ResponseEntity with HTTP status of
+     *         INTERNAL_SERVER_ERROR otherwise.
      */
     @GetMapping("/basket/{id}")
-    public ResponseEntity<ArrayList<Integer>> viewBasket(@PathVariable int id, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<ArrayList<Integer>> viewBasket(@PathVariable int id,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("GET /user/basket/" + id);
 
         try {
             User user = userDAO.getUser(id);
-            
+
             String key = headers.get("key");
             if (!userDAO.verifyKey(id, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -262,15 +254,14 @@ public class UserController {
     }
 
     /**
-     * Creates a {@linkplain User user} with the provided user object
+     * Creates a {@link User user} with the provided {@link User user} object
      * 
-     * @param user - The {@link User user} to create
+     * @param user The {@link User user} to create
      * 
      * @return ResponseEntity with created {@link User user} object and HTTP status
-     *         of CREATED<br>
-     *         ResponseEntity with HTTP status of CONFLICT if {@link User user}
-     *         object already exists<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
+     *         {@link User user} object already exists. ResponseEntity with HTTP
+     *         status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody User user) {
@@ -289,15 +280,15 @@ public class UserController {
     }
 
     /**
-     * Updates the {@linkplain User user} with the provided {@linkplain User user}
-     * object, if it exists
+     * Updates the {@link User user} with the provided {@link User user} object, if
+     * it exists
      * 
      * @param user The {@link User user} to update
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
-     *         of OK if updated<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if not found<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
+     *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
+     *         otherwise.
      */
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
@@ -316,13 +307,13 @@ public class UserController {
     }
 
     /**
-     * Deletes a {@linkplain User user} with the given id
+     * Deletes a {@link User user} with the given id
      * 
      * @param id The id of the {@link User user} to deleted
      * 
-     * @return ResponseEntity HTTP status of OK if deleted<br>
-     *         ResponseEntity with HTTP status of NOT_FOUND if not found<br>
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
+     * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
+     *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
+     *         INTERNAL_SERVER_ERROR otherwise.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable int id) {
