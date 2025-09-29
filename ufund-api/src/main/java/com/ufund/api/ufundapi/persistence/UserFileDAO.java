@@ -25,7 +25,7 @@ public class UserFileDAO implements UserDAO {
 
     private static final int KEY_CHARACTERS = 32;
 
-    Map<Integer, User> users; // Provides a local cache of the user objects
+    private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time
     private ObjectMapper objectMapper; // Provides conversion between User
     // objects and JSON text format written to the file
