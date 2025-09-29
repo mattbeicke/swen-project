@@ -9,12 +9,13 @@ geometry: margin=1in
 > and appear in the generated PDF in italics but do so only **after** all team members agree that the requirements for that section and current Sprint have been met. **Do not** delete future Sprint expectations._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: Goated
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Anthony Ficalora
+  * Ricardo Lopez
+  * Matthew Beicke
+  * Zach Coy
+  * Julian Burton
 
 ## Executive Summary
 
