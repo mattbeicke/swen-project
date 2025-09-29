@@ -68,14 +68,13 @@ public class UserFileDAOTest {
     }
 
     @Test
-    public void testViewBasket() {
-        User user = new User(80, "name", "pass");
+    public void testViewBasket() throws IOException{
+        User user = new User(80, "gaming", "pass");
         User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                 "Unexpected exception thrown");
         assertNotNull(result);
         result.addToBasket(10);
-
-        ArrayList<Integer> b2 = assertDoesNotThrow(() -> userFileDAO.viewBasket(userFileDAO.getUser(80)),
+        ArrayList<Integer> b2 = assertDoesNotThrow(() -> userFileDAO.viewBasket(userFileDAO.getUser(result.getId())),
                 "Unexpected exception thrown");
 
         ArrayList<Integer> basket = new ArrayList<>();
@@ -113,7 +112,7 @@ public class UserFileDAOTest {
                 "Unexpected exception thrown");
         assertNotNull(result);
 
-        assertEquals(result, assertDoesNotThrow(() -> userFileDAO.getUser(13),
+        assertEquals(result, assertDoesNotThrow(() -> userFileDAO.getUser(result.getId()),
                 "Unexpected exception thrown"));
     }
 
