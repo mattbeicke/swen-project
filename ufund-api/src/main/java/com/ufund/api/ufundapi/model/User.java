@@ -4,18 +4,30 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Class code for a {@link User user} object
+ * 
+ * @author Matthew Beicke
+ */
 public class User {
     @JsonProperty("id")
-    private int id;
+    private int id; // User's unique id
     @JsonProperty("username")
-    private String username;
+    private String username; // User's unique username
     @JsonProperty("password")
-    private String password;
+    private String password; // User's pasword
     @JsonProperty("basket")
-    private ArrayList<Integer> basket;
+    private ArrayList<Integer> basket; // User's need basket
 
     static final String STRING_FORMAT = "User [id=%d, username=%s, password=%s]";
 
+    /**
+     * Constructor for a {@link User user}
+     * 
+     * @param id       UserID
+     * @param username User's username
+     * @param password User's password
+     */
     public User(int id, String username, String password) {
         this.id = id;
         this.username = username;
@@ -23,6 +35,12 @@ public class User {
         basket = new ArrayList<>();
     }
 
+    /**
+     * Updates a user's username and/or password
+     * 
+     * @param username new username
+     * @param password new pasword
+     */
     public void updateUser(String username, String password) {
         if (username != null) { // Only update what is new
             this.username = username;
@@ -32,28 +50,58 @@ public class User {
         }
     }
 
+    /**
+     * Returns the user's username
+     * 
+     * @return user's username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Returns the user's password
+     * 
+     * @return user's password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Returns the user's id
+     * 
+     * @return user's id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Returns the user's basket
+     * 
+     * @return which is an {@link ArrayList ArrayList} of {@link Need Need} objects
+     */
     public ArrayList<Integer> getBasket() {
         return basket;
     }
 
+    /**
+     * Adds to a user's basket
+     * 
+     * @param needId id of the {@link Need need} to add
+     */
     public void addToBasket(int needId) {
         if (!inBasket(needId)) {
             basket.add(needId);
         }
     }
 
+    /**
+     * "Checksout" a user's basket (removes everything in it)
+     * 
+     * @return true if there were things in the basket, false if not
+     */
     public boolean checkout() {
         if (basket.isEmpty()) {
             return false;
@@ -63,14 +111,31 @@ public class User {
         }
     }
 
+    /**
+     * Removes a need from a user's basket
+     * 
+     * @param needId id of {@link Need need} to remove
+     */
     public void removeFromBasket(int needId) {
         basket.remove((Integer) needId);
     }
 
+    /**
+     * Checks if a need is in a user's basket
+     * 
+     * @param needId id of {@link Need need} to check
+     * @return true if the {@link Need need} with id needId is in the user's basket,
+     *         false otherwise
+     */
     public boolean inBasket(int needId) {
         return basket.contains((Integer) needId);
     }
 
+    /**
+     * Standard toString method, uses custom format
+     * 
+     * @return A string containing user data
+     */
     @Override
     public String toString() {
         return String.format(STRING_FORMAT, id, username, password);
