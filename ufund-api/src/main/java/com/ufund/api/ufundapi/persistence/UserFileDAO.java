@@ -9,11 +9,9 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Io;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
 /**
