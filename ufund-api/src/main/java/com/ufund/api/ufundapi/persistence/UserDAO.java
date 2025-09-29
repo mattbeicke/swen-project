@@ -119,27 +119,6 @@ public interface UserDAO {
      */
     boolean deleteUser(int id) throws IOException;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Checks if a entered username password combo exists
      * 
@@ -168,7 +147,7 @@ public interface UserDAO {
      * Returns if a username key combo exist
      * 
      * @param username username to check
-     * @param key key to check
+     * @param key      key to check
      * 
      * @return true if the key is the one currently assigned to that username
      * 
@@ -179,7 +158,7 @@ public interface UserDAO {
     /**
      * Returns if an id key combo exist
      * 
-     * @param id id to check
+     * @param id  id to check
      * @param key key to check
      * 
      * @return true if the key is the one currently assigned to that id

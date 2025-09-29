@@ -72,7 +72,7 @@ The following Tiers/Layers model shows a high-level view of the webapp's archite
 **NOTE**: detailed diagrams are required in later sections of this document.
 > _**[Sprint 1]** (Augment this diagram with your **own** rendition and representations of sample system classes, placing them into the appropriate M/V/VM (orange rectangle) tier section. Focus on what is currently required to support **Sprint 1 - Demo requirements**. Make sure to describe your design choices in the corresponding _**Tier Section**_ and also in the _**OO Design Principles**_ section below.)_
 
-![The Tiers & Layers of the Architecture](architecture-tiers-and-layers.png)
+![The Tiers & Layers of the Architecture](architecture.png)
 
 The web application, is built using the Model–View–ViewModel (MVVM) architecture pattern. 
 
@@ -118,6 +118,10 @@ Once the helper reaches this main page, the 3 lines represent a collapsable tabl
 
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+Account Controller - Provides API functionality for login/logout
+Cupboard Controller - Provides API functionality to access Need objects
+Manager Controller - Provides API functionality to for all manager related tasks 
+User Controller - Provides API functionality to for all helper related tasks 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -144,7 +148,7 @@ CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your Model Tier class diagram 1, etc.](model-placeholder.png)
+![Replace with your Model Tier class diagram 1, etc.](model.png)
 
 ## OO Design Principles
 
