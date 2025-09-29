@@ -162,8 +162,8 @@ public class ManagerController {
      *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
      *         otherwise.
      */
-    @PostMapping("/edit/{id}")
-    public ResponseEntity<Need> editNeed(@PathVariable Need need, @RequestHeader Map<String, String> headers) {
+    @PostMapping("/edit")
+    public ResponseEntity<Need> editNeed(@RequestBody Need need, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /edit/" + need.getId());
         try {
             String key = headers.get("key");
