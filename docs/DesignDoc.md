@@ -128,6 +128,12 @@ This section describes the web interface and flow; this is how the user views an
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
+Manager: A manager adds and removes needs from their cupboard.
+Need: A need is some item that a manager needs funded.
+User: A user can help support a manager by funding a need.
+UserDAO: The UserDAO provides functions to store and edit users.
+CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
+
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
 > Tier above._
@@ -140,6 +146,13 @@ This section describes the web interface and flow; this is how the user views an
 ## OO Design Principles
 
 > _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
+
+Single Responsibility: We made sure that each class was small and only is responsible for themselves.
+Open/Closed: We have made it so only authorized users can access and edit data as needed.
+Information Expert: We made sure that each class has enough responsibility to access the information needed for its responsibility.
+Dependency Inversion/Injection: We use interfaces for the dependancies.
+Controller: We implemented controllers for each object.
+Pure Fabrication: We have created DAO files.
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
