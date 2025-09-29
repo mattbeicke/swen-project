@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Need;
@@ -95,7 +96,7 @@ public class CupboardController {
      *         INTERNAL_SERVER_ERROR otherwise.
      */
     @GetMapping("/")
-    public ResponseEntity<Need[]> searchNeeds(@RequestBody String name) {
+    public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
         LOG.info("GET /cupboard/?name=" + name);
 
         try {

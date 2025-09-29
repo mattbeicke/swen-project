@@ -158,7 +158,7 @@ public class UserController {
      *         user} object does not exist. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
      */
-    @PostMapping("basket/checkout")
+    @PostMapping("basket/checkout/{id}")
     public ResponseEntity<User> checkout(@PathVariable int id, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /user/basket/checkout " + id);
 

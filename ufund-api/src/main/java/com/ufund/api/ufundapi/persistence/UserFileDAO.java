@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
 /**
@@ -89,6 +90,17 @@ public class UserFileDAO implements UserDAO {
     }
 
     /**
+     * Generates the next id for a new {@link Need need}
+     * 
+     * @return The next id
+     */
+    private synchronized static int nextId() {
+        int id = nextId;
+        ++nextId;
+        return id;
+    }
+
+    /**
      ** {@inheritDoc}
      */
     @Override
@@ -149,7 +161,10 @@ public class UserFileDAO implements UserDAO {
     @Override
     public User createUser(User user) throws IOException {
         synchronized (users) {
-            User newUser = new User(user.getId(), user.getUsername(), user.getPassword());
+            if(getUserByUsername(user.getUsername()) != null) {
+                return null;
+            }
+            User newUser = new User(nextId(), user.getUsername(), user.getPassword());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;

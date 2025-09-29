@@ -164,7 +164,7 @@ public class CupboardFileDAO implements CupboardDAO {
         synchronized (needs) {
             // We create a new need object because the id field is immutable
             // and we need to assign the next unique id
-            Need newNeed = new Need(need.getName(), need.getId(), need.getDescription());
+            Need newNeed = new Need(need.getName(), nextId(), need.getDescription());
             needs.put(newNeed.getId(), newNeed);
             save(); // may throw an IOException
             return newNeed;
