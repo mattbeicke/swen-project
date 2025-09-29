@@ -88,10 +88,13 @@ Both the ViewModel and Model are built using Java and Spring Framework. Details 
 This section describes the web interface and flow; this is how the user views and interacts with the web application.
 >_For the reference below, provide an initial draft image/sketch of possible layout of a mayor page of your User Interface and a brief description of the elements it contains **[Sprint 1]**_
 
-![Replace with your First concept of a layout for a mayor page in the User Interface](draft-layout-ui.png)
+![Replace with your First concept of a layout for a mayor page in the User Interface](Base-UI-Design.png)
 
 ### 
 > _Provide a summary of the application's user interface.  Describe, from the user's perspective, the flow of the pages/navigation in the web application.
+
+Once the helper reaches this main page, the 3 lines represent a collapsable table of buttons as shown. The basket button takes them to a page that shows which needs they've added, has a button for them to checkout at the bottom, and a button next to each need to remove it from basket if they so wish. The main page also had a search bar which when a term is added, will update the list of needs that match the term. The manager version would have the basket layout without the checkout button. Instead, the checkout button will have a create button that takes them to an input page to get the variables to craete a need. The list of needs they effect will be the cupboard, which stores the total list of needs.
+
 >  (Add low-fidelity mockups prior to initiating your **[Sprint 2]**  work so you have a good idea of the user interactions.) Eventually replace with representative screen shots of your high-fidelity results as these become available and finally include future recommendations improvement recommendations for your **[Sprint 4]** )_
 
 
@@ -123,7 +126,7 @@ This section describes the web interface and flow; this is how the user views an
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your ViewModel Tier class diagram 1, etc.](model-placeholder.png)
+![Replace with your ViewModel Tier class diagram 1, etc.](Controller-UML.png)
 
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
