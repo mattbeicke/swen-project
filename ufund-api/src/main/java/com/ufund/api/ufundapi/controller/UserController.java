@@ -272,7 +272,7 @@ public class UserController {
             if (newuser == null) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            return new ResponseEntity<User>(user, HttpStatus.CREATED);
+            return new ResponseEntity<User>(newuser, HttpStatus.CREATED);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
