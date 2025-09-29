@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.controller;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,12 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
+import com.ufund.api.ufundapi.persistence.UserDAO;
 
 /**
  * Handles the REST API requests for the Manager resource
@@ -27,6 +30,8 @@ import com.ufund.api.ufundapi.persistence.CupboardDAO;
 public class ManagerController {
     private static final Logger LOG = Logger.getLogger(ManagerController.class.getName());
     private CupboardDAO cupboardDAO;
+    private UserDAO userDAO;
+    private static final String MANAGER_USERNAME = "admin";
 
     /**
      * Creates a REST API controller to reponds to requests
@@ -34,8 +39,9 @@ public class ManagerController {
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
      */
-    public ManagerController(CupboardDAO cupboardDAO) {
+    public ManagerController(CupboardDAO cupboardDAO, UserDAO userDAO) {
         this.cupboardDAO = cupboardDAO;
+        this.userDAO = userDAO;
     }
 
     /**
@@ -66,16 +72,22 @@ public class ManagerController {
      * Creates a {@link Need need} with the provided {@link Need need} object
      * 
      * @param need The {@link Need need} to create
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with created {@link Need need} object and HTTP status
      *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
      *         {@link Need need} object already exists. ResponseEntity with HTTP
      *         status of INTERNAL_SERVER_ERROR otherwise.
      */
-    @PostMapping("/add/")
-    public ResponseEntity<Need> addNeed(@RequestBody Need need) {
+    @PostMapping("/add")
+    public ResponseEntity<Need> addNeed(@RequestBody Need need, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /add" + need.getId());
         try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(MANAGER_USERNAME, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             Need newNeed = cupboardDAO.createNeed(need);
             if (newNeed != null) {
                 return new ResponseEntity<Need>(newNeed, HttpStatus.OK);
@@ -111,15 +123,21 @@ public class ManagerController {
      * Deletes a {@link Need need} with the given id
      * 
      * @param id The id of the {@link Need need} to deleted
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
      *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("/delete/{id}")
-    public ResponseEntity<Manager> deleteNeed(@PathVariable int id) {
+    public ResponseEntity<Manager> deleteNeed(@PathVariable int id, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /delete/" + id);
         try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(MANAGER_USERNAME, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             boolean del = cupboardDAO.deleteNeed(id);
             if (del) {
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -137,6 +155,7 @@ public class ManagerController {
      * it exists
      * 
      * @param need The {@link Need need} to edit
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with edited {@link Need need} object and HTTP status
      *         of OK if edited. ResponseEntity with HTTP status of NOT_FOUND if not
@@ -144,9 +163,14 @@ public class ManagerController {
      *         otherwise.
      */
     @PostMapping("/edit/{id}")
-    public ResponseEntity<Need> editNeed(@PathVariable Need need) {
+    public ResponseEntity<Need> editNeed(@PathVariable Need need, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /edit/" + need.getId());
         try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(MANAGER_USERNAME, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             Need need2 = cupboardDAO.updateNeed(need);
             if (need2 != null) {
                 return new ResponseEntity<Need>(need2, HttpStatus.OK);
