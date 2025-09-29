@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -15,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
+import com.ufund.api.ufundapi.persistence.UserDAO;
 
 /**
  * Test the Manager Controller class
@@ -26,7 +29,7 @@ import com.ufund.api.ufundapi.persistence.CupboardDAO;
 public class ManagerControllerTest {
     private ManagerController managerController;
     private CupboardDAO mockCupboardDAO;
-    // TODO FIX THIS
+    private UserDAO mockUserDAO;
 
     /**
      * Before each test, create a new CupboardController object and inject
@@ -35,7 +38,9 @@ public class ManagerControllerTest {
     @BeforeEach
     public void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
-        managerController = new ManagerController(mockCupboardDAO);
+        mockUserDAO = mock(UserDAO.class);
+        managerController = new ManagerController(mockCupboardDAO, mockUserDAO);
+
     }
 
     @Test
@@ -82,16 +87,20 @@ public class ManagerControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-     @Test
+    @Test
     public void testAddNeed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Cookies", 99, "chocolate chip");
+        User user = new User(69, "admin", "pword");
         // when createNeed is called, return true simulating successful
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = managerController.addNeed(need);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.addNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -102,12 +111,16 @@ public class ManagerControllerTest {
     public void testAddNeedFailed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Plates", 99, "paper");
+        User user = new User(69, "admin", "pword");
         // when createNeed is called, return false simulating failed
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(null);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = managerController.addNeed(need);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.addNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -117,15 +130,37 @@ public class ManagerControllerTest {
     public void testAddNeedHandleException() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Bread", 99, "Whole grain loaf");
-
+        User user = new User(69, "admin", "pword");
         // When createNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).createNeed(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = managerController.addNeed(need);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.addNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testAddNeedNoAuth() throws IOException { // createNeed may throw IOException
+        // Setup
+        Need need = new Need("Cookies", 99, "chocolate chip");
+        User user = new User(69, "admin", "pword");
+        // when createNeed is called, return true simulating successful
+        // creation and save
+        when(mockCupboardDAO.createNeed(need)).thenReturn(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
+
+        // Invoke
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
+        ResponseEntity<Need> response = managerController.addNeed(need, header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
@@ -161,12 +196,16 @@ public class ManagerControllerTest {
     @Test
     public void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
         // Setup
+        User user = new User(69, "admin", "pword");
         int needId = 99;
         // when deleteNeeds is called return true, simulating successful deletion
         when(mockCupboardDAO.deleteNeed(needId)).thenReturn(true);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -175,12 +214,16 @@ public class ManagerControllerTest {
     @Test
     public void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
         // Setup
+        User user = new User(69, "admin", "pword");
         int needId = 99;
         // when deleteNeeds is called return false, simulating failed deletion
         when(mockCupboardDAO.deleteNeed(needId)).thenReturn(false);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -189,29 +232,56 @@ public class ManagerControllerTest {
     @Test
     public void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
         // Setup
+        User user = new User(69, "admin", "pword");
         int needId = 99;
         // When deleteNeeds is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).deleteNeed(needId);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
     @Test
+    public void testDeleteNeedNoAuth() throws IOException { // deleteNeeds may throw IOException
+        // Setup
+        User user = new User(69, "admin", "pword");
+        int needId = 99;
+        // when deleteNeeds is called return true, simulating successful deletion
+        when(mockCupboardDAO.deleteNeed(needId)).thenReturn(true);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
+
+        // Invoke
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
+        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
     public void testEditNeed() throws IOException { // updateNeed may throw IOException
         // Setup
+        User user = new User(69, "admin", "pword");
         Need need = new Need("Slop", 99, "canned please!");
         // when updateNeed is called, return true simulating successful
         // update and save
         when(mockCupboardDAO.updateNeed(need)).thenReturn(need);
-        ResponseEntity<Need> response = managerController.editNeed(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
         need.updateNeed("Soup", null);
 
         // Invoke
-        response = managerController.editNeed(need);
+        response = managerController.editNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -221,13 +291,17 @@ public class ManagerControllerTest {
     @Test
     public void testEditNeedFailed() throws IOException { // updateNeed may throw IOException
         // Setup
+        User user = new User(69, "admin", "pword");
         Need need = new Need("Cheerios", 99, "Family sized");
         // when updateNeed is called, return true simulating successful
         // update and save
         when(mockCupboardDAO.updateNeed(need)).thenReturn(null);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = managerController.editNeed(need);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -236,15 +310,36 @@ public class ManagerControllerTest {
     @Test
     public void testEditNeedHandleException() throws IOException { // updateNeed may throw IOException
         // Setup
+        User user = new User(69, "admin", "pword");
         Need need = new Need("Sadness", 99, "More Sadness");
         // When updateNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).updateNeed(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
 
         // Invoke
-        ResponseEntity<Need> response = managerController.editNeed(need);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
+    @Test
+    public void testEditNeedNoAuth() throws IOException { // deleteNeeds may throw IOException
+        // Setup
+        User user = new User(69, "admin", "pword");
+        Need need = new Need("Sadness", 99, "More Sadness");
+        // When updateNeed is called on the Mock Need DAO, throw an IOException
+        doThrow(new IOException()).when(mockCupboardDAO).updateNeed(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
+
+        // Invoke
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "INVALID KEY");
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
 }
