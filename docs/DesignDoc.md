@@ -118,9 +118,10 @@ Once the helper reaches this main page, the 3 lines represent a collapsable tabl
 
 ### ViewModel Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
-Account Controller - Provides API functionality for login/logout
-Cupboard Controller - Provides API functionality to access Need objects
-Manager Controller - Provides API functionality to for all manager related tasks 
+
+Account Controller - Provides API functionality for login/logout<br>
+Cupboard Controller - Provides API functionality to access Need objects<br>
+Manager Controller - Provides API functionality to for all manager related tasks<br>
 User Controller - Provides API functionality to for all helper related tasks 
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
@@ -135,10 +136,10 @@ User Controller - Provides API functionality to for all helper related tasks
 ### Model Tier
 > _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
-Manager: A manager adds and removes needs from their cupboard.
-Need: A need is some item that a manager needs funded.
-User: A user can help support a manager by funding a need.
-UserDAO: The UserDAO provides functions to store and edit users.
+Manager: A manager adds and removes needs from their cupboard.<br>
+Need: A need is some item that a manager needs funded.<br>
+User: A user can help support a manager by funding a need.<br>
+UserDAO: The UserDAO provides functions to store and edit users.<br>
 CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
 
 > _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
@@ -154,11 +155,11 @@ CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
 
 > _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
 
-Single Responsibility: We made sure that each class was small and only is responsible for themselves.
-Open/Closed: We have made it so only authorized users can access and edit data as needed.
-Information Expert: We made sure that each class has enough responsibility to access the information needed for its responsibility.
-Dependency Inversion/Injection: We use interfaces for the dependancies.
-Controller: We implemented controllers for each object.
+Single Responsibility: We made sure that each class was small and only is responsible for themselves.<br>
+Open/Closed: We have made it so only authorized users can access and edit data as needed.<br>
+Information Expert: We made sure that each class has enough responsibility to access the information needed for its responsibility.<br>
+Dependency Inversion/Injection: We use interfaces for the dependancies.<br>
+Controller: We implemented controllers for each object.<br>
 Pure Fabrication: We have created DAO files.
 
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
