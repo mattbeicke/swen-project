@@ -130,6 +130,10 @@ public class User {
     public boolean inBasket(int needId) {
         return basket.contains((Integer) needId);
     }
+    
+    public boolean isManager() {
+        return username.equals(Manager.MANAGER_USERNAME);
+    }
 
     /**
      * Standard toString method, uses custom format
