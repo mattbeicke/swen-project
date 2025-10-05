@@ -68,16 +68,19 @@ public class UserController {
         try {
             int needID = data.get("needID");
             int userID = data.get("userID");
+            User user = userDAO.getUser(userID);
+            if (user == null)
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
             String key = headers.get("key");
             if (!userDAO.verifyKey(userID, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+            if (userDAO.userIsManager(userID)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
 
             if (cupboardDAO.getNeed(needID) != null) {
-                User user = userDAO.getUser(userID);
-                if (user == null)
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 User newuser = userDAO.addToBasket(user, needID);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -118,15 +121,21 @@ public class UserController {
             int needID = data.get("needID");
             int userID = data.get("userID");
 
+            User user = userDAO.getUser(userID);
+            if (user == null)
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
             String key = headers.get("key");
+
             if (!userDAO.verifyKey(userID, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+            if (userDAO.userIsManager(userID)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
 
             if (cupboardDAO.getNeed(needID) != null) {
-                User user = userDAO.getUser(userID);
-                if (user == null)
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
                 User newuser = userDAO.removeFromBasket(user, needID);
                 if (newuser == null) {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -165,13 +174,16 @@ public class UserController {
         try {
             User user = userDAO.getUser(id);
 
+            if (user == null)
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
             String key = headers.get("key");
             if (!userDAO.verifyKey(id, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-
-            if (user == null)
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (userDAO.userIsManager(id)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
                 cupboardDAO.deleteNeed(need);
@@ -228,10 +240,17 @@ public class UserController {
 
         try {
             User user = userDAO.getUser(id);
+            ArrayList<Integer> basket = userDAO.viewBasket(user);
+            if (basket == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
 
             String key = headers.get("key");
             if (!userDAO.verifyKey(id, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            if (userDAO.userIsManager(id)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
             ArrayList<Integer> oldBasket = user.getBasket();
@@ -241,10 +260,7 @@ public class UserController {
                 }
             }
 
-            ArrayList<Integer> basket = userDAO.viewBasket(user);
-            if (basket == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            
             LOG.info(basket.toString());
             return new ResponseEntity<>(basket, HttpStatus.OK);
         } catch (IOException e) {
@@ -283,18 +299,30 @@ public class UserController {
      * Updates the {@link User user} with the provided {@link User user} object, if
      * it exists
      * 
-     * @param user The {@link User user} to update
+     * @param user    The {@link User user} to update
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
-     *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
-     *         otherwise.
+     *         found. ResponseEntity with HTTP status of UNAUTHORIZED
+     *         if not logged in as the right user. ResponseEntity with HTTP status
+     *         of INTERNAL_SERVER_ERROR otherwise.
      */
     @PutMapping("")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@RequestBody User user,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("PUT /user " + user);
 
         try {
+            if(userDAO.getUser(user.getId()) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(user.getId(), key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             User update = userDAO.updateUser(user);
             if (update == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -309,17 +337,31 @@ public class UserController {
     /**
      * Deletes a {@link User user} with the given id
      * 
-     * @param id The id of the {@link User user} to deleted
+     * @param id      The id of the {@link User user} to deleted
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
      *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
+     *         UNAUTHORIZED
+     *         if not logged in as the right user. ResponseEntity with HTTP status
+     *         of
      *         INTERNAL_SERVER_ERROR otherwise.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable int id) {
+    public ResponseEntity<User> deleteUser(@PathVariable int id,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("DELETE /user/" + id);
 
         try {
+            if(userDAO.getUser(id) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(id, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             boolean deleted = userDAO.deleteUser(id);
             if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

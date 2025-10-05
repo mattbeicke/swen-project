@@ -33,7 +33,7 @@ public class CupboardControllerTest {
     @BeforeEach
     public void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
-        cupboardController = new CupboardController(mockCupboardDAO);
+        cupboardController = new CupboardController(mockCupboardDAO, true);
     }
 
     @Test

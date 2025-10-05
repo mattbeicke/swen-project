@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Ricardo Lopez
  */
 public class Manager {
+
+    public static final String MANAGER_USERNAME = "admin";
+
     @JsonProperty("username")
     private String username; // Manager's user name should always be admin
     @JsonProperty("password")

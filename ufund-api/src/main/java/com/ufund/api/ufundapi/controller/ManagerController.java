@@ -31,7 +31,6 @@ public class ManagerController {
     private static final Logger LOG = Logger.getLogger(ManagerController.class.getName());
     private CupboardDAO cupboardDAO;
     private UserDAO userDAO;
-    private static final String MANAGER_USERNAME = "admin";
 
     /**
      * Creates a REST API controller to reponds to requests
@@ -84,7 +83,7 @@ public class ManagerController {
         LOG.info("POST /add" + need.getId());
         try {
             String key = headers.get("key");
-            if (!userDAO.verifyKey(MANAGER_USERNAME, key)) {
+            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -134,7 +133,7 @@ public class ManagerController {
         LOG.info("POST /delete/" + id);
         try {
             String key = headers.get("key");
-            if (!userDAO.verifyKey(MANAGER_USERNAME, key)) {
+            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -167,7 +166,7 @@ public class ManagerController {
         LOG.info("POST /edit/" + need.getId());
         try {
             String key = headers.get("key");
-            if (!userDAO.verifyKey(MANAGER_USERNAME, key)) {
+            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
