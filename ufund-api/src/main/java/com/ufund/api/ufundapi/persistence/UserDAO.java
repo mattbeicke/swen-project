@@ -175,4 +175,13 @@ public interface UserDAO {
      * @throws IOException if underlying storage cannot be accessed
      */
     void attemptLogout(String username) throws IOException;
+
+    /**
+     * Returns if the given user ID corresponds to a Manager
+     * 
+     * @param id id of the the {@link User user} to check
+     * 
+     * @throws IOException if underlying storage cannot be accessed
+     */
+    public boolean userIsManager(int id) throws IOException;
 }

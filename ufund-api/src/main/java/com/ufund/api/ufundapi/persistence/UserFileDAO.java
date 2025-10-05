@@ -267,4 +267,12 @@ public class UserFileDAO implements UserDAO {
             return;
         activeLogins.remove(user.getId());
     }
+
+    /**
+     ** {@inheritDoc}
+     */
+    @Override
+    public boolean userIsManager(int id) throws IOException {
+        return getUser(id).isManager();
+    }
 }

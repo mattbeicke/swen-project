@@ -73,6 +73,9 @@ public class UserController {
             if (!userDAO.verifyKey(userID, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+            if (userDAO.userIsManager(userID)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
 
             if (cupboardDAO.getNeed(needID) != null) {
                 User user = userDAO.getUser(userID);
@@ -119,8 +122,12 @@ public class UserController {
             int userID = data.get("userID");
 
             String key = headers.get("key");
+            
             if (!userDAO.verifyKey(userID, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            if (userDAO.userIsManager(userID)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
             if (cupboardDAO.getNeed(needID) != null) {
@@ -168,6 +175,9 @@ public class UserController {
             String key = headers.get("key");
             if (!userDAO.verifyKey(id, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            if (userDAO.userIsManager(id)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
             if (user == null)
@@ -232,6 +242,9 @@ public class UserController {
             String key = headers.get("key");
             if (!userDAO.verifyKey(id, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            if (userDAO.userIsManager(id)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
             ArrayList<Integer> oldBasket = user.getBasket();
