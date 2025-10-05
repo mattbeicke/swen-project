@@ -297,17 +297,25 @@ public class UserController {
      * it exists
      * 
      * @param user The {@link User user} to update
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
-     *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
-     *         otherwise.
+     *         found. ResponseEntity with HTTP status of UNAUTHORIZED
+     *         if not logged in as the right user. ResponseEntity with HTTP status 
+     *         of INTERNAL_SERVER_ERROR otherwise.
      */
     @PutMapping("")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+    public ResponseEntity<User> updateUser(@RequestBody User user,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("PUT /user " + user);
 
         try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(user.getId(), key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             User update = userDAO.updateUser(user);
             if (update == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -323,16 +331,24 @@ public class UserController {
      * Deletes a {@link User user} with the given id
      * 
      * @param id The id of the {@link User user} to deleted
+     * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
-     *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
+     *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of UNAUTHORIZED
+     *         if not logged in as the right user. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable int id) {
+    public ResponseEntity<User> deleteUser(@PathVariable int id,
+            @RequestHeader Map<String, String> headers) {
         LOG.info("DELETE /user/" + id);
 
         try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(id, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             boolean deleted = userDAO.deleteUser(id);
             if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
