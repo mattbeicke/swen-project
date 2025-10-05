@@ -32,7 +32,7 @@ public class CupboardController {
     private static final Logger LOG = Logger.getLogger(CupboardController.class.getName());
     private CupboardDAO cupboardDAO;
 
-    @Value("${development-mode}")
+    
     private boolean DEVELOPMENT_MODE;
 
     /**
@@ -41,8 +41,10 @@ public class CupboardController {
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
      */
-    public CupboardController(CupboardDAO cupboardDAO) {
+    public CupboardController(CupboardDAO cupboardDAO, @Value("${development-mode}") boolean development_mode) {
         this.cupboardDAO = cupboardDAO;
+        this.DEVELOPMENT_MODE = development_mode;
+
     }
 
     /**
