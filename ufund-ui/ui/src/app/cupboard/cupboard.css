@@ -3,7 +3,7 @@
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
-  width: 15em;
+  width: 50em;
 }
 
 .needs li {
@@ -35,20 +35,12 @@
   color: #fafafa;
 }
 
-.needs button.selected {
-  background-color: black;
-  color: white;
-}
 
 .needs button.selected:hover {
   background-color: #505050;
   color: white;
 }
 
-.needs button.selected:active {
-  background-color: black;
-  color: white;
-}
 
 .needs .badge {
   display: inline-block;
