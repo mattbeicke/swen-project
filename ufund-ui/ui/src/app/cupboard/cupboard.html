@@ -1,9 +1,22 @@
-<h2>My Needs</h2>
-<ul class="needs">
-    <li *ngFor="let need of needs">
-        <span class="badge">{{need.id}}</span>
-        <span class="name">{{need.name}}</span>
-        <span class="description">{{need.description}}</span>
-        <button [class.selected]="need === selectedNeed" type="button" (click)="onSelect(need)">Add to Basket</button>
-    </li>
-</ul>
+<div class="container">
+    <aside class="sidebar">
+        <nav>
+            <a routerLink="/cupboard">Needs</a><br>
+            <a routerLink="/account">Account Management</a><br>
+            <a routerLink="/baskettab">Basket</a><br>
+        </nav>
+    </aside>
+
+    <div class="content">
+        <h2>My Needs</h2>
+        <ul class="needs">
+            <li *ngFor="let need of needs">
+                <span class="badge">{{need.id}}</span>
+                <span class="name">{{need.name}}</span>
+                <span class="description">{{need.description}}</span>
+                <button [class.selected]="need === selectedNeed" type="button" (click)="onSelect(need)">Add to
+                    Basket</button>
+            </li>
+        </ul>
+    </div>
+</div>
