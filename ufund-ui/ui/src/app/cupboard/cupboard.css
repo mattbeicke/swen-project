@@ -9,10 +9,26 @@ nav a {
   text-align: center;
 }
 
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 150px;
+}
+
+.content {
+  flex: 1;
+  margin-left: 75px;
+}
+
+
 nav a:hover {
   color: white;
   background-color: #42545C;
 }
+
 nav a:active {
   background-color: black;
 }
