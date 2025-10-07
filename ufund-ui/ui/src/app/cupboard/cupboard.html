@@ -1,4 +1,4 @@
-<div class="container">
+<div class="overall">
     <aside class="sidebar">
         <nav>
             <a routerLink="/cupboard">Needs</a><br>
@@ -8,15 +8,33 @@
     </aside>
 
     <div class="content">
-        <h2>My Needs</h2>
-        <ul class="needs">
-            <li *ngFor="let need of needs">
-                <span class="badge">{{need.id}}</span>
-                <span class="name">{{need.name}}</span>
-                <span class="description">{{need.description}}</span>
-                <button [class.selected]="need === selectedNeed" type="button" (click)="onSelect(need)">Add to
-                    Basket</button>
-            </li>
-        </ul>
+        <h1 class="stick">All Needs</h1>
+        <table class="needs">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let need of needs">
+                    <td>{{need.name}}</td>
+                    <td>{{need.description}}</td>
+                    <td>
+                        <button [class.selected]="need === selectedNeed" type="button"
+                            (click)="onSelect(need)">{{bText}}</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
+    <aside class="sidebarr">
+        <br><br>
+        <div *ngIf="isManager">
+            <button>create need</button>
+        </div>
+        <input type="text">
+    </aside>
 </div>
