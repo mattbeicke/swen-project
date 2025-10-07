@@ -8,6 +8,7 @@ import { Cupboard } from './cupboard/cupboard';
 import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { BasketTab } from './basket-tab/basket-tab';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

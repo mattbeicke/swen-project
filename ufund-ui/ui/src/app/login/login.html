@@ -1,1 +1,10 @@
-<p>Login Here</p>
+<div id="login-form">
+    <span class="title">Login for Goated U-Fund</span>
+    <p>
+        <input id="username-in" [(ngModel)]="username" placeholder="Username" class="login-form-input"> <!--  -->
+        <br>
+        <input type="password" id="password-in" [(ngModel)]="password" placeholder="Password" class="login-form-input">
+    </p>
+    <button type="button" (click)="login()">Enter</button>
+
+</div>
