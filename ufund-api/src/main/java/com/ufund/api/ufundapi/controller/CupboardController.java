@@ -60,9 +60,6 @@ public class CupboardController {
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
         LOG.info("GET /cupboard/" + id);
-        if(!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
@@ -86,10 +83,6 @@ public class CupboardController {
     @GetMapping("")
     public ResponseEntity<Need[]> getNeeds() {
         LOG.info("GET /cupboard");
-        if(!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
         try {
             return new ResponseEntity<Need[]>(cupboardDAO.getNeeds(), HttpStatus.OK);
         } catch (IOException e) {
@@ -113,9 +106,6 @@ public class CupboardController {
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
         LOG.info("GET /cupboard/?name=" + name);
-        if(!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
         try {
             return new ResponseEntity<Need[]>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
         } catch (IOException e) {
