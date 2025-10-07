@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 export class Cupboard {
   selectedNeed?: Need;
   bText = "";
+  isManager = false;
 
   onSelect(need: Need): void {
     this.selectedNeed = need;
@@ -38,8 +39,10 @@ export class Cupboard {
     this.getNeeds();
     if (localStorage.getItem("role") == "manager") {
       this.bText = "Edit/Delete";
+      this.isManager = true;
     } else {
       this.bText = "Add to Basket";
+      this.isManager = false;
     }
   }
 }

@@ -9,7 +9,12 @@ nav a {
   text-align: center;
 }
 
-nav{
+.overall {
+  display: grid;
+  grid-template-columns: 159px 60rem 150px;
+}
+
+nav {
   top: 8px;
   position: sticky;
 }
@@ -23,19 +28,20 @@ nav{
   width: 150px;
 }
 
-.need {
-  width: 2000px;
-  margin-bottom: 10px;
+.sidebarr {
+  margin-left: 75px;
+  width: 150px;
 }
 
 .content {
-  flex: 1;
   margin-left: 75px;
+  width: 60rem;
 }
 
 .stick {
   position: sticky;
   top: 0;
+  width: 60rem;
   background-color: white;
   z-index: 10
 }
@@ -51,7 +57,7 @@ nav a:active {
 
 .needs {
   margin: 0 0 2em 0;
-  width: 75em;
+  width: 60rem;
 }
 
 .needs li {
@@ -94,7 +100,7 @@ nav a:active {
 
 table {
   table-layout: fixed;
-  
+
 }
 
 .needs .name {

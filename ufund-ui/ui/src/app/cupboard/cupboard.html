@@ -1,4 +1,4 @@
-<div class="container">
+<div class="overall">
     <aside class="sidebar">
         <nav>
             <a routerLink="/cupboard">Needs</a><br>
@@ -29,4 +29,12 @@
             </tbody>
         </table>
     </div>
+
+    <aside class="sidebarr">
+        <br><br>
+        <div *ngIf="isManager">
+            <button>create need</button>
+        </div>
+        <input type="text">
+    </aside>
 </div>
