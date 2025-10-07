@@ -9,6 +9,11 @@ nav a {
   text-align: center;
 }
 
+nav{
+  top: 8px;
+  position: sticky;
+}
+
 .container {
   display: flex;
   min-height: 100vh;
@@ -18,11 +23,22 @@ nav a {
   width: 150px;
 }
 
+.need {
+  width: 2000px;
+  margin-bottom: 10px;
+}
+
 .content {
   flex: 1;
   margin-left: 75px;
 }
 
+.stick {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 10
+}
 
 nav a:hover {
   color: white;
@@ -35,9 +51,7 @@ nav a:active {
 
 .needs {
   margin: 0 0 2em 0;
-  list-style-type: none;
-  padding: 0;
-  width: 50em;
+  width: 75em;
 }
 
 .needs li {
@@ -45,23 +59,16 @@ nav a:active {
 }
 
 .needs button {
-  flex: 1;
   cursor: pointer;
-  position: relative;
-  left: 0;
   background-color: #EEE;
   margin: .5em;
-  padding: 0;
+  padding: .5em;
   border-radius: 4px;
-  display: flex;
-  align-items: stretch;
-  height: 1.8em;
 }
 
 .needs button:hover {
   color: #2c3a41;
   background-color: #e6e6e6;
-  left: .1em;
 }
 
 .needs button:active {
@@ -69,12 +76,10 @@ nav a:active {
   color: #fafafa;
 }
 
-
 .needs button.selected:hover {
   background-color: #505050;
   color: white;
 }
-
 
 .needs .badge {
   display: inline-block;
@@ -87,6 +92,26 @@ nav a:active {
   border-radius: 4px 0 0 4px;
 }
 
+table {
+  table-layout: fixed;
+  
+}
+
 .needs .name {
-  align-self: center;
+  margin: 50px;
+  align-self: left;
+}
+
+.needs .description {
+  align-self: right;
+}
+
+.needs th {
+  font-size: 25px;
+  text-align: left;
+  padding-bottom: 10px;
+  position: sticky;
+  z-index: 1;
+  top: 33px;
+  background-color: #ffffff;
 }
