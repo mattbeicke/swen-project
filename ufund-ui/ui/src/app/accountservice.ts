@@ -14,11 +14,11 @@ export class AccountsService {
     return this.http.post(this.needsURL+'/login', {username: username, password: password}, {responseType: 'text'});
   }
 
-  logout(): void {
-    // todo: not implemented
+  logout(username: string, key: string): void {
+    this.http.post(this.needsURL+'/logout', username, {responseType: 'text', 'headers': {'key': key}});
   }
 
-  test(): boolean {
-    return false; // todo: not implemented
+  test(username: string, key: string): Observable<string> {
+    return this.http.post(this.needsURL+'/test', username, {responseType: 'text', 'headers': {'key': key}});
   }
 }

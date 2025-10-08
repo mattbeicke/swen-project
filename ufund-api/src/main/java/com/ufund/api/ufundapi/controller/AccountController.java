@@ -74,8 +74,12 @@ public class AccountController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestBody String username) {
+    public ResponseEntity<Void> logout(@RequestBody String username, @RequestHeader Map<String, String> headers) {
         try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(username, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             userDAO.attemptLogout(username);
             return new ResponseEntity<>(HttpStatus.OK);
 
