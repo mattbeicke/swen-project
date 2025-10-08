@@ -3,11 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 
-export interface Account {
-  id: number;
-  name: string;
-}
-
 @Injectable({
   providedIn: 'root'
 })

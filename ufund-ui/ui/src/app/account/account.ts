@@ -20,6 +20,7 @@ export class Account {
     localStorage.setItem("username", "");
     localStorage.setItem("key", "");
     localStorage.setItem("role", "");
+    localStorage.setItem("id", "");
 
     this.router.navigate(['/']);
   }
