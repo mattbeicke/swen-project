@@ -33,6 +33,11 @@ nav {
   width: 150px;
 }
 
+.search {
+  position: sticky;
+  top: 50px;
+}
+
 .content {
   margin-left: 75px;
   width: 60rem;

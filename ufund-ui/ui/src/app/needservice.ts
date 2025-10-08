@@ -13,4 +13,7 @@ export class NeedService {
   getNeeds(): Observable<Need[]> {
     return this.http.get<Need[]>(this.needsURL)
   }
+  searchNeeds(term: string): Observable<Need[]> {
+    return this.http.get<Need[]>(`${this.needsURL}/?name=${term}`);
+  }
 }
