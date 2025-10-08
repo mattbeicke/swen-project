@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AccountsService } from '../accountservice'
 import { Router } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login {
+export class Login implements OnInit {
 
   @Input() username?: string;
   @Input() password?: string;
@@ -16,6 +16,12 @@ export class Login {
   message?: string;
 
   constructor(private accountsService: AccountsService, private router: Router) { }
+
+  ngOnInit(): void {
+    if (localStorage.getItem('username')) { // username is present => force redirect to cupboard 
+      this.router.navigate(['/cupboard']);
+    }
+  }
 
   login(): void {
     if (!this.username) { // missing or removed username
