@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
 /**
@@ -97,6 +98,23 @@ public class AccountController {
                 return new ResponseEntity<>("Invalid API key.", HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>("API key is valid.", HttpStatus.OK);
+
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<User> getInfo(@RequestBody String username, @RequestHeader Map<String, String> headers) {
+        try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(username, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            User user = userDAO.getUserByUsername(username);
+            User user_copy = new User(user.getId(), user.getUsername(), "");
+            return new ResponseEntity<>(user_copy, HttpStatus.OK);
 
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
