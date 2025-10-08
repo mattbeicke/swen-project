@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -90,8 +91,8 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test(@RequestBody String username, @RequestHeader Map<String, String> headers) {
+    @GetMapping("/test/{username}")
+    public ResponseEntity<String> test(@PathVariable String username, @RequestHeader Map<String, String> headers) {
         try {
             String key = headers.get("key");
             if (!userDAO.verifyKey(username, key)) {
@@ -105,8 +106,8 @@ public class AccountController {
         }
     }
 
-    @GetMapping("/info")
-    public ResponseEntity<User> getInfo(@RequestBody String username, @RequestHeader Map<String, String> headers) {
+    @GetMapping("/info/{username}")
+    public ResponseEntity<User> getInfo(@PathVariable String username, @RequestHeader Map<String, String> headers) {
         try {
             String key = headers.get("key");
             if (!userDAO.verifyKey(username, key)) {

@@ -36,26 +36,49 @@ export class Login implements OnInit {
     this.accountsService.login(this.username, this.password)
       .subscribe({
         next: data => (this.finalizeLogin(data, saved_username)),
-        error: error => {switch(error.status){
-          case 401:
-            this.message = "Invalid username or password";
-            break;
-          case 500:
-            this.message = "Internal server error";
-            break;
-          default:
-            this.message = "Unknown error, is server online?";
-        }}
+        error: error => {
+          switch (error.status) {
+            case 401:
+              this.message = "Invalid username or password";
+              break;
+            case 500:
+              this.message = "Internal server error";
+              break;
+            default:
+              this.message = "Unknown error, is server online?";
+          }
+        }
       });
   }
 
-  finalizeLogin(data: string, username: string): void {
-    localStorage.setItem('key', data);
+  finalizeLogin(key: string, username: string): void {
+    localStorage.setItem('key', key);
     localStorage.setItem('username', username);
     localStorage.setItem('role', username == 'admin' ? 'manager' : 'helper');
 
-    this.router.navigate(['/cupboard']);
+    // Now that the login is successful, find the user's ID
+    this.accountsService.getInfo(username, key)
+      .subscribe({
+        next: data => {
+          const id: number = JSON.parse(data).id
+          localStorage.setItem('id', `${id}`);
+          this.router.navigate(['/cupboard']);
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              this.message = "Authorization successful, but could not find account"; // This should never happen.
+              break;
+            case 500:
+              this.message = "Internal server error";
+              break;
+            default:
+              this.message = "Unknown error, is server online?";
+          }
+        }
+      });
+
   }
 
-  
+
 }
