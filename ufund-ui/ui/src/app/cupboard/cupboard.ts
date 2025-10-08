@@ -55,7 +55,6 @@ export class Cupboard {
       this.isManager = false;
     }
     this.needs$ = this.searchTerms.pipe(
-      debounceTime(100),
       distinctUntilChanged(),
       switchMap((term: string) => this.needService.searchNeeds(term)),
     );
