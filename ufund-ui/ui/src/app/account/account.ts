@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AccountsService } from '../accountservice';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account',
@@ -8,4 +10,17 @@ import { Component } from '@angular/core';
 })
 export class Account {
 
+  constructor(private accountsService: AccountsService, private router: Router) { }
+
+  logout(): void {
+    const username: string = localStorage.getItem('username') || '';
+    const key: string = localStorage.getItem('key') || '';
+    this.accountsService.logout(username, key);
+    
+    localStorage.setItem("username", "");
+    localStorage.setItem("key", "");
+    localStorage.setItem("role", "");
+
+    this.router.navigate(['/']);
+  }
 }

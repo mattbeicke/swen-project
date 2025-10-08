@@ -44,7 +44,7 @@ export class Login {
   }
 
   finalizeLogin(data: string, username: string): void {
-    localStorage.setItem('key', "");
+    localStorage.setItem('key', data);
     localStorage.setItem('username', username);
     localStorage.setItem('role', username == 'admin' ? 'manager' : 'helper');
 
