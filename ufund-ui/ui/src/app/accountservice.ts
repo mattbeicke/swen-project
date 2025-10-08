@@ -19,6 +19,6 @@ export class AccountsService {
   }
 
   test(username: string, key: string): Observable<string> {
-    return this.http.post(this.needsURL+'/test', username, {responseType: 'text', 'headers': {'key': key}});
+    return this.http.get(this.needsURL+'/test'+username, {responseType: 'text', 'headers': {'key': key}});
   }
 }
