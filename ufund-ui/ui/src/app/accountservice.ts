@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,10 @@ export class AccountsService {
   }
 
   test(username: string, key: string): Observable<string> {
-    return this.http.get(this.needsURL+'/test'+username, {responseType: 'text', 'headers': {'key': key}});
+    return this.http.get(this.needsURL+'/test/'+username, {responseType: 'text', 'headers': {'key': key}});
+  }
+
+  getInfo(username: string, key: string): Observable<string> {
+    return this.http.get(this.needsURL+'/info/'+username, {responseType: 'text', 'headers': {'key': key}});
   }
 }

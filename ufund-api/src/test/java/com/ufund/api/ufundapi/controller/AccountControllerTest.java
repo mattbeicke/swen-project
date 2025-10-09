@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
 /**
@@ -81,18 +83,39 @@ public class AccountControllerTest {
     @Test
     public void testValidLogout() throws IOException {
         String username = "user1";
+        String key = "key";
+        when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("key", key);
 
-        ResponseEntity<Void> response = accountController.logout(username);
+        ResponseEntity<Void> response = accountController.logout(username, headers);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testValidLogoutNoAuth() throws IOException {
+        String username = "user1";
+        String key = "key";
+        when(mockUserDAO.verifyKey(username, key)).thenReturn(false);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("key", key);
+
+        ResponseEntity<Void> response = accountController.logout(username, headers);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
     public void testLogoutHandleException() throws IOException {
         String username = "user1";
         doThrow(new IOException()).when(mockUserDAO).attemptLogout(username);
+        String key = "irrelevant";
+        when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("key", key);
 
-        ResponseEntity<Void> response = accountController.logout(username);
+        ResponseEntity<Void> response = accountController.logout(username, headers);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
@@ -132,6 +155,53 @@ public class AccountControllerTest {
         headers.put("key", key);
 
         ResponseEntity<String> response = accountController.test(username, headers);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetInfo() throws IOException {
+        String username = "user1";
+        String key = "key";
+        int id = 1;
+        when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User(id, username, ""));
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("key", key);
+
+        ResponseEntity<User> response = accountController.getInfo(username, headers);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(id, response.getBody().getId());
+        assertEquals(username, response.getBody().getUsername());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetInfoNoAuth() throws IOException {
+        // This also happens when the given user does not exist.
+        String username = "user1";
+        String key = "key";
+        when(mockUserDAO.verifyKey(username, key)).thenReturn(false);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("key", key);
+
+        ResponseEntity<User> response = accountController.getInfo(username, headers);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetInfoHandleException() throws IOException {
+        String username = "user1";
+        String key = "key";
+        doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
+        when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("key", key);
+
+        ResponseEntity<User> response = accountController.getInfo(username, headers);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
