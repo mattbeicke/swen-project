@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
 import { Observable, Subject, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, timeout } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith, subscribeOn, switchMap, timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cupboard',
@@ -12,14 +12,10 @@ import { debounceTime, distinctUntilChanged, switchMap, timeout } from 'rxjs/ope
 })
 export class Cupboard {
   needs$!: Observable<Need[]>;
-  needs: Need[] = [];
   private searchTerms = new Subject<string>();
   selectedNeed?: Need;
   bText = "";
   isManager = false;
-  v1 = "";
-  v2 = "";
-  v3 = "";
   initial = true;
 
   onSelect(need: Need): void {
@@ -32,19 +28,10 @@ export class Cupboard {
   }
 
   search(term: string): void {
-    this.initial = false;
-    this.v1 = "All Needs";
-    this.v2 = "Name";
-    this.v3 = "Description";
     this.searchTerms.next(term);
   }
 
   constructor(private needService: NeedService) { }
-
-  getNeeds(): void {
-    this.needService.getNeeds()
-      .subscribe(needs => this.needs = needs);
-  }
 
   ngOnInit(): void {
     if (localStorage.getItem("role") == "manager") {
@@ -54,10 +41,14 @@ export class Cupboard {
       this.bText = "Add to Basket";
       this.isManager = false;
     }
-    this.needs$ = this.searchTerms.pipe(
-      distinctUntilChanged(),
-      switchMap((term: string) => this.needService.searchNeeds(term)),
-    );
-    this.getNeeds();
+
+    this.needService.getNeeds()
+      .subscribe(needs => {
+        this.needs$ = this.searchTerms.pipe(
+          distinctUntilChanged(),
+          switchMap((term: string) => this.needService.searchNeeds(term)),
+          startWith(needs),
+        );
+      })
   }
 }

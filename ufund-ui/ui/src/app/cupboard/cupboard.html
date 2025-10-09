@@ -8,36 +8,13 @@
     </aside>
 
     <div>
-        <div *ngIf="initial" class="content">
+        <div class="content">
             <h1 class="stick">All Needs</h1>
             <table class="needs">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let need of needs">
-                        <td>{{need.name}}</td>
-                        <td>{{need.description}}</td>
-                        <td>
-                            <button [class.selected]="need === selectedNeed" type="button"
-                                (click)="onSelect(need)">{{bText}}</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="content">
-            <h1 class="stick">{{v1}}</h1>
-            <table class="needs">
-                <thead>
-                    <tr>
-                        <th>{{v2}}</th>
-                        <th>{{v3}}</th>
                         <th></th>
                     </tr>
                 </thead>
