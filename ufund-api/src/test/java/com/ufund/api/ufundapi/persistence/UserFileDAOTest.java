@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.User;
 import java.io.File;
 
+@Tag("Persistence-tier")
 public class UserFileDAOTest {
     UserFileDAO userFileDAO;
     User[] testUsers;
