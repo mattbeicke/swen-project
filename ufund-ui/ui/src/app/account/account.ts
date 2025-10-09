@@ -25,5 +25,11 @@ export class Account {
     this.router.navigate(['/']);
   }
 
-  changeUsername(name: string): void{}
+  changeUsername(name: string): void{
+    console.log("Is called")
+    if (localStorage.getItem("role") == "helper"){
+      this.accountsService.changeName(name, localStorage.getItem('key') || '').subscribe({next: name => (name)});
+      console.log("made it this far")
+    }
+  }
 }

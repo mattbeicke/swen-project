@@ -1,2 +1,1 @@
-[{"id":1,"username":"admin","password":"adminpw","manager":true,"basket":[]},
-{"id":2,"username":"Tim","password":"userpw","manager":false,"basket":[]}]
+[{"id":1,"username":"admin","password":"adminpw","manager":true,"basket":[]},{"id":2,"username":"greg","password":"userpw","manager":false,"basket":[]}]

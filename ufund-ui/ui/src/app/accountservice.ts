@@ -27,7 +27,11 @@ export class AccountsService {
     return this.http.get(this.needsURL+'/info/'+username, {responseType: 'text', 'headers': {'key': key}});
   }
 
-  //changeName(): void {
-  //  return this.http.put('http://localhost:8080/users', {}, {responseType: 'text'})
-  //}
+  changeName(name: string, key: string): Observable<string> {
+    return this.http.put('http://localhost:8080/user', {
+      "id":localStorage.getItem("id"), 
+      "username":name
+    }
+    , {responseType: 'text', 'headers': {'key': key}})
+  }
 }
