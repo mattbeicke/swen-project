@@ -21,4 +21,8 @@ export class AccountsService {
   test(): boolean {
     return false; // todo: not implemented
   }
+
+  //changeName(): void {
+  //  return this.http.put('http://localhost:8080/users', {}, {responseType: 'text'})
+  //}
 }

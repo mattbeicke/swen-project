@@ -8,6 +8,11 @@
     </aside>
 
     <div class="content">
-        <p>account works!</p>
+        <input id="new-name" #Name />
+
+        <!-- (click) passes input value to add() and then clears the input -->
+        <button type="button" class="add-button" (click)="changeUsername(Name.value); Name.value=''">
+          Change Name
+        </button>
     </div>
 </div>

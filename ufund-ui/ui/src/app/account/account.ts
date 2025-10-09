@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-account',
@@ -7,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './account.css'
 })
 export class Account {
-
+  @Input() 
+  changeUsername(name:string){
+    if (localStorage.getItem("role") != "manager") {
+      localStorage.setItem("username", name)
+      
+    }
+  }
 }
