@@ -10,12 +10,14 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.Need;
 import java.io.File;
 
+@Tag("Persistence-tier")
 public class CupboardFileDAOTest {
     CupboardFileDAO cupboardFileDAO;
     Need[] testNeeds;
