@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
 import { Observable, Subject, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, subscribeOn, switchMap, timeout } from 'rxjs/operators';
+import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cupboard',
