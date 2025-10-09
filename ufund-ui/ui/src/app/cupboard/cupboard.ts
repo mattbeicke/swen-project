@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
-
-import {
-  NgIf,
-  NgFor,
-  UpperCasePipe,
-} from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Observable, Subject, of } from 'rxjs';
+import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cupboard',
@@ -16,33 +11,44 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './cupboard.css'
 })
 export class Cupboard {
+  needs$!: Observable<Need[]>;
+  private searchTerms = new Subject<string>();
   selectedNeed?: Need;
   bText = "";
   isManager = false;
+  initial = true;
 
   onSelect(need: Need): void {
     this.selectedNeed = need;
     if (localStorage.getItem("role") == "manager") {
       //TODO: open edit/delete modal
-    } else {
+    } else if (localStorage.getItem("role") == "helper") {
       //TODO: add to basket
     }
   }
 
-  constructor(private needService: NeedService) { }
-  needs: Need[] = [];
-  getNeeds(): void {
-    this.needService.getNeeds()
-      .subscribe(needs => this.needs = needs);
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
+
+  constructor(private needService: NeedService) { }
+
   ngOnInit(): void {
-    this.getNeeds();
     if (localStorage.getItem("role") == "manager") {
       this.bText = "Edit/Delete";
       this.isManager = true;
-    } else {
+    } else if (localStorage.getItem("role") == "helper") {
       this.bText = "Add to Basket";
       this.isManager = false;
     }
+
+    this.needService.getNeeds()
+      .subscribe(needs => {
+        this.needs$ = this.searchTerms.pipe(
+          distinctUntilChanged(),
+          switchMap((term: string) => this.needService.searchNeeds(term)),
+          startWith(needs),
+        );
+      })
   }
 }
