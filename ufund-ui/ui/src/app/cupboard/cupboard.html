@@ -32,12 +32,11 @@
         </div>
     </div>
 
-
     <aside class="sidebarr">
         <br><br>
-        <div *ngIf="isManager">
-            <button>create need</button>
-        </div>
         <input class="search" #searchBox id="search-box" (input)="search(searchBox.value)" placeholder="Search Needs">
+        <div class="create" *ngIf="isManager">
+            <button (click)="create()">Create a new Need</button>
+        </div>
     </aside>
 </div>
