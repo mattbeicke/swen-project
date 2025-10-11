@@ -105,8 +105,11 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public User addToBasket(User user, int needId) throws IOException {
-        user.addToBasket(needId);
-        return user;
+        synchronized (users) {
+            user.addToBasket(needId);
+            save();
+            return user;
+        }
     }
 
     /**
@@ -114,8 +117,10 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public User removeFromBasket(User user, int needId) throws IOException {
-        user.removeFromBasket(needId);
-        return user;
+        synchronized (users) {
+            user.removeFromBasket(needId);
+            return user;
+        }
     }
 
     /**
@@ -131,7 +136,11 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public boolean checkout(User user) throws IOException {
-        return user.checkout();
+        synchronized (users) {
+            boolean retval = user.checkout();
+            save();
+            return retval;
+        }
     }
 
     /**
@@ -161,7 +170,7 @@ public class UserFileDAO implements UserDAO {
     @Override
     public User createUser(User user) throws IOException {
         synchronized (users) {
-            if(getUserByUsername(user.getUsername()) != null) {
+            if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
             User newUser = new User(nextId(), user.getUsername(), user.getPassword());
@@ -244,16 +253,20 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean verifyKey(String username, String key) throws IOException {
         User user = getUserByUsername(username);
-        if (user == null) return false;
-        if (!activeLogins.containsKey(user.getId())) return false;
+        if (user == null)
+            return false;
+        if (!activeLogins.containsKey(user.getId()))
+            return false;
         return activeLogins.get(user.getId()).equals(key);
     }
 
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
         User user = getUser(id);
-        if(user == null) return false;
-        if(!activeLogins.containsKey(user.getId())) return false;
+        if (user == null)
+            return false;
+        if (!activeLogins.containsKey(user.getId()))
+            return false;
         return activeLogins.get(user.getId()).equals(key);
     }
 

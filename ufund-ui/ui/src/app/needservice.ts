@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Need } from './need';
+import { User } from './user';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -11,6 +12,7 @@ export class NeedService {
 
   private needsURL = 'http://localhost:8080/cupboard';
   private managerURL = 'http://localhost:8080/manager';
+  private userURL = 'http://localhost:8080/user';
 
   getNeeds(): Observable<Need[]> {
     return this.http.get<Need[]>(this.needsURL)
@@ -19,6 +21,9 @@ export class NeedService {
     return this.http.get<Need[]>(`${this.needsURL}/?name=${term}`);
   }
   createNeed(need: Need, key: string): Observable<Need> {
-    return this.http.post<Need>(this.managerURL + '/add', need, { responseType: 'json', 'headers': { 'key': key }});
+    return this.http.post<Need>(this.managerURL + '/add', need, { responseType: 'json', 'headers': { 'key': key } });
+  }
+  addNeedtoBasket(userID: number, needID: number, key: string): Observable<User> {
+    return this.http.post<User>(this.userURL + "/basket/add", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
   }
 }

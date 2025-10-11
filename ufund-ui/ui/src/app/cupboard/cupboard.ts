@@ -20,10 +20,34 @@ export class Cupboard {
 
   onSelect(need: Need): void {
     this.selectedNeed = need;
+    // verify a users role/id then do:
     if (localStorage.getItem("role") == "manager") {
       //TODO: open edit/delete modal
     } else if (localStorage.getItem("role") == "helper") {
-      //TODO: add to basket
+      this.needService.addNeedtoBasket(+(localStorage.getItem("id") ?? ""), this.selectedNeed.id, localStorage.getItem("key") ?? "")
+        .subscribe({
+          next: () => {
+            alert("Added " + this.selectedNeed?.name + " to your basket!");
+          },
+          error: error => {
+            switch (error.status) {
+              case 401:
+                alert("You are not authorized add Needs to your basket");
+                break;
+              case 403:
+                alert("You are not allowed add Needs to your basket");
+                break;
+              case 404:
+                alert("Need you are trying to add a Need that no longer exists");
+                break;
+              case 500:
+                alert("Internal server error");
+                break;
+              default:
+                alert("Unknown error, is server online?");
+            }
+          }
+        });
     }
   }
 
@@ -62,7 +86,6 @@ export class Cupboard {
           }
         }
       });
-
   }
 
   search(term: string): void {
