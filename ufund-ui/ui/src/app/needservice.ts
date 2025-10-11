@@ -17,12 +17,15 @@ export class NeedService {
   getNeeds(): Observable<Need[]> {
     return this.http.get<Need[]>(this.needsURL)
   }
+
   searchNeeds(term: string): Observable<Need[]> {
     return this.http.get<Need[]>(`${this.needsURL}/?name=${term}`);
   }
+
   createNeed(need: Need, key: string): Observable<Need> {
     return this.http.post<Need>(this.managerURL + '/add', need, { responseType: 'json', 'headers': { 'key': key } });
   }
+  
   addNeedtoBasket(userID: number, needID: number, key: string): Observable<User> {
     return this.http.post<User>(this.userURL + "/basket/add", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
   }
