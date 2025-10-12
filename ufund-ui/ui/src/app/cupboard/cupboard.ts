@@ -22,7 +22,7 @@ export class Cupboard {
     this.selectedNeed = need;
     // verify a users role/id then do:
     if (localStorage.getItem("role") == "manager") {
-      //TODO: open edit/delete modal
+      this.editDelete();
     } else if (localStorage.getItem("role") == "helper") {
       this.addToBasket();
     }
@@ -70,6 +70,48 @@ export class Cupboard {
       return;
     }
     this.needService.createNeed({ name, description } as Need, localStorage.getItem("key") ?? "")
+      .subscribe({
+        next: () => {
+          this.search("");
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to create new Needs");
+              break;
+            case 404:
+              alert("Internal Error");
+              break;
+            case 500:
+              alert("Internal server error");
+              break;
+            default:
+              alert("Unknown error, is server online?");
+          }
+        }
+      });
+  }
+
+  editDelete(): void {
+    // verify a users role then do:
+    if (localStorage.getItem("role") != "manager") {
+      alert("You are not authorized to edit or delete Needs");
+      return;
+    }
+    let name = prompt("Enter new Need name\nOr clear name field to delete\nOr press OK to update description of " + this.selectedNeed?.name, this.selectedNeed?.name);
+    if (name == null) {
+      return;
+    }
+    if (name == "") {
+      //delete
+      return;
+    }
+    let description = prompt("Enter " + name + "'s new description or press OK", this.selectedNeed?.description);
+    if (description == null || description == "") {
+      return;
+    }
+    let id = this.selectedNeed?.id;
+    this.needService.editNeed({ id, name, description } as Need, localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
           this.search("");

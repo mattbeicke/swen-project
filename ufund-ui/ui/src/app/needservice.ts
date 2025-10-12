@@ -25,7 +25,11 @@ export class NeedService {
   createNeed(need: Need, key: string): Observable<Need> {
     return this.http.post<Need>(this.managerURL + '/add', need, { responseType: 'json', 'headers': { 'key': key } });
   }
-  
+
+  editNeed(need: Need, key: string): Observable<Need> {
+    return this.http.post<Need>(this.managerURL + "/edit", need, { responseType: 'json', 'headers': { 'key': key } })
+  }
+
   addNeedtoBasket(userID: number, needID: number, key: string): Observable<User> {
     return this.http.post<User>(this.userURL + "/basket/add", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
   }
