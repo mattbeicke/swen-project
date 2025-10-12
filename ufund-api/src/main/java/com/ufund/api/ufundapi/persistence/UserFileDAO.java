@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -173,7 +174,7 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = new User(nextId(), user.getUsername(), user.getPassword());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -217,7 +218,10 @@ public class UserFileDAO implements UserDAO {
     public boolean verifyLogin(String username, String password) throws IOException {
         if (getUserByUsername(username) == null)
             return false;
-        return (getUserByUsername(username).getPassword().equals(password));
+        System.out.println(password);
+        System.out.println(getUserByUsername(username).getPassword());
+        System.out.println(BCrypt.checkpw(password, getUserByUsername(username).getPassword()));
+        return (BCrypt.checkpw(password, getUserByUsername(username).getPassword()));
     }
 
     /**
