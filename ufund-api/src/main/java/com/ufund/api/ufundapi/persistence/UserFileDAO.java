@@ -190,6 +190,10 @@ public class UserFileDAO implements UserDAO {
             if (users.containsKey(user.getId()) == false) {
                 return null; // user does not exist
             }
+            if (getUserByUsername(user.getUsername()) != null && getUserByUsername(user.getUsername()).getId() != user.getId()) {
+                // if a user with the username already exists, but is not the user being updated
+                return null;
+            }
             users.put(user.getId(), user);
             save(); // may throw an IOException
             return user;
@@ -218,9 +222,6 @@ public class UserFileDAO implements UserDAO {
     public boolean verifyLogin(String username, String password) throws IOException {
         if (getUserByUsername(username) == null)
             return false;
-        System.out.println(password);
-        System.out.println(getUserByUsername(username).getPassword());
-        System.out.println(BCrypt.checkpw(password, getUserByUsername(username).getPassword()));
         return (BCrypt.checkpw(password, getUserByUsername(username).getPassword()));
     }
 
@@ -251,27 +252,27 @@ public class UserFileDAO implements UserDAO {
         return new_key;
     }
 
+    private boolean verifyKey(User user, String key) throws IOException {
+        if(user == null) 
+            return false;
+        if(!activeLogins.containsKey(user.getId()))
+            return false;
+        return activeLogins.get(user.getId()).equals(key);
+    }
+
     /**
      ** {@inheritDoc}
      */
     @Override
     public boolean verifyKey(String username, String key) throws IOException {
         User user = getUserByUsername(username);
-        if (user == null)
-            return false;
-        if (!activeLogins.containsKey(user.getId()))
-            return false;
-        return activeLogins.get(user.getId()).equals(key);
+        return verifyKey(user, key);
     }
 
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
         User user = getUser(id);
-        if (user == null)
-            return false;
-        if (!activeLogins.containsKey(user.getId()))
-            return false;
-        return activeLogins.get(user.getId()).equals(key);
+        return verifyKey(user, key);
     }
 
     /**
