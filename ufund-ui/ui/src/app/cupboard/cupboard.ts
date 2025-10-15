@@ -46,7 +46,7 @@ export class Cupboard {
               alert("Need you are trying to add a Need that no longer exists");
               break;
             case 500:
-              alert("Internal server error");
+              alert("Internal server error\nPlease try again later!");
               break;
             default:
               alert("Unknown error, is server online?");
@@ -80,10 +80,10 @@ export class Cupboard {
               alert("You are not authorized to create new Needs");
               break;
             case 404:
-              alert("Internal Error");
+              alert("Internal Error\nPlease try again later!");
               break;
             case 500:
-              alert("Internal server error");
+              alert("Internal server error\nPlease try again later!");
               break;
             default:
               alert("Unknown error, is server online?");
@@ -103,9 +103,38 @@ export class Cupboard {
       return;
     }
     if (name == "") {
-      //delete
+      this.delete();
       return;
     }
+    this.edit(name);
+  }
+
+  delete(): void {
+    let id = this.selectedNeed?.id;
+    this.needService.deleteNeed(id ?? -1, localStorage.getItem("key") ?? "")
+      .subscribe({
+        next: () => {
+          this.search("");
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to delete Needs");
+              break;
+            case 404:
+              alert("Internal Error");
+              break;
+            case 500:
+              alert("Internal server error");
+              break;
+            default:
+              alert("Unknown error, is server online?");
+          }
+        }
+      });
+  }
+
+  edit(name: string): void {
     let description = prompt("Enter " + name + "'s new description or press OK", this.selectedNeed?.description);
     if (description == null || description == "") {
       return;
@@ -122,10 +151,10 @@ export class Cupboard {
               alert("You are not authorized to create new Needs");
               break;
             case 404:
-              alert("Internal Error");
+              alert("Internal Error\nPlease try again later!");
               break;
             case 500:
-              alert("Internal server error");
+              alert("Internal server error\nPlease try again later!");
               break;
             default:
               alert("Unknown error, is server online?");

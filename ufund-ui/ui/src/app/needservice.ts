@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Need } from './need';
 import { User } from './user';
+import { Manager } from './manager';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -28,6 +29,10 @@ export class NeedService {
 
   editNeed(need: Need, key: string): Observable<Need> {
     return this.http.post<Need>(this.managerURL + "/edit", need, { responseType: 'json', 'headers': { 'key': key } })
+  }
+
+  deleteNeed(id: number, key: string): Observable<Manager> {
+    return this.http.post<Manager>(this.managerURL + "/delete/" + id, 0, { responseType: 'json', 'headers': { 'key': key } })
   }
 
   addNeedtoBasket(userID: number, needID: number, key: string): Observable<User> {
