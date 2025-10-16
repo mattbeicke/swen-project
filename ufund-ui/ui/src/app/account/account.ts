@@ -26,10 +26,12 @@ export class Account {
   }
 
   changeUsername(name: string): void{
-    console.log("Is called")
-    if (localStorage.getItem("role") == "helper"){
+    // verify a users role then do:
+    if (localStorage.getItem("role") != "manager") {
+      alert("You are not authorized to create new Needs");
+      return;
+    } else if (localStorage.getItem("role") == "helper"){
       this.accountsService.changeName(name, localStorage.getItem('key') || '').subscribe({next: name => (name)});
-      console.log("made it this far")
     }
   }
 }
