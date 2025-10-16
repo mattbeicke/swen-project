@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
 import { Observable, Subject, of } from 'rxjs';
-import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
+import { startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cupboard',
@@ -181,9 +181,8 @@ export class Cupboard {
     this.needService.getNeeds()
       .subscribe(needs => {
         this.needs$ = this.searchTerms.pipe(
-          distinctUntilChanged(),
           switchMap((term: string) => this.needService.searchNeeds(term)),
-          startWith(needs),
+          startWith(needs)
         );
       })
   }
