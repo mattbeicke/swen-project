@@ -13,7 +13,7 @@ export class AccountsService {
   private userURL = 'http://localhost:8080/user';
 
   login(username: string, password: string): Observable<string> {
-    return this.http.post(this.needsURL+'/login', {username: username, password: password}, {responseType: 'text'});
+    return this.http.post(this.accountURL + '/login', { username: username, password: password }, { responseType: 'text' });
   }
 
   logout(username: string, key: string): void {
@@ -27,7 +27,7 @@ export class AccountsService {
   getInfo(username: string, key: string): Observable<string> {
     return this.http.get(this.accountURL + '/info/' + username, { responseType: 'text', 'headers': { 'key': key } });
   }
-  
+
   createAccount(user: User) {
     return this.http.post(this.userURL, user);
   }
