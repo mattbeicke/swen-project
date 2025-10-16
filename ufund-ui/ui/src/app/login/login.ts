@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AccountsService } from '../accountservice'
 import { Router } from '@angular/router';
+import { User } from '../user';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,50 @@ export class Login implements OnInit {
     if (localStorage.getItem('username')) { // username is present => force redirect to cupboard 
       this.router.navigate(['/cupboard']);
     }
+  }
+
+  createAccount(): void {
+    let username = prompt("Creating a new account:\nEnter a username or press Cancel to quit");
+    if (username == null || username == "") {
+      return;
+    }
+    let password = prompt("Creating a new account:\nEnter a password or press Cancel to quit");
+    if (password == null || password == "") {
+      return;
+    }
+
+    this.accountsService.createAccount({ username, password } as User).subscribe({
+      next: () => {
+        this.accountsService.login(username, password)
+          .subscribe({
+            next: data => (this.finalizeLogin(data, username)),
+            error: error => {
+              switch (error.status) {
+                case 401:
+                  this.message = "Invalid username or password";
+                  break;
+                case 500:
+                  this.message = "Internal server error";
+                  break;
+                default:
+                  this.message = "Unknown error, is server online?";
+              }
+            }
+          });
+      },
+      error: error => {
+        switch (error.status) {
+          case 409:
+            alert("User with that username already exists!");
+            break;
+          case 500:
+            alert("Internal server error\nPlease try again later!");
+            break;
+          default:
+            alert("Unknown error, is server online?");
+        }
+      }
+    });
   }
 
   login(): void {
