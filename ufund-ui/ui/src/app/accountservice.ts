@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { rstr_md5 } from './md5';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,6 @@ export class AccountsService {
   private needsURL = 'http://localhost:8080/accounts';
   login(username: string, password: string): Observable<string> {
     return this.http.post(this.needsURL+'/login', {username: username, password: password}, {responseType: 'text'});
-    // todo: replace password with encrypt(password): this may have side effects, must discuss
   }
 
   logout(username: string, key: string): void {
@@ -25,9 +23,5 @@ export class AccountsService {
 
   getInfo(username: string, key: string): Observable<string> {
     return this.http.get(this.needsURL+'/info/'+username, {responseType: 'text', 'headers': {'key': key}});
-  }
-
-  encrypt(password: string): string {
-    return rstr_md5(password);
   }
 }
