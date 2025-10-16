@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
+/**
+ * Code behind the Needs tab
+ * 
+ * @author Matthew Beicke
+ */
 @Component({
   selector: 'app-cupboard',
   standalone: false,
@@ -11,6 +16,8 @@ import { startWith, switchMap } from 'rxjs/operators';
   styleUrl: './cupboard.css'
 })
 export class Cupboard {
+  constructor(private needService: NeedService) { }
+
   needs$!: Observable<Need[]>;
   private searchTerms = new Subject<string>();
   selectedNeed?: Need;
@@ -18,6 +25,31 @@ export class Cupboard {
   isManager = false;
   initial = true;
 
+  /**
+   * This code runs on initialization, setting the button type and initially populating the list of needs
+   */
+  ngOnInit(): void {
+    if (localStorage.getItem("role") == "manager") {
+      this.bText = "Edit/Delete";
+      this.isManager = true;
+    } else if (localStorage.getItem("role") == "helper") {
+      this.bText = "Add to Basket";
+      this.isManager = false;
+    }
+
+    this.needService.getNeeds().subscribe(needs => {
+      this.needs$ = this.searchTerms.pipe(
+        switchMap((term: string) => this.needService.searchNeeds(term)),
+        startWith(needs)
+      );
+    });
+  }
+
+  /**
+   * Handles button presses for adding to basket and editing/delete a need
+   * 
+   * @param need Need that this is running for
+   */
   onSelect(need: Need): void {
     this.selectedNeed = need;
     // verify a users role/id then do:
@@ -28,6 +60,9 @@ export class Cupboard {
     }
   }
 
+  /**
+   * Calls service for when adding the selected need to your basket and all of the outcomes from it
+   */
   addToBasket(): void {
     this.needService.addNeedtoBasket(+(localStorage.getItem("id") ?? ""), this.selectedNeed!.id, localStorage.getItem("key") ?? "")
       .subscribe({
@@ -55,6 +90,9 @@ export class Cupboard {
       });
   }
 
+  /**
+   * Calls service for creating a need, reporting errors, then refreshing need list
+   */
   create(): void {
     // verify a users role then do:
     if (localStorage.getItem("role") != "manager") {
@@ -69,6 +107,7 @@ export class Cupboard {
     if (description == null || description == "") {
       return;
     }
+
     this.needService.createNeed({ name, description } as Need, localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
@@ -92,6 +131,9 @@ export class Cupboard {
       });
   }
 
+  /**
+   * Handles the selection of editing or deleting a selected need 
+   */
   editDelete(): void {
     // verify a users role then do:
     if (localStorage.getItem("role") != "manager") {
@@ -109,6 +151,9 @@ export class Cupboard {
     this.edit(name);
   }
 
+  /**
+   * Handles the deletion the selected need, reporting errors, then refreshing need list
+   */
   delete(): void {
     let id = this.selectedNeed?.id;
     this.needService.deleteNeed(id ?? -1, localStorage.getItem("key") ?? "")
@@ -134,6 +179,11 @@ export class Cupboard {
       });
   }
 
+  /**
+   * Handles the editing the selected need, reporting errors, then refreshing need list
+   * 
+   * @param name Selected needs updated name
+   */
   edit(name: string): void {
     let description = prompt("Enter " + name + "'s new description or press OK", this.selectedNeed?.description);
     if (description == null || description == "") {
@@ -163,27 +213,12 @@ export class Cupboard {
       });
   }
 
+  /**
+   * Handles the searching of needs
+   * 
+   * @param term What to search by
+   */
   search(term: string): void {
     this.searchTerms.next(term);
-  }
-
-  constructor(private needService: NeedService) { }
-
-  ngOnInit(): void {
-    if (localStorage.getItem("role") == "manager") {
-      this.bText = "Edit/Delete";
-      this.isManager = true;
-    } else if (localStorage.getItem("role") == "helper") {
-      this.bText = "Add to Basket";
-      this.isManager = false;
-    }
-
-    this.needService.getNeeds()
-      .subscribe(needs => {
-        this.needs$ = this.searchTerms.pipe(
-          switchMap((term: string) => this.needService.searchNeeds(term)),
-          startWith(needs)
-        );
-      })
   }
 }

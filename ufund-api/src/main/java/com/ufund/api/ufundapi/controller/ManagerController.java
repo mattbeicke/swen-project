@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -161,7 +162,7 @@ public class ManagerController {
      *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
      *         otherwise.
      */
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     public ResponseEntity<Need> editNeed(@RequestBody Need need, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /edit/" + need.getId());
         try {
