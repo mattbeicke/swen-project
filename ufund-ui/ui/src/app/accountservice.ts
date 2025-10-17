@@ -34,4 +34,12 @@ export class AccountsService {
     }
     , {responseType: 'text', 'headers': {'key': key}})
   }
+
+  changePass(pass: string, key: string): Observable<string> {
+    return this.http.put('http://localhost:8080/user', {
+      "id":localStorage.getItem("id"), 
+      "password":pass
+    }
+    , {responseType: 'text', 'headers': {'key': key}})
+  }
 }
