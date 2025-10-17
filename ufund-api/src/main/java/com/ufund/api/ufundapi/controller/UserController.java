@@ -310,7 +310,7 @@ public class UserController {
      */
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user,
-            @RequestHeader Map<String, String> headers) {
+        @RequestHeader Map<String, String> headers) {
         LOG.info("PUT /user " + user);
 
         try {

@@ -31,4 +31,24 @@ export class AccountsService {
   createAccount(user: User) {
     return this.http.post(this.userURL, user);
   }
+
+  changeName(name: string, key: string): Observable<string> {
+    return this.http.put('http://localhost:8080/user', {
+      "id":localStorage.getItem("id"), 
+      "username":name
+    }
+    , {responseType: 'text', 'headers': {'key': key}})
+  }
+
+  changePass(pass: string, key: string): Observable<string> {
+    return this.http.put('http://localhost:8080/user', {
+      "id":localStorage.getItem("id"), 
+      "password":pass
+    }
+    , {responseType: 'text', 'headers': {'key': key}})
+  }
+
+  deleteUser(id: string, key: string): Observable<string> {
+    return this.http.delete('http://localhost:8080/user/' + id, {responseType: 'text', 'headers': {'key': key}})
+  }
 }
