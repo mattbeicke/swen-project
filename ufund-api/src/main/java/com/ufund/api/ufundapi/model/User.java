@@ -3,6 +3,7 @@ package com.ufund.api.ufundapi.model;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 /**
  * Class code for a {@link User user} object
@@ -15,18 +16,18 @@ public class User {
     @JsonProperty("username")
     private String username; // User's unique username
     @JsonProperty("password")
-    private String password; // User's pasword
+    private String password; // User's password
     @JsonProperty("basket")
     private ArrayList<Integer> basket; // User's need basket
 
-    static final String STRING_FORMAT = "User [id=%d, username=%s, password=%s]";
+    static final String STRING_FORMAT = "User [id=%d, username=%s]";
 
     /**
      * Constructor for a {@link User user}
      * 
      * @param id       UserID
      * @param username User's username
-     * @param password User's password
+     * @param password User's encrypted password
      */
     public User(int id, String username, String password) {
         this.id = id;
@@ -36,17 +37,29 @@ public class User {
     }
 
     /**
+     * Constructor for a {@link User user} for the load() function, preventing reencrypting
+     * 
+     * @param id       UserID
+     * @param username User's username
+     * @param password User's password
+     */
+    public static User generateUser(int id, String username, String password) {
+        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()));
+        return user;
+    }
+
+    /**
      * Updates a user's username and/or password
      * 
      * @param username new username
-     * @param password new pasword
+     * @param password new password
      */
     public void updateUser(String username, String password) {
         if (username != null) { // Only update what is new
             this.username = username;
         }
         if (password != null) {
-            this.password = password;
+            this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         }
     }
 
@@ -60,9 +73,9 @@ public class User {
     }
 
     /**
-     * Returns the user's password
+     * Returns the user's encrypted password
      * 
-     * @return user's password
+     * @return user's encrypted password
      */
     public String getPassword() {
         return password;
