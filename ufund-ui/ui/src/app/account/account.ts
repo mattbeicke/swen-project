@@ -73,4 +73,26 @@ export class Account {
                 alert("Unknown error, is server online?");}}});
     }
   }
+
+  deleteUser(): void {
+    this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
+      .subscribe({
+        next: () => {alert("Deleted User")}, 
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to delete this user");
+              break;
+            case 403:
+              alert("You are not allowed to delete this user");
+              break;
+            case 500:
+              alert("Internal server error\nPlease try again later!");
+              break;
+            default:
+              alert("Unknown error, is server online?");
+          }
+        }
+    },)
+  }
 }

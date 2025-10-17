@@ -8,18 +8,22 @@
     </aside>
 
     <div class="content">
-        <input id="new-name" #Name />
 
         <!-- (click) passes input value to add() and then clears the input -->
         <button type="button" class="add-button" (click)="changeUsername(Name.value); Name.value=''; logout()">
           Change Name
         </button>
+        <input id="new-name" #Name />
 
-        <input id="new-password" #Pass />
         <button type="button" class="add-button" (click)="changePassword(Pass.value); Name.value=''; logout()">
           Change Password
         </button>
+        <input id="new-password" #Pass />
+
+        <div class = "bottom_button">
+            <button type="button" (click)="logout()">Log out</button>
+        </div>
         
-        <button type="button" (click)="logout()">Log out</button>
+        <button type="button" (click)="deleteUser(); logout()">DELETE ACCOUNT</button>
     </div>
 </div>

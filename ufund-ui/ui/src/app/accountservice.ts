@@ -42,4 +42,8 @@ export class AccountsService {
     }
     , {responseType: 'text', 'headers': {'key': key}})
   }
+
+  deleteUser(id: string, key: string): Observable<string> {
+    return this.http.delete('http://localhost:8080/user/' + id, {responseType: 'text', 'headers': {'key': key}})
+  }
 }

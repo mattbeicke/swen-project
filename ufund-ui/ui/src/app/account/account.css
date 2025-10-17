@@ -31,3 +31,19 @@ nav a:active {
     flex: 1;
     margin-left: 75px;
 }
+
+button {
+    display: block;
+    width: 150px;
+}
+
+.bottom_button{
+    display: block;
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+input {
+    display: block;
+    margin-bottom: 20px;
+}
