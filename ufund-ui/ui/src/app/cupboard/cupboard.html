@@ -7,34 +7,36 @@
         </nav>
     </aside>
 
-    <div class="content">
-        <h1 class="stick">All Needs</h1>
-        <table class="needs">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let need of needs">
-                    <td>{{need.name}}</td>
-                    <td>{{need.description}}</td>
-                    <td>
-                        <button [class.selected]="need === selectedNeed" type="button"
-                            (click)="onSelect(need)">{{bText}}</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div>
+        <div class="content">
+            <h1 class="stick">All Needs</h1>
+            <table class="needs">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let need of needs$ | async">
+                        <td>{{need.name}}</td>
+                        <td>{{need.description}}</td>
+                        <td>
+                            <button [class.selected]="need === selectedNeed" type="button"
+                                (click)="onSelect(need)">{{bText}}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <aside class="sidebarr">
         <br><br>
-        <div *ngIf="isManager">
-            <button>create need</button>
+        <input class="search" #searchBox id="search-box" (input)="search(searchBox.value)" placeholder="Search Needs">
+        <div class="create" *ngIf="isManager">
+            <button (click)="create()">Create a new Need</button>
         </div>
-        <input type="text">
     </aside>
 </div>

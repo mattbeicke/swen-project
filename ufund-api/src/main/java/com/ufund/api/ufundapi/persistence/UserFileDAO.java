@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,8 +106,11 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public User addToBasket(User user, int needId) throws IOException {
-        user.addToBasket(needId);
-        return user;
+        synchronized (users) {
+            user.addToBasket(needId);
+            save();
+            return user;
+        }
     }
 
     /**
@@ -114,8 +118,10 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public User removeFromBasket(User user, int needId) throws IOException {
-        user.removeFromBasket(needId);
-        return user;
+        synchronized (users) {
+            user.removeFromBasket(needId);
+            return user;
+        }
     }
 
     /**
@@ -131,7 +137,11 @@ public class UserFileDAO implements UserDAO {
      */
     @Override
     public boolean checkout(User user) throws IOException {
-        return user.checkout();
+        synchronized (users) {
+            boolean retval = user.checkout();
+            save();
+            return retval;
+        }
     }
 
     /**
@@ -161,10 +171,10 @@ public class UserFileDAO implements UserDAO {
     @Override
     public User createUser(User user) throws IOException {
         synchronized (users) {
-            if(getUserByUsername(user.getUsername()) != null) {
+            if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = new User(nextId(), user.getUsername(), user.getPassword());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -210,7 +220,7 @@ public class UserFileDAO implements UserDAO {
     public boolean verifyLogin(String username, String password) throws IOException {
         if (getUserByUsername(username) == null)
             return false;
-        return (getUserByUsername(username).getPassword().equals(password));
+        return (BCrypt.checkpw(password, getUserByUsername(username).getPassword()));
     }
 
     /**
@@ -240,23 +250,27 @@ public class UserFileDAO implements UserDAO {
         return new_key;
     }
 
+    private boolean verifyKey(User user, String key) throws IOException {
+        if(user == null) 
+            return false;
+        if(!activeLogins.containsKey(user.getId()))
+            return false;
+        return activeLogins.get(user.getId()).equals(key);
+    }
+
     /**
      ** {@inheritDoc}
      */
     @Override
     public boolean verifyKey(String username, String key) throws IOException {
         User user = getUserByUsername(username);
-        if (user == null) return false;
-        if (!activeLogins.containsKey(user.getId())) return false;
-        return activeLogins.get(user.getId()).equals(key);
+        return verifyKey(user, key);
     }
 
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
         User user = getUser(id);
-        if(user == null) return false;
-        if(!activeLogins.containsKey(user.getId())) return false;
-        return activeLogins.get(user.getId()).equals(key);
+        return verifyKey(user, key);
     }
 
     /**

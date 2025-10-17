@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -10,12 +11,14 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.Need;
 import java.io.File;
 
+@Tag("Persistence-tier")
 public class CupboardFileDAOTest {
     CupboardFileDAO cupboardFileDAO;
     Need[] testNeeds;
@@ -43,6 +46,7 @@ public class CupboardFileDAOTest {
         cupboardFileDAO = new CupboardFileDAO("doesnt_matter.txt", mockObjectMapper);
     }
 
+
     @Test
     public void testGetAllNeeds() {
         Need[] needs = cupboardFileDAO.getNeeds();
@@ -55,7 +59,7 @@ public class CupboardFileDAOTest {
 
     @Test
     public void testSearchNeeds() {
-        Need[] needs = cupboardFileDAO.getNeeds("Second"); // "Second .." and "Second .., Continued"
+        Need[] needs = cupboardFileDAO.searchNeeds("Second"); // "Second .." and "Second .., Continued"
 
         assertEquals(needs.length, 2);
         assertEquals(needs[0], testNeeds[1]);
@@ -106,6 +110,17 @@ public class CupboardFileDAOTest {
     }
 
     @Test
+    public void testUpdateNeedDoesNotExist() {
+        Need need = new Need("UFund", 5, "Testing Ex2");
+
+        // No need exists with id 5
+        Need new_result = assertDoesNotThrow(() -> cupboardFileDAO.updateNeed(need),
+                "Unexpected exception thrown");
+
+        assertNull(new_result);
+    }
+
+    @Test
     public void testDeleteNeed() {
         Need need = new Need("UFund", 5, "Testing Ex1");
 
@@ -119,5 +134,16 @@ public class CupboardFileDAOTest {
         assertDoesNotThrow(() -> cupboardFileDAO.deleteNeed(ID),
                 "Unexpected exception thrown");
         assertNull(cupboardFileDAO.getNeed(ID));
+    }
+
+    @Test
+    public void testDeleteNeedDoesNotExist() {
+        Need need = new Need("UFund", 5, "Testing Ex2");
+
+        // No need exists with id 5
+        boolean new_result = assertDoesNotThrow(() -> cupboardFileDAO.deleteNeed(need.getId()),
+                "Unexpected exception thrown");
+
+        assertFalse(new_result);
     }
 }
