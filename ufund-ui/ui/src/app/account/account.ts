@@ -11,6 +11,15 @@ import { Router } from '@angular/router';
 export class Account {
 
   constructor(private accountsService: AccountsService, private router: Router) { }
+  isManager = false;
+  
+  ngOnInit(): void {
+    if (localStorage.getItem("role") == "manager") {
+      this.isManager = true;
+    } else if (localStorage.getItem("role") == "helper") {
+      this.isManager = false;
+    }
+  }
 
   logout(): void {
     const username: string = localStorage.getItem('username') || '';
