@@ -277,13 +277,17 @@ public class UserController {
      * @return ResponseEntity with created {@link User user} object and HTTP status
      *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
      *         {@link User user} object already exists. ResponseEntity with HTTP
-     *         status of INTERNAL_SERVER_ERROR otherwise.
+     *         status of BAD_REQUEST if the user is invalid (i.e has an empty password.)
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         LOG.info("POST /user " + user);
 
         try {
+            if(user.getPassword().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             User newuser = userDAO.createUser(user);
             if (newuser == null) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -305,8 +309,9 @@ public class UserController {
      * @return ResponseEntity with updated {@link User user} object and HTTP status
      *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
      *         found. ResponseEntity with HTTP status of UNAUTHORIZED
-     *         if not logged in as the right user. ResponseEntity with HTTP status
-     *         of INTERNAL_SERVER_ERROR otherwise.
+     *         if not logged in as the right user. ResponseEntity with HTTP
+     *         status of BAD_REQUEST if the user is invalid (i.e has an empty password.)
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user,
@@ -321,6 +326,10 @@ public class UserController {
             String key = headers.get("key");
             if (!userDAO.verifyKey(user.getId(), key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            if(user.getPassword().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             User update = userDAO.updateUser(user);
@@ -340,12 +349,11 @@ public class UserController {
      * @param id      The id of the {@link User user} to deleted
      * @param headers Map of all headers, must include key
      * 
-     * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
+     * @return ResponseEntity HTTP status: OK if deleted. ResponseEntity with HTTP
      *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
-     *         UNAUTHORIZED
-     *         if not logged in as the right user. ResponseEntity with HTTP status
-     *         of
-     *         INTERNAL_SERVER_ERROR otherwise.
+     *         UNAUTHORIZED if not logged in as the right user. ResponseEntity of FORBIDDEN if
+     *         deletion can not happen (i.e user is a Manager.)
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable int id,
@@ -361,7 +369,10 @@ public class UserController {
             if (!userDAO.verifyKey(id, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-
+            if (userDAO.userIsManager(id)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            
             boolean deleted = userDAO.deleteUser(id);
             if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
