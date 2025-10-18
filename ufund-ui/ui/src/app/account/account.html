@@ -8,25 +8,22 @@
     </aside>
 
     <div class="content">
-
-        <!-- (click) passes input value to add() and then clears the input -->
-        <div *ngIf isManager>
+        <div *ngIf="isHelper">
             <button type="button" class="add-button" (click)="changeUsername(Name.value); Name.value=''; logout()">
-              Change Name
+                Change Name
             </button>
             <input id="new-name" #Name />
         </div>
-        
 
         <button type="button" class="add-button" (click)="changePassword(Pass.value); Pass.value=''; logout()">
-          Change Password
+            Change Password
         </button>
         <input id="new-password" #Pass />
 
-        <div class = "bottom_button">
+        <div class="bottom_button">
             <button type="button" (click)="logout()">Log out</button>
         </div>
-        
-        <button type="button" *ngIf isManager (click)="deleteUser(); logout()">DELETE ACCOUNT</button>
+
+        <button type="button" *ngIf="isHelper" (click)="deleteUser(); logout()">DELETE ACCOUNT</button>
     </div>
 </div>

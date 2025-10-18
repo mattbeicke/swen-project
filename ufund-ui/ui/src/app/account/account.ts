@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountsService } from '../accountservice';
 import { Router } from '@angular/router';
+import { User } from '../user';
 
 @Component({
   selector: 'app-account',
@@ -9,15 +10,15 @@ import { Router } from '@angular/router';
   styleUrl: './account.css'
 })
 export class Account {
-
   constructor(private accountsService: AccountsService, private router: Router) { }
-  isManager = false;
   
+  isHelper = false;
+
   ngOnInit(): void {
     if (localStorage.getItem("role") == "manager") {
-      this.isManager = true;
+      this.isHelper = false;
     } else if (localStorage.getItem("role") == "helper") {
-      this.isManager = false;
+      this.isHelper = true;
     }
   }
 
@@ -25,7 +26,7 @@ export class Account {
     const username: string = localStorage.getItem('username') || '';
     const key: string = localStorage.getItem('key') || '';
     this.accountsService.logout(username, key);
-    
+
     localStorage.setItem("username", "");
     localStorage.setItem("key", "");
     localStorage.setItem("role", "");
@@ -34,59 +35,67 @@ export class Account {
     this.router.navigate(['/']);
   }
 
-  changeUsername(name: string): void{
+  changeUsername(username: string): void {
     // verify a users role then do:
     if (localStorage.getItem("role") == "manager") {
       alert("You are not authorized to change the name of this account");
       return;
     } else {
-        this.accountsService.changeName(name, localStorage.getItem('key') || '')
-          .subscribe({
-            next: name => (name), 
-            error: error => {
-              switch (error.status) {
-                case 401:
-                  alert("You are not authorized to change this name");
-                  break;
-                case 403:
-                  alert("You are not allowed to change this name");
-                  break;
-                case 500:
-                  alert("Internal server error\nPlease try again later!");
-                  break;
-                default:
-                  alert("Unknown error, is server online?");}
-        }
-      });
-    }
-  }
-
-  changePassword(pass: string): void{
-    // verify a users role then do:
-    if (localStorage.getItem("role") == "helper"){
-      this.accountsService.changePass(pass, localStorage.getItem('key') || '')
+      let id = +(localStorage.getItem('id') ?? '');
+      this.accountsService.changeName({ id, username } as User, localStorage.getItem('key') || '')
         .subscribe({
-          next: pass => (pass),
+          next: () => {
+            alert("Username changed successfully");
+          },
           error: error => {
             switch (error.status) {
               case 401:
-                alert("You are not authorized to change this password");
+                alert("You are not authorized to change this name");
                 break;
               case 403:
-                alert("You are not allowed to change this password");
+                alert("You are not allowed to change this name");
                 break;
               case 500:
                 alert("Internal server error\nPlease try again later!");
                 break;
               default:
-                alert("Unknown error, is server online?");}}});
+                alert("Unknown error, is server online?");
+            }
+          }
+        });
     }
+  }
+
+  changePassword(password: string): void {
+    // verify a users role then do:
+    let id = +(localStorage.getItem('id') ?? '');
+    this.accountsService.changePass({ id, password } as User, localStorage.getItem('key') || '')
+      .subscribe({
+        next: () => {
+          alert("Password changed successfully");
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to change this password");
+              break;
+            case 403:
+              alert("You are not allowed to change this password");
+              break;
+            case 500:
+              alert("Internal server error\nPlease try again later!");
+              break;
+            default:
+              alert("Unknown error, is server online?");
+          }
+        }
+      });
   }
 
   deleteUser(): void {
     this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
       .subscribe({
-        next: () => {alert("Deleted User")}, 
+        next: () => { alert("Deleted User") },
         error: error => {
           switch (error.status) {
             case 401:
@@ -102,6 +111,6 @@ export class Account {
               alert("Unknown error, is server online?");
           }
         }
-    },)
+      },)
   }
 }
