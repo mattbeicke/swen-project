@@ -13,6 +13,15 @@ export class Account {
   isManager = false;
   
   ngOnInit(): void {
+    this.accountsService.test(localStorage.getItem('username') ?? '', localStorage.getItem('key') ?? '').subscribe({
+      next: () => {},
+      error: () => {
+        // Either API key is invalid or the server is down. Either way, force a log out
+        this.logout();
+      }
+    })
+
+
     if (localStorage.getItem("role") == "manager") {
       this.isManager = true;
     } else if (localStorage.getItem("role") == "helper") {

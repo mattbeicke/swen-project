@@ -104,7 +104,7 @@ export class Login implements OnInit {
     this.accountsService.getInfo(username, key)
       .subscribe({
         next: data => {
-          const id: number = JSON.parse(data).id
+          const id: number = data.id;
           localStorage.setItem('id', `${id}`);
           this.router.navigate(['/cupboard']);
         },
