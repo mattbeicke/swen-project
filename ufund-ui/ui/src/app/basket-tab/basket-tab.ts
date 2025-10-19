@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
-import { Observable, Subject, of } from 'rxjs';
-import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cupboard',
@@ -11,8 +9,15 @@ import { distinctUntilChanged, startWith, switchMap } from 'rxjs/operators';
   styleUrl: './basket-tab.css'
 })
 export class BasketTab {
-  needs$!: Need[];
+  constructor(private needService: NeedService) { }
+
+  needs$: Need[] = [];
   selectedNeed?: Need;
+
+  ngOnInit(): void {
+    this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
+      .subscribe(needs => this.needs$ = needs);
+  }
 
   remove(need: Need): void {
     this.selectedNeed = need;
@@ -20,17 +25,19 @@ export class BasketTab {
       .subscribe({
         next: () => {
           alert("Removed " + this.selectedNeed?.name + " from your basket!");
+          this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
+            .subscribe(needs => this.needs$ = needs);
         },
         error: error => {
           switch (error.status) {
             case 401:
-              alert("You are not authorized to remove a Need from this basket");
+              alert("You are not authorized remove Needs from your basket");
               break;
             case 403:
-              alert("You are not allowed to remove a Need from a basket");
+              alert("You are not allowed remove Needs from your basket");
               break;
             case 404:
-              alert("This Need is not in your basket");
+              alert("Need you are trying to remove a Need that no longer exists");
               break;
             case 500:
               alert("Internal server error\nPlease try again later!");
@@ -40,26 +47,26 @@ export class BasketTab {
           }
         }
       });
-
-
   }
 
   checkout(): void {
     this.needService.checkout(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
-          alert("Checkout Complete");
+          alert("Successfully checked your items out!");
+          this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
+            .subscribe(needs => this.needs$ = needs);
         },
         error: error => {
           switch (error.status) {
             case 401:
-              alert("You are not authorized to checkout this basket");
+              alert("You are not authorized checkout your basket");
               break;
             case 403:
-              alert("You are not allowed to checkout a basket");
+              alert("You are not allowed checkout your basket");
               break;
             case 404:
-              alert("There is nothing in your basket to checkout");
+              alert("You have no items in your basket!");
               break;
             case 500:
               alert("Internal server error\nPlease try again later!");
@@ -69,13 +76,5 @@ export class BasketTab {
           }
         }
       });
-
-  }
-
-  constructor(private needService: NeedService) { }
-
-  ngOnInit(): void {
-    this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
-      .subscribe(needs => this.needs$ = needs);
   }
 }
