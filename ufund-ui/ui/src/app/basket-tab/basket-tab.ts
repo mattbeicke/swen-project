@@ -15,6 +15,13 @@ export class BasketTab {
   needs$: Need[] = [];
   selectedNeed?: Need;
 
+
+  /**
+   * Creates a view of the user's basket
+   *
+   * @author Zach Coy
+   */
+
   ngOnInit(): void {
     if (localStorage.getItem("role") == "manager") {
       this.router.navigate(['/cupboard']);
@@ -23,6 +30,14 @@ export class BasketTab {
     this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
       .subscribe(needs => this.needs$ = needs);
   }
+
+
+  /**
+   * Removes a Need from the Basket
+   *
+   * @param need The Need that is being removed
+   * @author Zach Coy
+   */
 
   remove(need: Need): void {
     this.selectedNeed = need;
@@ -53,6 +68,13 @@ export class BasketTab {
         }
       });
   }
+
+
+  /**
+   * Performs a checkout on the User's Basket
+   *
+   * @author Zach Coy
+   */
 
   checkout(): void {
     this.needService.checkout(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
