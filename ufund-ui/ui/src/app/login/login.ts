@@ -3,6 +3,11 @@ import { AccountsService } from '../accountservice'
 import { Router } from '@angular/router';
 import { User } from '../user';
 
+/**
+ * Login page component
+ * 
+ * @author Anthony Ficalora
+ */
 @Component({
   selector: 'app-login',
   standalone: false,
@@ -17,12 +22,18 @@ export class Login implements OnInit {
   key?: string;
   message?: string;
 
+  /**
+   * Forces user to cupboard if already logged in
+   */
   ngOnInit(): void {
     if (localStorage.getItem('username')) { // username is present => force redirect to cupboard 
       this.router.navigate(['/cupboard']);
     }
   }
 
+  /**
+   * Function to create an account, takes in input via prompt().
+   */
   createAccount(): void {
     let username = prompt("Creating a new account:\nEnter a username or press Cancel to quit");
     if (username == null || username.trim() == "") {
@@ -77,6 +88,9 @@ export class Login implements OnInit {
     });
   }
 
+  /**
+   * Logs in user with input from the page, or displays an error message
+   */
   login(): void {
     this.username = this.username?.trim();
     this.password = this.password?.trim();
@@ -107,6 +121,11 @@ export class Login implements OnInit {
       });
   }
 
+  /**
+   * Finalizes and recieves information about a user
+   * @param key The recieved key from login()
+   * @param username The username sent into login()
+   */
   finalizeLogin(key: string, username: string): void {
     localStorage.setItem('key', key);
     localStorage.setItem('username', username);
