@@ -24,13 +24,13 @@ export class BasketTab {
         error: error => {
           switch (error.status) {
             case 401:
-              alert("You are not authorized add Needs to your basket");
+              alert("You are not authorized to remove a Need from this basket");
               break;
             case 403:
-              alert("You are not allowed add Needs to your basket");
+              alert("You are not allowed to remove a Need from a basket");
               break;
             case 404:
-              alert("Need you are trying to add a Need that no longer exists");
+              alert("This Need is not in your basket");
               break;
             case 500:
               alert("Internal server error\nPlease try again later!");
@@ -54,13 +54,13 @@ export class BasketTab {
         error: error => {
           switch (error.status) {
             case 401:
-              alert("You are not authorized add Needs to your basket");
+              alert("You are not authorized to checkout this basket");
               break;
             case 403:
-              alert("You are not allowed add Needs to your basket");
+              alert("You are not allowed to checkout a basket");
               break;
             case 404:
-              alert("Need you are trying to add a Need that no longer exists");
+              alert("There is nothing in your basket to checkout");
               break;
             case 500:
               alert("Internal server error\nPlease try again later!");
@@ -73,7 +73,7 @@ export class BasketTab {
 
     }
 
-      view(need: Need): void {
+    view(need: Need): void {
     this.selectedNeed = need;
     this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), this.selectedNeed!.id, localStorage.getItem("key") ?? "")
       .subscribe({
@@ -83,13 +83,13 @@ export class BasketTab {
         error: error => {
           switch (error.status) {
             case 401:
-              alert("You are not authorized add Needs to your basket");
+              alert("You are not authorized to view this basket");
               break;
             case 403:
-              alert("You are not allowed add Needs to your basket");
+              alert("You are not allowed to view a basket");
               break;
             case 404:
-              alert("Need you are trying to add a Need that no longer exists");
+              alert("There is nothing in your basket to view");
               break;
             case 500:
               alert("Internal server error\nPlease try again later!");
