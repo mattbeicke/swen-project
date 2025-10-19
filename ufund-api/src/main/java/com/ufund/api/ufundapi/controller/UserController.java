@@ -328,10 +328,6 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            if(user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-
             User update = userDAO.updateUser(user);
             if (update == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
