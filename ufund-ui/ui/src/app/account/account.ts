@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountsService } from '../accountservice';
 import { Router } from '@angular/router';
+import { User } from '../user';
 
 @Component({
   selector: 'app-account',
@@ -10,13 +11,14 @@ import { Router } from '@angular/router';
 })
 export class Account {
   constructor(private accountsService: AccountsService, private router: Router) { }
-  isManager = false;
   
+  isHelper = false;
+
   ngOnInit(): void {
     if (localStorage.getItem("role") == "manager") {
-      this.isManager = true;
+      this.isHelper = false;
     } else if (localStorage.getItem("role") == "helper") {
-      this.isManager = false;
+      this.isHelper = true;
     }
   }
 
@@ -33,11 +35,7 @@ export class Account {
     this.router.navigate(['/']);
   }
 
-  changeUsername(name: string): void {
-    if (name.trim() == "") {
-      alert("Invalid new Username");
-      return;
-    }
+  changeUsername(): void {
     // verify a users role then do:
     if (localStorage.getItem("role") == "manager") {
       alert("You are not authorized to change the name of this account");
@@ -63,11 +61,39 @@ export class Account {
           }
         });
     }
+    let id = +(localStorage.getItem('id') ?? '');
+    let username = prompt("Enter New Username", "John Doe");
+    if (username == null || username == ''){
+      return;
+    }
+    this.accountsService.changeName({ id, username } as User, localStorage.getItem('key') || '')
+      .subscribe({
+        next: () => {
+          alert("Username changed successfully");
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to change this name");
+              break;
+            case 403:
+              alert("You are not allowed to change this name");
+              break;
+            case 500:
+              alert("Internal server error\nPlease try again later!");
+              break;
+            default:
+              alert("Unknown error, is server online?");
+          }
+        }
+      });
   }
 
-  changePassword(pass: string): void {
-    if (pass.trim() == "") {
-      alert("Invalid new Password");
+  changePassword(): void {
+    // verify a users role then do:
+    let id = +(localStorage.getItem('id') ?? '');
+    let password = prompt("Enter New Password", "New Password Here");
+    if (password == null || password == ''){
       return;
     }
     // verify a users role then do:
@@ -90,8 +116,8 @@ export class Account {
                 alert("Unknown error, is server online?");
             }
           }
-        });
-    }
+        }
+      });
   }
 
   deleteUser(): void {
