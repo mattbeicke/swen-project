@@ -62,28 +62,30 @@ export class AccountsService {
 
   /**
    * Changes the name of the current User.
+   * @param id The user's ID
    * @param name The user's username
    * @param key The current session's API key
    * @returns The string representation of the updated User object, or null if failed
    */
-  changeName(name: string, key: string): Observable<string> {
+  changeName(id: string, name: string, key: string): Observable<string> {
     return this.http.put('http://localhost:8080/user', {
-      "id":localStorage.getItem("id"), 
-      "username":name
+      "id": id, 
+      "username": name
     }
     , {responseType: 'text', 'headers': {'key': key}})
   }
 
   /**
    * Changes the name of the current User.
+   * @param id The user's ID
    * @param pass The user's password
    * @param key The current session's API key
    * @returns The string representation of the updated User object, or null if failed
    */
-  changePass(pass: string, key: string): Observable<string> {
+  changePass(id: string, pass: string, key: string): Observable<string> {
     return this.http.put('http://localhost:8080/user', {
-      "id":localStorage.getItem("id"), 
-      "password":pass
+      "id": id, 
+      "password": pass
     }
     , {responseType: 'text', 'headers': {'key': key}})
   }
