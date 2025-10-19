@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
  */
 @Tag("Controller-tier")
 public class CupboardControllerTest {
-    private CupboardController cupboardController;
+    private CupboardController cupboardController, noDevCController;
     private CupboardDAO mockCupboardDAO;
 
     /**
@@ -34,6 +34,7 @@ public class CupboardControllerTest {
     public void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
         cupboardController = new CupboardController(mockCupboardDAO, true);
+        noDevCController = new CupboardController(mockCupboardDAO, false);
     }
 
     @Test
@@ -97,6 +98,18 @@ public class CupboardControllerTest {
     }
 
     @Test
+    public void testCreateNeedNotDeveloperMode() throws IOException { // createNeed may throw IOException
+        // Setup
+        Need need = new Need("Cookies", 99, "chocolate chip");
+
+        // Invoke
+        ResponseEntity<Need> response = noDevCController.createNeed(need);
+
+        // Analyze
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+    }
+
+    @Test
     public void testCreateNeedFailed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Plates", 99, "paper");
@@ -142,6 +155,18 @@ public class CupboardControllerTest {
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(need, response.getBody());
+    }
+
+    @Test
+    public void testUpdateNeedNotDeveloperMode() throws IOException { // updateNeed may throw IOException
+        // Setup
+        Need need = new Need("Cookies", 99, "chocolate chip");
+
+        // Invoke
+        ResponseEntity<Need> response = noDevCController.updateNeed(need);
+
+        // Analyze
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
     @Test
@@ -248,6 +273,18 @@ public class CupboardControllerTest {
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteNeedNotDeveloperMode() throws IOException { // deleteNeeds may throw IOException
+        // Setup
+        int needId = 99;
+
+        // Invoke
+        ResponseEntity<Need> response = noDevCController.deleteNeeds(needId);
+
+        // Analyze
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
     @Test
