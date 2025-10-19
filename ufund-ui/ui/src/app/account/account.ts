@@ -41,7 +41,7 @@ export class Account {
       alert("You are not authorized to change the name of this account");
       return;
     } else {
-      this.accountsService.changeName(name.trim(), localStorage.getItem('key') || '')
+      this.accountsService.changeName(localStorage.getItem('id') ?? '', name, localStorage.getItem('key') ?? '')
         .subscribe({
           next: name => (name),
           error: error => {
@@ -98,7 +98,7 @@ export class Account {
     }
     // verify a users role then do:
     if (localStorage.getItem("role") == "helper") {
-      this.accountsService.changePass(pass.trim(), localStorage.getItem('key') || '')
+      this.accountsService.changePass(localStorage.getItem('id') ?? '', pass, localStorage.getItem('key') ?? '')
         .subscribe({
           next: pass => (pass),
           error: error => {

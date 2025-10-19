@@ -355,7 +355,7 @@ public class UserController {
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable int id,
+    public ResponseEntity<Void> deleteUser(@PathVariable int id,
             @RequestHeader Map<String, String> headers) {
         LOG.info("DELETE /user/" + id);
 
