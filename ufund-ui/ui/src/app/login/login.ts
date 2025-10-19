@@ -98,14 +98,13 @@ export class Login implements OnInit {
   finalizeLogin(key: string, username: string): void {
     localStorage.setItem('key', key);
     localStorage.setItem('username', username);
-    localStorage.setItem('role', username == 'admin' ? 'manager' : 'helper');
 
     // Now that the login is successful, find the user's ID
     this.accountsService.getInfo(username, key)
       .subscribe({
         next: data => {
-          const id: number = data.id;
-          localStorage.setItem('id', `${id}`);
+          localStorage.setItem('id', `${data.id}`);
+          localStorage.setItem('role', data.manager ? 'manager' : 'helper');
           this.router.navigate(['/cupboard']);
         },
         error: error => {
