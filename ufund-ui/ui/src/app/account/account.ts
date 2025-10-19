@@ -100,6 +100,11 @@ export class Account {
   }
 
   deleteUser(): void {
+    // verify a user's role then:
+    if (localStorage.getItem("role") == "manager") {
+      alert("You are not authorized to delete this account");
+      return;
+    }
     this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
       .subscribe({
         next: () => { alert("Deleted User") },
@@ -118,6 +123,6 @@ export class Account {
               alert("Unknown error, is server online?");
           }
         }
-      },)
+      });
   }
 }

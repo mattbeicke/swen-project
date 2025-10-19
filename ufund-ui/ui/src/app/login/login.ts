@@ -10,13 +10,12 @@ import { User } from '../user';
   styleUrl: './login.css'
 })
 export class Login implements OnInit {
+  constructor(private accountsService: AccountsService, private router: Router) { }
 
   @Input() username?: string;
   @Input() password?: string;
   key?: string;
   message?: string;
-
-  constructor(private accountsService: AccountsService, private router: Router) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('username')) { // username is present => force redirect to cupboard 
@@ -26,11 +25,11 @@ export class Login implements OnInit {
 
   createAccount(): void {
     let username = prompt("Creating a new account:\nEnter a username or press Cancel to quit");
-    if (username == null || username == "") {
+    if (username == null || username.trim() == "") {
       return;
     }
     let password = prompt("Creating a new account:\nEnter a password or press Cancel to quit");
-    if (password == null || password == "") {
+    if (password == null || password.trim() == "") {
       return;
     }
 
@@ -122,8 +121,5 @@ export class Login implements OnInit {
           }
         }
       });
-
   }
-
-
 }

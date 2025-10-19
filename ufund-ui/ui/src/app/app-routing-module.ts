@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'cupboard', component: Cupboard },
   { path: 'login', component: Login },
   { path: 'account', component: Account },
-  { path: 'baskettab', component: BasketTab },
+  { path: 'basket', component: BasketTab },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
