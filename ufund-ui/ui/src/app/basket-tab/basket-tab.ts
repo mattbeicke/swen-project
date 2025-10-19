@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cupboard',
@@ -9,12 +10,16 @@ import { NeedService } from '../needservice';
   styleUrl: './basket-tab.css'
 })
 export class BasketTab {
-  constructor(private needService: NeedService) { }
+  constructor(private needService: NeedService, private router: Router) { }
 
   needs$: Need[] = [];
   selectedNeed?: Need;
 
   ngOnInit(): void {
+    if (localStorage.getItem("role") == "manager") {
+      this.router.navigate(['/cupboard']);
+      alert("Administrator account do have access to a basket");
+    }
     this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
       .subscribe(needs => this.needs$ = needs);
   }
