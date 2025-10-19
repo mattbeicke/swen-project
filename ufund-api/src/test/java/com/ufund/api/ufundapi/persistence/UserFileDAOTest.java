@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.User;
 import java.io.File;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
 @Tag("Persistence-tier")
 public class UserFileDAOTest {
     UserFileDAO userFileDAO;
@@ -161,7 +163,7 @@ public class UserFileDAOTest {
 
         assertNotNull(new_result);
         assertEquals(new_result.getUsername(), newUsername);
-        assertEquals(new_result.getPassword(), newPassword);
+        assertTrue(BCrypt.checkpw(newPassword, new_result.getPassword()));
     }
 
     @Test
@@ -172,11 +174,11 @@ public class UserFileDAOTest {
         User user2 = new User(15, "name2", "pass2");
         User added_user = assertDoesNotThrow(() -> userFileDAO.createUser(user2),
                 "Initial create user failed (Unexpected exception)");
-
-		User copy = new User(added_user.getId(), "unique", "pass2");
-		User updated = assertDoesNotThrow(() -> userFileDAO.updateUser(copy),
-                "Unexpected exception thrown");
-		assertNull(updated);
+        
+        User copy = new User(added_user.getId(), "unique", "pass2");
+        User updated = assertDoesNotThrow(() -> userFileDAO.updateUser(copy),
+        "Unexpected exception thrown");
+        assertNull(updated);
     }
 
     @Test

@@ -616,7 +616,7 @@ public class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
+        ResponseEntity<ArrayList<Need>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -636,7 +636,7 @@ public class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "INVALID KEY");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
+        ResponseEntity<ArrayList<Need>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -656,7 +656,7 @@ public class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
+        ResponseEntity<ArrayList<Need>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -676,7 +676,7 @@ public class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
         // Invoke
-        ResponseEntity<ArrayList<Integer>> response = userController.viewBasket(user.getId(), header);
+        ResponseEntity<ArrayList<Need>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

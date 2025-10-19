@@ -190,6 +190,13 @@ public class UserFileDAO implements UserDAO {
             if (users.containsKey(user.getId()) == false) {
                 return null; // user does not exist
             }
+
+            User existing = getUserByUsername(user.getUsername());
+            if (existing != null && existing.getId() != user.getId()) {
+                // if a user with this name exists and has a different ID, then you cannot do this
+                return null;
+            }
+
             User prevUser = getUser(user.getId());
             if(user.getUsername() != null) {
                 prevUser.updateUser(user.getUsername(), null);
