@@ -105,6 +105,7 @@ export class Account {
       alert("You are not authorized to delete this account");
       return;
     }
+    prompt("Are you sure you want to delete this account")
     this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
       .subscribe({
         next: () => { alert("Deleted User") },
