@@ -35,40 +35,47 @@ export class Account {
     this.router.navigate(['/']);
   }
 
-  changeUsername(username: string): void {
+  changeUsername(): void {
     // verify a users role then do:
     if (localStorage.getItem("role") == "manager") {
       alert("You are not authorized to change the name of this account");
       return;
-    } else {
-      let id = +(localStorage.getItem('id') ?? '');
-      this.accountsService.changeName({ id, username } as User, localStorage.getItem('key') || '')
-        .subscribe({
-          next: () => {
-            alert("Username changed successfully");
-          },
-          error: error => {
-            switch (error.status) {
-              case 401:
-                alert("You are not authorized to change this name");
-                break;
-              case 403:
-                alert("You are not allowed to change this name");
-                break;
-              case 500:
-                alert("Internal server error\nPlease try again later!");
-                break;
-              default:
-                alert("Unknown error, is server online?");
-            }
-          }
-        });
     }
+    let id = +(localStorage.getItem('id') ?? '');
+    let username = prompt("Enter New Username", "John Doe");
+    if (username == null || username == ''){
+      return;
+    }
+    this.accountsService.changeName({ id, username } as User, localStorage.getItem('key') || '')
+      .subscribe({
+        next: () => {
+          alert("Username changed successfully");
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to change this name");
+              break;
+            case 403:
+              alert("You are not allowed to change this name");
+              break;
+            case 500:
+              alert("Internal server error\nPlease try again later!");
+              break;
+            default:
+              alert("Unknown error, is server online?");
+          }
+        }
+      });
   }
 
-  changePassword(password: string): void {
+  changePassword(): void {
     // verify a users role then do:
     let id = +(localStorage.getItem('id') ?? '');
+    let password = prompt("Enter New Password", "New Password Here");
+    if (password == null || password == ''){
+      return;
+    }
     this.accountsService.changePass({ id, password } as User, localStorage.getItem('key') || '')
       .subscribe({
         next: () => {
