@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -105,6 +106,26 @@ public class ManagerControllerTest {
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(need, response.getBody());
+    }
+
+    @Test
+    public void testAddNeedInvalid() throws IOException { // createNeed may throw IOException
+        // Setup
+        Need need = new Need("", 99, "chocolate chip");
+        User user = new User(69, "admin", "pword");
+        // when createNeed is called, return true simulating successful
+        // creation and save
+        when(mockCupboardDAO.createNeed(need)).thenReturn(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
+
+        // Invoke
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.addNeed(need, header);
+
+        // Analyze
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
@@ -286,6 +307,29 @@ public class ManagerControllerTest {
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(need, response.getBody());
+    }
+
+    @Test
+    public void testEditNeedInvalid() throws IOException { // updateNeed may throw IOException
+        // Setup
+        User user = new User(69, "admin", "pword");
+        Need need = new Need("", 99, "canned please!");
+        // when updateNeed is called, return true simulating successful
+        // update and save
+        when(mockCupboardDAO.updateNeed(need)).thenReturn(need);
+        when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
+        need.updateNeed("", null);
+
+        // Invoke
+        response = managerController.editNeed(need, header);
+
+        // Analyze
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
     }
 
     @Test
