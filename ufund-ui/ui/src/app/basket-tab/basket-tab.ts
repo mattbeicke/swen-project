@@ -3,6 +3,11 @@ import { Need } from '../need';
 import { NeedService } from '../needservice';
 import { Router } from '@angular/router';
 
+/**
+ * Code behind the basket tab
+ * 
+ * @author Zach Coy
+ */
 @Component({
   selector: 'app-cupboard',
   standalone: false,
@@ -15,13 +20,9 @@ export class BasketTab {
   needs$: Need[] = [];
   selectedNeed?: Need;
 
-
   /**
    * Creates a view of the user's basket
-   *
-   * @author Zach Coy
    */
-
   ngOnInit(): void {
     if (localStorage.getItem("role") == "manager") {
       this.router.navigate(['/cupboard']);
@@ -31,14 +32,11 @@ export class BasketTab {
       .subscribe(needs => this.needs$ = needs);
   }
 
-
   /**
    * Removes a Need from the Basket
    *
    * @param need The Need that is being removed
-   * @author Zach Coy
    */
-
   remove(need: Need): void {
     this.selectedNeed = need;
     this.needService.removeNeedFromBasket(+(localStorage.getItem("id") ?? ""), this.selectedNeed!.id, localStorage.getItem("key") ?? "")
@@ -69,13 +67,9 @@ export class BasketTab {
       });
   }
 
-
   /**
-   * Performs a checkout on the User's Basket
-   *
-   * @author Zach Coy
+   * Performs a checkout of the User's Basket
    */
-
   checkout(): void {
     this.needService.checkout(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
       .subscribe({
