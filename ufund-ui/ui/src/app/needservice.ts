@@ -90,11 +90,11 @@ export class NeedService {
   }
 
   checkout(userID: number, needID: number, key: string) {
-    return this.http.post<User>(this.userURL + "/basket/checkout/{id}", { "userID": userID, "needID": needID}, {responseType: 'json', 'headers': { 'key': key}});
+    return this.http.post<User>(this.userURL + "/basket/checkout/" + userID, { "userID": userID, "needID": needID}, {responseType: 'json', 'headers': { 'key': key}});
   }
 
   viewBasket(userID: number, key:string) {
-    return this.http.post<Need[]>(this.needsURL + "/basket/{id}", { "userID": userID}, {responseType: 'json', 'headers': { 'key': key}});
+    return this.http.post<Need[]>(this.needsURL + "/basket/" + userID, { "userID": userID}, {responseType: 'json', 'headers': { 'key': key}});
   }
 
 }
