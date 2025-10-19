@@ -12,16 +12,13 @@
             <button type="button" class="add-button" (click)="changeUsername(); logout()">
                 Change Name
             </button>
-            <input id="new-name" #Name />
         </div>
 
         <button type="button" class="add-button" (click)="changePassword(); logout()">
             Change Password
         </button>
 
-        <div class="bottom_button">
-            <button type="button" (click)="logout()">Log out</button>
-        </div>
+        <button type="button" (click)="logout()">Log out</button>
 
         <button type="button" *ngIf="isHelper" (click)="deleteUser(); logout()">DELETE ACCOUNT</button>
     </div>
