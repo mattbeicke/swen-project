@@ -85,16 +85,37 @@ export class NeedService {
     return this.http.post<User>(this.userURL + "/basket/add", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
   }
 
-  removeNeedFromBasket(userID: number, needID: number, key: string) {
-    return this.http.post<User>(this.userURL + "/basket/remove", { "userID": userID, "needID": needID}, {responseType: 'json', 'headers': { 'key': key}});
+  /**
+   * Handles HTTP request to remove a need from a helpers basket
+   * 
+   * @param userID id of user to remove need from
+   * @param needID id of need to remove from user
+   * @param key Helper's API Key
+   * @returns User account (as we had to return something?)
+   */
+  removeNeedFromBasket(userID: number, needID: number, key: string): Observable<User> {
+    return this.http.post<User>(this.userURL + "/basket/remove", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
   }
 
-  checkout(userID: number, needID: number, key: string) {
-    return this.http.post<User>(this.userURL + "/basket/checkout/" + userID, { "userID": userID, "needID": needID}, {responseType: 'json', 'headers': { 'key': key}});
+  /**
+   * Handles HTTP request to view a user's basket
+   * 
+   * @param userID id of user who is viewing basket their basket
+   * @param key Helper's API Key
+   * @returns List of all Needs in the user's basket
+   */
+  viewBasket(userID: number, key: string): Observable<Need[]> {
+    return this.http.get<Need[]>(this.userURL + "/basket/" + userID, { responseType: 'json', 'headers': { 'key': key } });
   }
 
-  viewBasket(userID: number, key:string) {
-    return this.http.post<Need[]>(this.needsURL + "/basket/" + userID, { "userID": userID}, {responseType: 'json', 'headers': { 'key': key}});
+  /**
+   * Handles HTTP request to checkout a user's basket
+   * 
+   * @param userID id of user who is checking out their basket
+   * @param key Helper's API Key
+   * @returns User account (as we had to return something?)
+   */
+  checkout(userID: number, key: string): Observable<User> {
+    return this.http.post<User>(this.userURL + "/basket/checkout/" + userID, 0, { responseType: 'json', 'headers': { 'key': key } });
   }
-
 }

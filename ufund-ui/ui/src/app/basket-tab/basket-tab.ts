@@ -44,8 +44,8 @@ export class BasketTab {
 
   }
 
-    checkout(): void {
-    this.needService.checkout(+(localStorage.getItem("id") ?? ""), this.selectedNeed!.id, localStorage.getItem("key") ?? "")
+  checkout(): void {
+    this.needService.checkout(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
           alert("Checkout Complete");
@@ -70,7 +70,7 @@ export class BasketTab {
         }
       });
 
-    }
+  }
 
   constructor(private needService: NeedService) { }
 
