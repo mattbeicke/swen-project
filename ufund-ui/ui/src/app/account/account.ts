@@ -50,6 +50,7 @@ export class Account {
       .subscribe({
         next: () => {
           alert("Username changed successfully");
+          this.logout();
         },
         error: error => {
           switch (error.status) {
@@ -72,31 +73,36 @@ export class Account {
   changePassword(): void {
     // verify a users role then do:
     let id = +(localStorage.getItem('id') ?? '');
-    let password = prompt("Enter New Password", "New Password Here");
+    let password = prompt("Enter New Password", "Make sure to save your password");
     if (password == null || password == ''){
       return;
     }
-    this.accountsService.changePass({ id, password } as User, localStorage.getItem('key') || '')
-      .subscribe({
-        next: () => {
-          alert("Password changed successfully");
-        },
-        error: error => {
-          switch (error.status) {
-            case 401:
-              alert("You are not authorized to change this password");
-              break;
-            case 403:
-              alert("You are not allowed to change this password");
-              break;
-            case 500:
-              alert("Internal server error\nPlease try again later!");
-              break;
-            default:
-              alert("Unknown error, is server online?");
+    let response = confirm("Are you sure you want to change your password to " + password + "?")
+    if (response){
+      this.accountsService.changePass({ id, password } as User, localStorage.getItem('key') || '')
+        .subscribe({
+          next: () => {
+            alert("Password changed successfully");
+            this.logout();
+
+          },
+          error: error => {
+            switch (error.status) {
+              case 401:
+                alert("You are not authorized to change this password");
+                break;
+              case 403:
+                alert("You are not allowed to change this password");
+                break;
+              case 500:
+                alert("Internal server error\nPlease try again later!");
+                break;
+              default:
+                alert("Unknown error, is server online?");
+            }
           }
-        }
-      });
+        });
+    }
   }
 
   deleteUser(): void {
@@ -105,10 +111,13 @@ export class Account {
       alert("You are not authorized to delete this account");
       return;
     }
-    prompt("Are you sure you want to delete this account")
-    this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
+    let result = confirm("Are you sure you want to delete this account")
+    if (result){
+      this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
       .subscribe({
-        next: () => { alert("Deleted User") },
+        next: () => { alert("Deleted User") 
+          this.logout();
+        },
         error: error => {
           switch (error.status) {
             case 401:
@@ -125,5 +134,6 @@ export class Account {
           }
         }
       });
+    }
   }
 }
