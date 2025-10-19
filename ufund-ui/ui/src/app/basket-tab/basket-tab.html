@@ -22,8 +22,8 @@
                     <td>{{need.name}}</td>
                     <td>{{need.description}}</td>
                     <td>
-                        <button [class.selected]="need === selectedNeed" type="button"
-                            (click)="remove(need)">Remove From Basket</button>
+                        <button [class.selected]="need === selectedNeed" type="button" (click)="remove(need)">Remove
+                            From Basket</button>
                     </td>
                 </tr>
             </tbody>
@@ -32,7 +32,6 @@
 
     <aside class="sidebarr">
         <br><br>
-          <button type="button"
-                          (click)="checkout()">Checkout Basket</button>
+        <button type="button" (click)="checkout()">Checkout Basket</button>
     </aside>
 </div>
