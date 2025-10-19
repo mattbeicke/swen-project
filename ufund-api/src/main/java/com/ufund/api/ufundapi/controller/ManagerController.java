@@ -76,7 +76,8 @@ public class ManagerController {
      * 
      * @return ResponseEntity with created {@link Need need} object and HTTP status
      *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
-     *         {@link Need need} object already exists. ResponseEntity with HTTP
+     *         {@link Need need} object already exists. ResponseEntity with HTTP status
+     *         of BAD_REQUEST if the need is invalid. ResponseEntity with HTTP
      *         status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("/add")
@@ -86,6 +87,10 @@ public class ManagerController {
             String key = headers.get("key");
             if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            if(need.getName().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             Need newNeed = cupboardDAO.createNeed(need);
@@ -159,7 +164,8 @@ public class ManagerController {
      * 
      * @return ResponseEntity with edited {@link Need need} object and HTTP status
      *         of OK if edited. ResponseEntity with HTTP status of NOT_FOUND if not
-     *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
+     *         found. ResponseEntity with HTTP status of BAD_REQUEST if the need 
+     *         is invalid. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
      *         otherwise.
      */
     @PutMapping("/edit")
@@ -171,6 +177,9 @@ public class ManagerController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
+            if(need.getName().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             Need need2 = cupboardDAO.updateNeed(need);
             if (need2 != null) {
                 return new ResponseEntity<Need>(need2, HttpStatus.OK);

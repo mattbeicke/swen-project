@@ -42,11 +42,11 @@ export class Account {
       return;
     }
     let id = +(localStorage.getItem('id') ?? '');
-    let username = prompt("Enter New Username", "John Doe");
+    let username = prompt("Enter New Username", "johndoe");
     if (username == null || username == ''){
       return;
     }
-    this.accountsService.changeName({ id, username } as User, localStorage.getItem('key') || '')
+    this.accountsService.changeName(localStorage.getItem('id') ?? '', username, localStorage.getItem('key') || '')
       .subscribe({
         next: () => {
           alert("Username changed successfully");
@@ -73,13 +73,13 @@ export class Account {
   changePassword(): void {
     // verify a users role then do:
     let id = +(localStorage.getItem('id') ?? '');
-    let password = prompt("Enter New Password", "Make sure to save your password");
+    let password = prompt("Enter New Password", "password");
     if (password == null || password == ''){
       return;
     }
     let response = confirm("Are you sure you want to change your password to " + password + "?")
     if (response){
-      this.accountsService.changePass({ id, password } as User, localStorage.getItem('key') || '')
+      this.accountsService.changePass(localStorage.getItem('id') ?? '', pass, localStorage.getItem('key') || '')
         .subscribe({
           next: () => {
             alert("Password changed successfully");

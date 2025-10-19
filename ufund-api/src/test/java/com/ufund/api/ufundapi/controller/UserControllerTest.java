@@ -102,7 +102,7 @@ public class UserControllerTest {
         header.put("key", "valid");
 
         // Invoke
-        ResponseEntity<User> response = userController.deleteUser(userId, header);
+        ResponseEntity<Void> response = userController.deleteUser(userId, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -120,7 +120,7 @@ public class UserControllerTest {
         header.put("key", "unnecessary");
 
         // Invoke
-        ResponseEntity<User> response = userController.deleteUser(userId, header);
+        ResponseEntity<Void> response = userController.deleteUser(userId, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -139,7 +139,7 @@ public class UserControllerTest {
         header.put("key", "valid");
 
         // Invoke
-        ResponseEntity<User> response = userController.deleteUser(userId, header);
+        ResponseEntity<Void> response = userController.deleteUser(userId, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -158,7 +158,7 @@ public class UserControllerTest {
         header.put("key", "invalid");
 
         // Invoke
-        ResponseEntity<User> response = userController.deleteUser(userId, header);
+        ResponseEntity<Void> response = userController.deleteUser(userId, header);
 
         // Analyze
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());

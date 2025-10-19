@@ -28,10 +28,20 @@ export class Login implements OnInit {
     if (username == null || username.trim() == "") {
       return;
     }
+    if (username[0] == ' ' || username[username.length - 1] == ' ') {
+      alert("A username cannot begin or end with a space!");
+      return;
+    }
     let password = prompt("Creating a new account:\nEnter a password or press Cancel to quit");
     if (password == null || password.trim() == "") {
       return;
     }
+    if (password[0] == ' ' || password[password.length - 1] == ' ') {
+      alert("A password cannot begin or end with a space!");
+      return;
+    }
+    username = username.trim();
+    password = password.trim();
 
     this.accountsService.createAccount({ username, password } as User).subscribe({
       next: () => {
@@ -68,6 +78,8 @@ export class Login implements OnInit {
   }
 
   login(): void {
+    this.username = this.username?.trim();
+    this.password = this.password?.trim();
     if (!this.username) { // missing or removed username
       this.message = "Missing username"
       return;
@@ -98,14 +110,13 @@ export class Login implements OnInit {
   finalizeLogin(key: string, username: string): void {
     localStorage.setItem('key', key);
     localStorage.setItem('username', username);
-    localStorage.setItem('role', username == 'admin' ? 'manager' : 'helper');
 
     // Now that the login is successful, find the user's ID
     this.accountsService.getInfo(username, key)
       .subscribe({
         next: data => {
-          const id: number = JSON.parse(data).id
-          localStorage.setItem('id', `${id}`);
+          localStorage.setItem('id', `${data.id}`);
+          localStorage.setItem('role', data.manager ? 'manager' : 'helper');
           this.router.navigate(['/cupboard']);
         },
         error: error => {
