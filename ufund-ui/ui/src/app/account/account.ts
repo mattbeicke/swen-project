@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AccountsService } from '../accountservice';
 import { Router } from '@angular/router';
-import { User } from '../user';
 
 @Component({
   selector: 'app-account',
@@ -11,7 +10,7 @@ import { User } from '../user';
 })
 export class Account {
   constructor(private accountsService: AccountsService, private router: Router) { }
-  
+
   isHelper = false;
 
   ngOnInit(): void {
@@ -43,7 +42,7 @@ export class Account {
     }
     let id = +(localStorage.getItem('id') ?? '');
     let username = prompt("Enter New Username", "johndoe");
-    if (username == null || username == ''){
+    if (username == null || username == '') {
       return;
     }
     this.accountsService.changeName(localStorage.getItem('id') ?? '', username, localStorage.getItem('key') || '')
@@ -72,27 +71,25 @@ export class Account {
 
   changePassword(): void {
     // verify a users role then do:
-    let id = +(localStorage.getItem('id') ?? '');
     let password = prompt("Enter New Password", "password");
-    if (password == null || password == ''){
+    if (password == null || password == '') {
       return;
     }
-    let response = confirm("Are you sure you want to change your password to " + password + "?")
-    if (response){
-      this.accountsService.changePass(localStorage.getItem('id') ?? '', pass, localStorage.getItem('key') || '')
+    let response = confirm("Are you sure you want to change your password?");
+    if (response) {
+      this.accountsService.changePass(localStorage.getItem('id') ?? '', password, localStorage.getItem('key') || '')
         .subscribe({
           next: () => {
             alert("Password changed successfully");
             this.logout();
-
           },
           error: error => {
             switch (error.status) {
               case 401:
-                alert("You are not authorized to change this password");
+                alert("You are not authorized to change your password");
                 break;
               case 403:
-                alert("You are not allowed to change this password");
+                alert("You are not allowed to change your password");
                 break;
               case 500:
                 alert("Internal server error\nPlease try again later!");
@@ -111,29 +108,30 @@ export class Account {
       alert("You are not authorized to delete this account");
       return;
     }
-    let result = confirm("Are you sure you want to delete this account")
-    if (result){
+    let result = confirm("Are you sure you want to delete your account?");
+    if (result) {
       this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
-      .subscribe({
-        next: () => { alert("Deleted User") 
-          this.logout();
-        },
-        error: error => {
-          switch (error.status) {
-            case 401:
-              alert("You are not authorized to delete this user");
-              break;
-            case 403:
-              alert("You are not allowed to delete this user");
-              break;
-            case 500:
-              alert("Internal server error\nPlease try again later!");
-              break;
-            default:
-              alert("Unknown error, is server online?");
+        .subscribe({
+          next: () => {
+            alert("Deleted User");
+            this.logout();
+          },
+          error: error => {
+            switch (error.status) {
+              case 401:
+                alert("You are not authorized to delete your account");
+                break;
+              case 403:
+                alert("You are not allowed to delete your account");
+                break;
+              case 500:
+                alert("Internal server error\nPlease try again later!");
+                break;
+              default:
+                alert("Unknown error, is server online?");
+            }
           }
-        }
-      });
+        });
     }
   }
 }
