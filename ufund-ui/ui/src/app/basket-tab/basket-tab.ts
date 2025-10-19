@@ -44,8 +44,7 @@ export class BasketTab {
 
   }
 
-    checkout(need: Need): void {
-    this.selectedNeed = need;
+    checkout(): void {
     this.needService.checkout(+(localStorage.getItem("id") ?? ""), this.selectedNeed!.id, localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {

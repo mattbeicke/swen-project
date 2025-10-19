@@ -23,7 +23,7 @@
                     <td>{{need.description}}</td>
                     <td>
                         <button [class.selected]="need === selectedNeed" type="button"
-                            (click)="onSelect(need)">Remove From Basket</button>
+                            (click)="remove(need)">Remove From Basket</button>
                     </td>
                 </tr>
             </tbody>
@@ -32,6 +32,7 @@
 
     <aside class="sidebarr">
         <br><br>
-          <button>checkout</button>
+          <button type="button"
+                          (click)="checkout()">Checkout Basket</button>
     </aside>
 </div>
