@@ -40,36 +40,17 @@ export class Account {
     if (localStorage.getItem("role") == "manager") {
       alert("You are not authorized to change the name of this account");
       return;
-    } else {
-      this.accountsService.changeName(localStorage.getItem('id') ?? '', name, localStorage.getItem('key') ?? '')
-        .subscribe({
-          next: name => (name),
-          error: error => {
-            switch (error.status) {
-              case 401:
-                alert("You are not authorized to change this name");
-                break;
-              case 403:
-                alert("You are not allowed to change this name");
-                break;
-              case 500:
-                alert("Internal server error\nPlease try again later!");
-                break;
-              default:
-                alert("Unknown error, is server online?");
-            }
-          }
-        });
     }
     let id = +(localStorage.getItem('id') ?? '');
-    let username = prompt("Enter New Username", "John Doe");
+    let username = prompt("Enter New Username", "johndoe");
     if (username == null || username == ''){
       return;
     }
-    this.accountsService.changeName({ id, username } as User, localStorage.getItem('key') || '')
+    this.accountsService.changeName(localStorage.getItem('id') ?? '', username, localStorage.getItem('key') || '')
       .subscribe({
         next: () => {
           alert("Username changed successfully");
+          this.logout();
         },
         error: error => {
           switch (error.status) {
@@ -92,15 +73,19 @@ export class Account {
   changePassword(): void {
     // verify a users role then do:
     let id = +(localStorage.getItem('id') ?? '');
-    let password = prompt("Enter New Password", "New Password Here");
+    let password = prompt("Enter New Password", "password");
     if (password == null || password == ''){
       return;
     }
-    // verify a users role then do:
-    if (localStorage.getItem("role") == "helper") {
-      this.accountsService.changePass(localStorage.getItem('id') ?? '', pass, localStorage.getItem('key') ?? '')
+    let response = confirm("Are you sure you want to change your password to " + password + "?")
+    if (response){
+      this.accountsService.changePass(localStorage.getItem('id') ?? '', pass, localStorage.getItem('key') || '')
         .subscribe({
-          next: pass => (pass),
+          next: () => {
+            alert("Password changed successfully");
+            this.logout();
+
+          },
           error: error => {
             switch (error.status) {
               case 401:
@@ -116,8 +101,8 @@ export class Account {
                 alert("Unknown error, is server online?");
             }
           }
-        }
-      });
+        });
+    }
   }
 
   deleteUser(): void {
@@ -126,9 +111,13 @@ export class Account {
       alert("You are not authorized to delete this account");
       return;
     }
-    this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
+    let result = confirm("Are you sure you want to delete this account")
+    if (result){
+      this.accountsService.deleteUser(localStorage.getItem('id') || '', localStorage.getItem('key') || '')
       .subscribe({
-        next: () => { alert("Deleted User") },
+        next: () => { alert("Deleted User") 
+          this.logout();
+        },
         error: error => {
           switch (error.status) {
             case 401:
@@ -145,5 +134,6 @@ export class Account {
           }
         }
       });
+    }
   }
 }
