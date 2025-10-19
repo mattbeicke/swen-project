@@ -40,6 +40,26 @@ export class Account {
     if (localStorage.getItem("role") == "manager") {
       alert("You are not authorized to change the name of this account");
       return;
+    } else {
+      this.accountsService.changeName(name.trim(), localStorage.getItem('key') || '')
+        .subscribe({
+          next: name => (name),
+          error: error => {
+            switch (error.status) {
+              case 401:
+                alert("You are not authorized to change this name");
+                break;
+              case 403:
+                alert("You are not allowed to change this name");
+                break;
+              case 500:
+                alert("Internal server error\nPlease try again later!");
+                break;
+              default:
+                alert("Unknown error, is server online?");
+            }
+          }
+        });
     }
     let id = +(localStorage.getItem('id') ?? '');
     let username = prompt("Enter New Username", "John Doe");
@@ -76,24 +96,25 @@ export class Account {
     if (password == null || password == ''){
       return;
     }
-    this.accountsService.changePass({ id, password } as User, localStorage.getItem('key') || '')
-      .subscribe({
-        next: () => {
-          alert("Password changed successfully");
-        },
-        error: error => {
-          switch (error.status) {
-            case 401:
-              alert("You are not authorized to change this password");
-              break;
-            case 403:
-              alert("You are not allowed to change this password");
-              break;
-            case 500:
-              alert("Internal server error\nPlease try again later!");
-              break;
-            default:
-              alert("Unknown error, is server online?");
+    // verify a users role then do:
+    if (localStorage.getItem("role") == "helper") {
+      this.accountsService.changePass(pass.trim(), localStorage.getItem('key') || '')
+        .subscribe({
+          next: pass => (pass),
+          error: error => {
+            switch (error.status) {
+              case 401:
+                alert("You are not authorized to change this password");
+                break;
+              case 403:
+                alert("You are not allowed to change this password");
+                break;
+              case 500:
+                alert("Internal server error\nPlease try again later!");
+                break;
+              default:
+                alert("Unknown error, is server online?");
+            }
           }
         }
       });

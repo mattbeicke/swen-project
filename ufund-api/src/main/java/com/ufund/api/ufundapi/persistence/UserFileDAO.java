@@ -191,7 +191,12 @@ public class UserFileDAO implements UserDAO {
                 return null; // user does not exist
             }
             User prevUser = getUser(user.getId());
-            prevUser.updateUser(user.getUsername(), user.getPassword());
+            if(user.getUsername() != null) {
+                prevUser.updateUser(user.getUsername(), null);
+            }
+            if(user.getPassword() != null) {
+                prevUser.updateUser(null, user.getPassword());
+            }
             users.put(user.getId(), prevUser);
             save(); // may throw an IOException
             return prevUser;
