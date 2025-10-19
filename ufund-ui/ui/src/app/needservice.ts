@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
  * Does the HTTP requests for all need related tasks
  *
  * @author Matthew Beicke
+ * @author Zach Coy
  */
 @Injectable({
   providedIn: 'root'

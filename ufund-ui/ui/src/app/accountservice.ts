@@ -68,11 +68,7 @@ export class AccountsService {
    * @returns The string representation of the updated User object, or null if failed
    */
   changeName(id: string, name: string, key: string): Observable<string> {
-    return this.http.put('http://localhost:8080/user', {
-      "id": id, 
-      "username": name
-    }
-    , {responseType: 'text', 'headers': {'key': key}})
+    return this.http.put('http://localhost:8080/user', { "id": id, "username": name }, { responseType: 'text', 'headers': { 'key': key } })
   }
 
   /**
@@ -83,11 +79,7 @@ export class AccountsService {
    * @returns The string representation of the updated User object, or null if failed
    */
   changePass(id: string, pass: string, key: string): Observable<string> {
-    return this.http.put('http://localhost:8080/user', {
-      "id": id, 
-      "password": pass
-    }
-    , {responseType: 'text', 'headers': {'key': key}})
+    return this.http.put('http://localhost:8080/user', { "id": id, "password": pass }, { responseType: 'text', 'headers': { 'key': key } })
   }
 
   /**
