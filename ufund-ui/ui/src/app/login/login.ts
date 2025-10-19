@@ -70,6 +70,8 @@ export class Login implements OnInit {
   }
 
   login(): void {
+    this.username = this.username?.trim();
+    this.password = this.password?.trim();
     if (!this.username) { // missing or removed username
       this.message = "Missing username"
       return;
