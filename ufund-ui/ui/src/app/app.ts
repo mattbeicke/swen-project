@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 export class App {
   constructor(private accountsService: AccountsService, private router: Router) { }
 
+  /**
+   * Checks on every page if the current session is still valid. 
+   * If it's not, logs the user out.
+   */
   ngOnInit(): void {
     if(localStorage.getItem("username") == null || 
       localStorage.getItem("username")?.length == 0) { return; } // if username is empty or doesn't exist, ignore this code
@@ -24,6 +28,9 @@ export class App {
     })
   }
 
+  /**
+   * Verifies that the current saved data is accurate to the server-side data.
+   */
   verifyInfo(): void {
     this.accountsService.getInfo(localStorage.getItem('username') ?? '', localStorage.getItem('key') ?? '').subscribe({
       next: (data) => {
@@ -40,6 +47,9 @@ export class App {
     })
   }
 
+  /**
+   * Removes the user's login data from localStorage
+   */
   deleteLogin(): void {
     localStorage.setItem("username", "");
     localStorage.setItem("key", "");
