@@ -285,7 +285,7 @@ public class UserController {
         LOG.info("POST /user " + user);
 
         try {
-            if(user.getPassword().isEmpty()) {
+            if(user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             User newuser = userDAO.createUser(user);
@@ -328,7 +328,7 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            if(user.getPassword().isEmpty()) {
+            if(user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 

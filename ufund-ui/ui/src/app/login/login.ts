@@ -32,6 +32,8 @@ export class Login implements OnInit {
     if (password == null || password.trim() == "") {
       return;
     }
+    username = username.trim();
+    password = password.trim();
 
     this.accountsService.createAccount({ username, password } as User).subscribe({
       next: () => {
