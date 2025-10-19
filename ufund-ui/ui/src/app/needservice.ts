@@ -7,13 +7,14 @@ import { HttpClient } from '@angular/common/http';
 
 /**
  * Does the HTTP requests for all need related tasks
- * 
+ *
  * @author Matthew Beicke
  */
 @Injectable({
   providedIn: 'root'
 })
 export class NeedService {
+
   constructor(private http: HttpClient) { }
 
   private needsURL = 'http://localhost:8080/cupboard';
@@ -22,7 +23,7 @@ export class NeedService {
 
   /**
    * Handles HTTP request to get all Needs
-   * 
+   *
    * @returns List of all Needs
    */
   getNeeds(): Observable<Need[]> {
@@ -31,7 +32,7 @@ export class NeedService {
 
   /**
    * Handles HTTP request to get all Needs that contain the search term
-   * 
+   *
    * @param term What to search by
    * @returns List of all Needs that contain the term
    */
@@ -41,7 +42,7 @@ export class NeedService {
 
   /**
    * Handles HTTP request to create a new need
-   * 
+   *
    * @param need Need to create
    * @param key Manager's API Key
    * @returns Need that was created
@@ -52,7 +53,7 @@ export class NeedService {
 
   /**
    * Handles HTTP request to edit a need
-   * 
+   *
    * @param need Need to edit
    * @param key Manager's API Key
    * @returns Need that was edited
@@ -63,7 +64,7 @@ export class NeedService {
 
   /**
    * Handles HTTP request to delete a need
-   * 
+   *
    * @param id id of need to delete
    * @param key Manager's API Key
    * @returns Manager account (as we had to return something?)
@@ -74,7 +75,7 @@ export class NeedService {
 
   /**
    * Handles HTTP request to add a need to a helpers basket
-   * 
+   *
    * @param userID id of user to add need to
    * @param needID id of need to add to user
    * @param key Helper's API Key
@@ -82,5 +83,39 @@ export class NeedService {
    */
   addNeedtoBasket(userID: number, needID: number, key: string): Observable<User> {
     return this.http.post<User>(this.userURL + "/basket/add", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
+  }
+
+  /**
+   * Handles HTTP request to remove a need from a helpers basket
+   * 
+   * @param userID id of user to remove need from
+   * @param needID id of need to remove from user
+   * @param key Helper's API Key
+   * @returns User account (as we had to return something?)
+   */
+  removeNeedFromBasket(userID: number, needID: number, key: string): Observable<User> {
+    return this.http.post<User>(this.userURL + "/basket/remove", { "userID": userID, "needID": needID }, { responseType: 'json', 'headers': { 'key': key } });
+  }
+
+  /**
+   * Handles HTTP request to view a user's basket
+   * 
+   * @param userID id of user who is viewing basket their basket
+   * @param key Helper's API Key
+   * @returns List of all Needs in the user's basket
+   */
+  viewBasket(userID: number, key: string): Observable<Need[]> {
+    return this.http.get<Need[]>(this.userURL + "/basket/" + userID, { responseType: 'json', 'headers': { 'key': key } });
+  }
+
+  /**
+   * Handles HTTP request to checkout a user's basket
+   * 
+   * @param userID id of user who is checking out their basket
+   * @param key Helper's API Key
+   * @returns User account (as we had to return something?)
+   */
+  checkout(userID: number, key: string): Observable<User> {
+    return this.http.post<User>(this.userURL + "/basket/checkout/" + userID, 0, { responseType: 'json', 'headers': { 'key': key } });
   }
 }

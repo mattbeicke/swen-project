@@ -15,12 +15,8 @@
 button {
     display: block;
     width: 150px;
-}
-
-.bottom_button{
-    display: block;
-    width: 150px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-left: 400px;
 }
 
 input {

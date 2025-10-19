@@ -234,7 +234,7 @@ public class UserController {
      *         INTERNAL_SERVER_ERROR otherwise.
      */
     @GetMapping("/basket/{id}")
-    public ResponseEntity<ArrayList<Integer>> viewBasket(@PathVariable int id,
+    public ResponseEntity<ArrayList<Need>> viewBasket(@PathVariable int id,
             @RequestHeader Map<String, String> headers) {
         LOG.info("GET /user/basket/" + id);
 
@@ -260,9 +260,12 @@ public class UserController {
                 }
             }
 
-            
-            LOG.info(basket.toString());
-            return new ResponseEntity<>(basket, HttpStatus.OK);
+            ArrayList<Need> retBasket = new ArrayList<>();
+            for (int i : basket) {
+                retBasket.add(cupboardDAO.getNeed(i));
+            }
+
+            return new ResponseEntity<>(retBasket, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -315,11 +318,11 @@ public class UserController {
      */
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user,
-        @RequestHeader Map<String, String> headers) {
+            @RequestHeader Map<String, String> headers) {
         LOG.info("PUT /user " + user);
 
         try {
-            if(userDAO.getUser(user.getId()) == null) {
+            if (userDAO.getUser(user.getId()) == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
@@ -357,7 +360,7 @@ public class UserController {
         LOG.info("DELETE /user/" + id);
 
         try {
-            if(userDAO.getUser(id) == null) {
+            if (userDAO.getUser(id) == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
