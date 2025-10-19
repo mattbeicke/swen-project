@@ -28,8 +28,16 @@ export class Login implements OnInit {
     if (username == null || username.trim() == "") {
       return;
     }
+    if (username[0] == ' ' || username[username.length - 1] == ' ') {
+      alert("A username cannot begin or end with a space!");
+      return;
+    }
     let password = prompt("Creating a new account:\nEnter a password or press Cancel to quit");
     if (password == null || password.trim() == "") {
+      return;
+    }
+    if (password[0] == ' ' || password[password.length - 1] == ' ') {
+      alert("A password cannot begin or end with a space!");
       return;
     }
     username = username.trim();
