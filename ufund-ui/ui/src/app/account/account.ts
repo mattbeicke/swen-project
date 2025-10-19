@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { AccountsService } from '../accountservice';
 import { Router } from '@angular/router';
 
+/**
+ * Code behind the Accounts Tab
+ * @author Ricardo Lopez
+ */
+
 @Component({
   selector: 'app-account',
   standalone: false,
@@ -21,6 +26,9 @@ export class Account {
     }
   }
 
+  /**
+   * On confirmation, logs the user out
+   */
   logout(): void {
     const username: string = localStorage.getItem('username') || '';
     const key: string = localStorage.getItem('key') || '';
@@ -33,7 +41,9 @@ export class Account {
 
     this.router.navigate(['/']);
   }
-
+  /**
+   * Checks if user is a helper, Calls account service for changing username, reports errors, then logs the user out
+   */
   changeUsername(): void {
     // verify a users role then do:
     if (localStorage.getItem("role") == "manager") {
@@ -69,6 +79,9 @@ export class Account {
       });
   }
 
+  /**
+   * Calls account service for changing account password, reports errors, then logs the user out
+   */
   changePassword(): void {
     // verify a users role then do:
     let password = prompt("Enter New Password", "password");
@@ -102,6 +115,9 @@ export class Account {
     }
   }
 
+  /**
+   * Checks if user isn't a manager, after a confirmation, user account is deleted
+   */
   deleteUser(): void {
     // verify a user's role then:
     if (localStorage.getItem("role") == "manager") {
