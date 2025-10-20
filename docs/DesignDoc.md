@@ -1,12 +1,7 @@
 ---
 geometry: margin=1in
 ---
-# PROJECT Design Documentation
-
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics but do so only **after** all team members agree that the requirements for that section and current Sprint have been met. **Do not** delete future Sprint expectations._
+# Goated U-Fund Design Documentation
 
 ## Team Information
 * Team name: Goated
@@ -15,7 +10,6 @@ geometry: margin=1in
   * Ricardo Lopez
   * Matthew Beicke
   * Zach Coy
-  * Julian Burton
 
 ## Executive Summary
 
@@ -26,11 +20,11 @@ This is a summary of the project.
 > important user group and user goals._
 
 ### Glossary and Acronyms
-> _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
 | Term | Definition |
 |------|------------|
-| SPA | Single Page |
+| SPA | Single Page Application |
+| User | Anyone who uses the system (either a helper or a manager)|
 
 
 ## Requirements
@@ -57,6 +51,7 @@ This section describes the application domain.
 
 ![Domain Model](image.png)
 
+<!--DO THIS ASAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
@@ -67,35 +62,31 @@ This section describes the application domain.
 This section describes the application architecture.
 
 ### Summary
-
 The following Tiers/Layers model shows a high-level view of the webapp's architecture. 
-**NOTE**: detailed diagrams are required in later sections of this document.
-> _**[Sprint 1]** (Augment this diagram with your **own** rendition and representations of sample system classes, placing them into the appropriate M/V/VM (orange rectangle) tier section. Focus on what is currently required to support **Sprint 1 - Demo requirements**. Make sure to describe your design choices in the corresponding _**Tier Section**_ and also in the _**OO Design Principles**_ section below.)_
-
 ![The Tiers & Layers of the Architecture](architecture.png)
 
-The web application, is built using the Model–View–ViewModel (MVVM) architecture pattern. 
-
-The Model stores the application data objects including any functionality to provide persistance. 
-
-The View is the client-side SPA built with Angular utilizing HTML, CSS and TypeScript. The ViewModel provides RESTful APIs to the client (View) as well as any logic required to manipulate the data objects from the Model.
-
-Both the ViewModel and Model are built using Java and Spring Framework. Details of the components within these tiers are supplied below.
+The application, is built using the Model–View–Controller (MVC) architecture pattern.<br>
+The Model stores the application data objects including any functionality to provide persistance.<br>
+The View is the client-side SPA built with Angular utilizing HTML, CSS and TypeScript. The Controller provides RESTful APIs to the client (View) as well as any logic required to manipulate the data objects from the Model.<br>
+Both the Controller and Model are built using Java and Spring Framework. Details of the components within these tiers are supplied below.
 
 
 ### Overview of User Interface
 
-This section describes the web interface and flow; this is how the user views and interacts with the web application.
->_For the reference below, provide an initial draft image/sketch of possible layout of a mayor page of your User Interface and a brief description of the elements it contains **[Sprint 1]**_
+First page a user sees when visiting website is the login. Here they can enter their username and password (of which the password appears as only dots) and then press either login to login or Create Account to create an account with the inputted information.
+![Login UI](loginui.png)
 
-![Replace with your First concept of a layout for a mayor page in the User Interface](Base-UI-Design.png)
+After logging in or creating an account a user is taken to the cupboard page, seen here being viewed as a helper. Here a help can search for needs and/or add needs to their basket.
+![Cupboard tab UI as seen by a helper](helperui.png)
 
-### 
-> _Provide a summary of the application's user interface.  Describe, from the user's perspective, the flow of the pages/navigation in the web application.
+If instead the user is a manager they will see this page in which, alongside searching for needs, lets them add, edit, and delete needs.
+![Cupboard tab UI as seen by a manager](managerui.png)
 
-Once the helper reaches this main page, the 3 lines represent a collapsable table of buttons as shown. The basket button takes them to a page that shows which needs they've added, has a button for them to checkout at the bottom, and a button next to each need to remove it from basket if they so wish. The main page also had a search bar which when a term is added, will update the list of needs that match the term. The manager version would have the basket layout without the checkout button. Instead, the checkout button will have a create button that takes them to an input page to get the variables to craete a need. The list of needs they effect will be the cupboard, which stores the total list of needs.
+If a helper presses on the "Basket" button on the lefthand side they can reach the basket page where they can removing things from their basket and/or checkout their basket.
+![Basket tab UI as seen by a helper](basketui.png)
 
->  (Add low-fidelity mockups prior to initiating your **[Sprint 2]**  work so you have a good idea of the user interactions.) Eventually replace with representative screen shots of your high-fidelity results as these become available and finally include future recommendations improvement recommendations for your **[Sprint 4]** )_
+If a user presses on the "Account Management" button on the lefthand side they can reach a page where they can edit their account information such as their username (only if a helper) and password as well as log out and delete their account (only if they are a helper)
+![Account Management tab UI as seen by a helper](amui.png)
 
 
 ### View Tier
@@ -111,18 +102,17 @@ Once the helper reaches this main page, the 3 lines represent a collapsable tabl
 > to help illustrate the end-to-end flow._
 
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
- >* _Class diagrams only apply to the **ViewModel** and **Model** Tier_
+ >* _Class diagrams only apply to the **Controller** and **Model** Tier_
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
 
-### ViewModel Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
+### Controller Tier
 
-Account Controller - Provides API functionality for login/logout<br>
+Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
 Cupboard Controller - Provides API functionality to access Need objects<br>
-Manager Controller - Provides API functionality to for all manager related tasks<br>
-User Controller - Provides API functionality to for all helper related tasks 
+Manager Controller - Provides API functionality to for all Manager related tasks<br>
+User Controller - Provides API functionality to for all Helper related tasks
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -131,10 +121,9 @@ User Controller - Provides API functionality to for all helper related tasks
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your ViewModel Tier class diagram 1, etc.](Controller-UML.png)
+![Controller UML Diagram](Controller-UML.png)
 
 ### Model Tier
-> _**[Sprint 1]** List the classes supporting this tier and provide a description of there purpose._
 
 Manager: A manager adds and removes needs from their cupboard.<br>
 Need: A need is some item that a manager needs funded.<br>
@@ -142,18 +131,15 @@ User: A user can help support a manager by funding a need.<br>
 UserDAO: The UserDAO provides functions to store and edit users.<br>
 CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
 
-> _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
+In this tier, interaction with the raw data is done and manipulated. The methods in the classes here are used in the Controllers to accomplish their goals.
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your Model Tier class diagram 1, etc.](model.png)
+
+![Model UML Diagram](model.png)
 
 ## OO Design Principles
-
-> _**[Sprint 1]** Name and describe the initial OO Principles that your team has considered in support of your design (and implementation) for this first Sprint._
 
 Single Responsibility: We made sure that each class was small and only is responsible for themselves.<br>
 Open/Closed: We have made it so only authorized users can access and edit data as needed.<br>
@@ -162,6 +148,7 @@ Dependency Inversion/Injection: We use interfaces for the dependancies.<br>
 Controller: We implemented controllers for each object.<br>
 Pure Fabrication: We have created DAO files.
 
+<!--DO THIS ASAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
@@ -175,24 +162,28 @@ Pure Fabrication: We have created DAO files.
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
 
 ## Testing
-> _This section will provide information about the testing performed
-> and the results of the testing._
-
 ### Acceptance Testing
-> _**[Sprint 2 & 4]** Report on the number of user stories that have passed all their
-> acceptance criteria tests, the number that have some acceptance
-> criteria tests failing, and the number of user stories that
-> have not had any testing yet. Highlight the issues found during
-> acceptance testing and if there are any concerns._
+
+<!--List how many user stories we have and for them how many acceptance criteria pass and how many fail (and give reason why)-->
+
+By the end of Sprint 2 we have 39 User stories.<br>
+Currently, for the acceptance criteria we have, all stories pass.
+
+<!--What issues are/were there-->
+The only issues that would arise were from faulty code. These would be fixed during the testing phase when another team member would analyze their code and figure out what went wrong, collaborate with the creator, and fix it.
 
 ### Unit Testing and Code Coverage
-> _**[Sprint 4]** Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets._
 
->_**[Sprint 2, 3 & 4]** **Include images of your code coverage report.** If there are any anomalies, discuss
-> those._
+Our strategy for unit testing was ensure everything is covered, all possible cases.
+Currently (end of Sprint 2) our code coverage is the following:
+
+![Code Coverage](cc.png)
+
+<!--List anomolies in the cc report here if there are any-->
 
 ## Ongoing Rationale
->_**[Sprint 1, 2, 3 & 4]** Throughout the project, provide a time stamp **(yyyy/mm/dd): Sprint # and description** of any _**mayor**_ team decisions or design milestones/changes and corresponding justification._
+
+2025/10/20: Sprint 2<br>
+Main programming for Sprint 2 is now complete, merged, and mostly tested (still need to do the actual acceptance testing writeup but).
+
+<!--Add more stuff here following above format as it happens such as 'team decisions or design milestones/changes and corresponding justification'-->
