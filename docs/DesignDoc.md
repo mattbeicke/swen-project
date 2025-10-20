@@ -1,12 +1,7 @@
 ---
 geometry: margin=1in
 ---
-# PROJECT Design Documentation
-
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics but do so only **after** all team members agree that the requirements for that section and current Sprint have been met. **Do not** delete future Sprint expectations._
+# Goated U-Fund Design Documentation
 
 ## Team Information
 * Team name: Goated
@@ -56,6 +51,7 @@ This section describes the application domain.
 
 ![Domain Model](image.png)
 
+<!--DO THIS ASAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 > _**[Sprint 2 & 4]** Provide a high-level overview of the domain for this application. You
 > can discuss the more important domain entities and their relationship
 > to each other._
@@ -125,7 +121,7 @@ User Controller - Provides API functionality to for all Helper related tasks
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Replace with your Controller Tier class diagram 1, etc.](Controller-UML.png)
+![Controller UML Diagram](Controller-UML.png)
 
 ### Model Tier
 
@@ -140,7 +136,8 @@ In this tier, interaction with the raw data is done and manipulated. The methods
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Model UML diagram](model.png)
+
+![Model UML Diagram](model.png)
 
 ## OO Design Principles
 
@@ -151,6 +148,7 @@ Dependency Inversion/Injection: We use interfaces for the dependancies.<br>
 Controller: We implemented controllers for each object.<br>
 Pure Fabrication: We have created DAO files.
 
+<!--DO THIS ASAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
