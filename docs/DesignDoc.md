@@ -16,15 +16,18 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
+<!---
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
-
+--->
+This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. Our main goal is for managers to be able to outline requirements, which any user to donate for.
 ### Glossary and Acronyms
 
 | Term | Definition |
 |------|------------|
 | SPA | Single Page Application |
-| User | Anyone who uses the system (either a helper or a manager)|
+| User | Anyone who uses the system (either a helper or a manager) |
+| Session | An instance of a user being logged in with an API key. |
 
 
 ## Requirements
@@ -36,8 +39,16 @@ This section describes the features of the application.
 > maybe Epics and critical Stories._
 
 ### Definition of MVP
-> _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
+Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization. 
 
+What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.
+
+
+<!---
+Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.
+
+Additionally, managers can log in to add, edit, and remove needs.
+--->
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 
