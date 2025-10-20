@@ -15,7 +15,6 @@ geometry: margin=1in
   * Ricardo Lopez
   * Matthew Beicke
   * Zach Coy
-  * Julian Burton
 
 ## Executive Summary
 
@@ -26,7 +25,6 @@ This is a summary of the project.
 > important user group and user goals._
 
 ### Glossary and Acronyms
-> _**[Sprint 2 & 4]** Provide a table of terms and acronyms._
 
 | Term | Definition |
 |------|------------|
@@ -68,19 +66,12 @@ This section describes the application domain.
 This section describes the application architecture.
 
 ### Summary
-
 The following Tiers/Layers model shows a high-level view of the webapp's architecture. 
-**NOTE**: detailed diagrams are required in later sections of this document.
-> _**[Sprint 1]** (Augment this diagram with your **own** rendition and representations of sample system classes, placing them into the appropriate M/V/C (orange rectangle) tier section. Focus on what is currently required to support **Sprint 1 - Demo requirements**. Make sure to describe your design choices in the corresponding _**Tier Section**_ and also in the _**OO Design Principles**_ section below.)_
-
 ![The Tiers & Layers of the Architecture](architecture.png)
 
-The web application, is built using the Model–View–ViewModel (MVVM) architecture pattern. 
-
-The Model stores the application data objects including any functionality to provide persistance. 
-
-The View is the client-side SPA built with Angular utilizing HTML, CSS and TypeScript. The Controller provides RESTful APIs to the client (View) as well as any logic required to manipulate the data objects from the Model.
-
+The application, is built using the Model–View–Controller (MVC) architecture pattern.<br>
+The Model stores the application data objects including any functionality to provide persistance.<br>
+The View is the client-side SPA built with Angular utilizing HTML, CSS and TypeScript. The Controller provides RESTful APIs to the client (View) as well as any logic required to manipulate the data objects from the Model.<br>
 Both the Controller and Model are built using Java and Spring Framework. Details of the components within these tiers are supplied below.
 
 
@@ -144,9 +135,7 @@ User: A user can help support a manager by funding a need.<br>
 UserDAO: The UserDAO provides functions to store and edit users.<br>
 CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
 
-> _**[Sprint 2, 3 & 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-> Tier above._
+In this tier, interaction with the raw data is done and manipulated. The methods in the classes here are used in the Controllers to accomplish their goals.
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
@@ -175,8 +164,6 @@ Pure Fabrication: We have created DAO files.
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
 
 ## Testing
-> _This section will provide information about the testing performed and the results of the testing._
-
 ### Acceptance Testing
 
 <!--List how many user stories we have and for them how many acceptance criteria pass and how many fail (and give reason why)-->
@@ -184,6 +171,7 @@ Pure Fabrication: We have created DAO files.
 By the end of Sprint 2 we have 39 User stories.<br>
 Currently, for the acceptance criteria we have, all stories pass.
 
+<!--What issues are/were there-->
 The only issues that would arise were from faulty code. These would be fixed during the testing phase when another team member would analyze their code and figure out what went wrong, collaborate with the creator, and fix it.
 
 ### Unit Testing and Code Coverage
