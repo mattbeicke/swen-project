@@ -333,7 +333,7 @@ public class UserController {
 
             User update = userDAO.updateUser(user);
             if (update == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
             return new ResponseEntity<>(update, HttpStatus.OK);
         } catch (IOException e) {

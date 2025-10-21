@@ -51,7 +51,7 @@ export class Account {
       return;
     }
     let id = +(localStorage.getItem('id') ?? '');
-    let username = prompt("Enter New Username", "johndoe");
+    let username = prompt("Enter New Username\nOr leave blank to cancel");
     if (username == null || username == '') {
       return;
     }
@@ -69,6 +69,12 @@ export class Account {
             case 403:
               alert("You are not allowed to change this name");
               break;
+            case 404:
+              alert("Could not verify that your account exists");
+              break;
+            case 409:
+              alert("User with that username already exists!");
+              break;
             case 500:
               alert("Internal server error\nPlease try again later!");
               break;
@@ -84,7 +90,7 @@ export class Account {
    */
   changePassword(): void {
     // verify a users role then do:
-    let password = prompt("Enter New Password", "password");
+    let password = prompt("Enter New Password\nOr leave blank to cancel");
     if (password == null || password == '') {
       return;
     }

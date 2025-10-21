@@ -16,33 +16,40 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
+<!---
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
-
+--->
+This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. Our main goal is for managers to be able to outline requirements, which any user can donate for.
 ### Glossary and Acronyms
 
 | Term | Definition |
 |------|------------|
 | SPA | Single Page Application |
-| User | Anyone who uses the system (either a helper or a manager)|
+| User | Anyone who uses the system (either a helper or a manager) |
+| Session | An instance of a user being logged in with an API key. |
 
 
 ## Requirements
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
-
 ### Definition of MVP
-> _**[Sprint 2 & 4]** Provide a simple description of the Minimum Viable Product._
+Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization. 
 
+What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.
+
+
+<!---
+Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.
+
+Additionally, managers can log in to add, edit, and remove needs.
+--->
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 
 ### Enhancements
-> _**[Sprint 4]** Describe what enhancements you have implemented for the project._
+Passwords are encrypted on the server, and cannot be retrieved after being created.
 
 
 ## Application Domain
@@ -150,6 +157,10 @@ Pure Fabrication: We have created DAO files.
 
 <!--DO THIS ASAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
+Controller: The User, Cupboard, and Manager objects all have their own Controllers.<br>
+Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br>
+Single Responsibility: The User, Cupboard, and Manager objects have their own Controllers. Along with that, the Needs, User, Cupboard, and Manager objects only interact with themselves, andwill not attempt to alter any other object.<br>
+Information Expert: Each class has its own DAO file and cannot access the other DAO files.<br>
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
