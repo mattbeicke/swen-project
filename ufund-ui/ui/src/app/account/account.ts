@@ -51,7 +51,7 @@ export class Account {
       return;
     }
     let id = +(localStorage.getItem('id') ?? '');
-    let username = prompt("Enter New Username", "johndoe");
+    let username = prompt("Enter New Username\nOr leave blank to cancel");
     if (username == null || username == '') {
       return;
     }
@@ -90,7 +90,7 @@ export class Account {
    */
   changePassword(): void {
     // verify a users role then do:
-    let password = prompt("Enter New Password", "password");
+    let password = prompt("Enter New Password\nOr leave blank to cancel");
     if (password == null || password == '') {
       return;
     }
