@@ -20,7 +20,7 @@ This is a summary of the project.
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
 --->
-This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. Our main goal is for managers to be able to outline requirements, which any user to donate for.
+This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. Our main goal is for managers to be able to outline requirements, which any user can donate for.
 ### Glossary and Acronyms
 
 | Term | Definition |
@@ -33,10 +33,6 @@ This project aims to enable organizations to have their most important needs sat
 ## Requirements
 
 This section describes the features of the application.
-
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
 
 ### Definition of MVP
 Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization. 
@@ -53,7 +49,7 @@ Additionally, managers can log in to add, edit, and remove needs.
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 
 ### Enhancements
-> _**[Sprint 4]** Describe what enhancements you have implemented for the project._
+Passwords are encrypted on the server, and cannot be retrieved after being created.
 
 
 ## Application Domain
