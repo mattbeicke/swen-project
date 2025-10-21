@@ -157,6 +157,10 @@ Pure Fabrication: We have created DAO files.
 
 <!--DO THIS ASAP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
 > _**[Sprint 2, 3 & 4]** Will eventually address upto **4 key OO Principles** in your final design. Follow guidance in augmenting those completed in previous Sprints as indicated to you by instructor. Be sure to include any diagrams (or clearly refer to ones elsewhere in your Tier sections above) to support your claims._
+Controller: The User, Cupboard, and Manager objects all have their own Controllers.<br>
+Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br>
+Single Responsibility: The User, Cupboard, and Manager objects have their own Controllers. Along with that, the Needs, User, Cupboard, and Manager objects only interact with themselves, andwill not attempt to alter any other object.<br>
+Information Expert: Each class has its own DAO file and cannot access the other DAO files.<br>
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
