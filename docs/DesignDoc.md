@@ -153,7 +153,7 @@ Pure Fabrication: We have created DAO files.
 controller
 pure fabrication
 single responsibility
-information expert
+information expert(elaborate on the four, like how they were done)
 
 > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
 
