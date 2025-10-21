@@ -26,7 +26,7 @@ export class BasketTab {
   ngOnInit(): void {
     if (localStorage.getItem("role") == "manager") {
       this.router.navigate(['/cupboard']);
-      alert("Administrator account do have access to a basket");
+      alert("Administrator accounts don't have access to a basket");
     }
     this.needService.viewBasket(+(localStorage.getItem("id") ?? ""), localStorage.getItem("key") ?? "")
       .subscribe(needs => this.needs$ = needs);
