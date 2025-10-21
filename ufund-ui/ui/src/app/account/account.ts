@@ -69,6 +69,12 @@ export class Account {
             case 403:
               alert("You are not allowed to change this name");
               break;
+            case 404:
+              alert("Could not verify that your account exists");
+              break;
+            case 409:
+              alert("User with that username already exists!");
+              break;
             case 500:
               alert("Internal server error\nPlease try again later!");
               break;
