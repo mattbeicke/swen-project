@@ -24,6 +24,7 @@ export class Cupboard {
   bText = "";
   isManager = false;
   initial = true;
+  searchValue: string = "";
 
   /**
    * This code runs on initialization, setting the button type and initially populating the list of needs
@@ -111,7 +112,7 @@ export class Cupboard {
     this.needService.createNeed({ name, description } as Need, localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
-          this.search("");
+          this.search(this.searchValue);
         },
         error: error => {
           switch (error.status) {
@@ -159,7 +160,7 @@ export class Cupboard {
     this.needService.deleteNeed(id ?? -1, localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
-          this.search("");
+          this.search(this.searchValue);
         },
         error: error => {
           switch (error.status) {
@@ -193,7 +194,7 @@ export class Cupboard {
     this.needService.editNeed({ id, name, description } as Need, localStorage.getItem("key") ?? "")
       .subscribe({
         next: () => {
-          this.search("");
+          this.search(this.searchValue);
         },
         error: error => {
           switch (error.status) {
@@ -220,5 +221,6 @@ export class Cupboard {
    */
   search(term: string): void {
     this.searchTerms.next(term);
+    this.searchValue = term;
   }
 }
