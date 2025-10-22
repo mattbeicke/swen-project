@@ -303,7 +303,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateUserNotFound() throws IOException { // updateUser may throw IOException
+    public void testUpdateUserConflict() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
         User user = new User(userId, "uname", "pword");
@@ -323,7 +323,7 @@ public class UserControllerTest {
         response = userController.updateUser(user, header);
 
         // Analyze
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
     @Test
