@@ -50,9 +50,8 @@ export class Account {
       alert("You are not authorized to change the name of this account");
       return;
     }
-    let id = +(localStorage.getItem('id') ?? '');
     let username = prompt("Enter New Username\nOr leave blank to cancel");
-    if (username == null || username == '') {
+    if (username == null || username.trim() == '') {
       return;
     }
     this.accountsService.changeName(localStorage.getItem('id') ?? '', username, localStorage.getItem('key') || '')
@@ -91,7 +90,7 @@ export class Account {
   changePassword(): void {
     // verify a users role then do:
     let password = prompt("Enter New Password\nOr leave blank to cancel");
-    if (password == null || password == '') {
+    if (password == null || password.trim() == '') {
       return;
     }
     let response = confirm("Are you sure you want to change your password?");
