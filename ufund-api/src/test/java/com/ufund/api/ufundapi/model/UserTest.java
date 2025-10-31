@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -151,6 +153,46 @@ public class UserTest {
 
         String expected = "User [id=1001, username=John Doe]";
         assertEquals(expected, user.toString());
+    }
 
+    @Test
+    public void testSetId() {
+        String name = "John Doe";
+        String password = "hunter2";
+        int id = 1001;
+        User user = new User(id, name, password);
+        int newId = 1002;
+        user.setId(newId);
+
+        assertEquals(user.getId(), newId);
+    }
+
+    @Test
+    public void testCheckoutEmpty() {
+        String name = "John Doe";
+        String password = "hunter2";
+        int id = 1001;
+        User user = new User(id, name, password);
+
+        boolean response = user.checkout();
+        assertEquals(response, false);
+    }
+
+    @Test
+    public void testVerifyAnswer() {
+        String name = "John Doe";
+        String password = "hunter2";
+        String answer = "test";
+        int id = 1001;
+        User user = new User(id, name, password, "", answer);
+
+        boolean response = user.verifyAnswer(answer);
+        assertEquals(response, true);
+    }
+
+    @Test
+    public void testEmptyConstructor() {
+        User user = new User();
+        assertEquals(user.getBasket(), new ArrayList<>());
     }
 }

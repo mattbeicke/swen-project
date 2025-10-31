@@ -389,4 +389,28 @@ public class UserFileDAOTest {
 		boolean result2 = assertDoesNotThrow(() -> userFileDAO.userIsManager(user.getId()));
 		assertFalse(result2);
 	}
+
+        @Test
+        public void testGetQuestion(){
+                String username = "user";
+                String password = "pass";
+                String question = "quest";
+                User user = new User(15, username,password,question, "");
+                
+                String response = assertDoesNotThrow(() -> userFileDAO.getQuestion(user),
+                "Create user failed (Unexpected exception)");
+                assertEquals(question, response);
+        }
+
+        @Test
+        public void testVerifyAnswer(){
+                String username = "user";
+                String password = "pass";
+                String answer = "hello";
+                User user = new User(15, username,password,"", answer);
+                
+                boolean response = assertDoesNotThrow(() -> userFileDAO.verifyAnswer(user,"hello"),
+                "Create user failed (Unexpected exception)");
+                assertEquals(true, response);
+        }
 }

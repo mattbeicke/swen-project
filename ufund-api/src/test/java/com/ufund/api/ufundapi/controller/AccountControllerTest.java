@@ -205,4 +205,163 @@ public class AccountControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    public void testForgotPassword() throws IOException {
+        String username = "user";
+        String question = "quest";
+        User user = new User(0, username, "", question, "");
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+        when(mockUserDAO.getQuestion(user)).thenReturn(question);
+
+        ResponseEntity<String> response = accountController.forgotPassword(username);
+
+        assertEquals(question, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testForgotPasswordNotFound1() throws IOException {
+        String username = "user";
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<String> response = accountController.forgotPassword(username);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testForgotPasswordNotFound2() throws IOException {
+        String username = "user";
+        String question = "quest";
+        User user = new User(0, username, "", question, "");
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+        when(mockUserDAO.getQuestion(user)).thenReturn(null);
+
+        ResponseEntity<String> response = accountController.forgotPassword(username);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testForgotPasswordHandleException() throws IOException {
+        String username = "user";
+        String question = "quest";
+        User user = new User(0, username, "", question, "");
+        doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
+        when(mockUserDAO.getQuestion(user)).thenReturn(null);
+
+        ResponseEntity<String> response = accountController.forgotPassword(username);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testVerifyUser() throws IOException {
+        String username = "user";
+        String question = "quest";
+        String answer = "yeah";
+        User user = new User(0, username, "", question, answer);
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+        when(mockUserDAO.verifyAnswer(user, answer)).thenReturn(true);
+
+        ResponseEntity<String> response = accountController.verifyUser(username, answer);
+
+        assertEquals("", response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testVerifyUserNotFound() throws IOException {
+        String username = "user";
+        String answer = "yeah";
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<String> response = accountController.verifyUser(username, answer);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testVerifyUserIncorrect() throws IOException {
+        String username = "user";
+        String question = "quest";
+        String answer = "yeah";
+        User user = new User(0, username, "", question, answer);
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+        when(mockUserDAO.verifyAnswer(user, answer)).thenReturn(false);
+
+        ResponseEntity<String> response = accountController.verifyUser(username, answer);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testVerifyUserHandleException() throws IOException {
+        String username = "user";
+        String question = "quest";
+        String answer = "yeah";
+        User user = new User(0, username, "", question, answer);
+        doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
+        when(mockUserDAO.getQuestion(user)).thenReturn(null);
+
+        ResponseEntity<String> response = accountController.verifyUser(username, answer);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testResetPassword() throws IOException {
+        String username = "user";
+        String password = "pass";
+        String password2 = "pass2";
+        User user = new User(0, username, password);
+        User user2 = new User(0, username, password2);
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+        when(mockUserDAO.updateUser(user)).thenReturn(user2);
+
+        ResponseEntity<User> response = accountController.resetPassword(user);
+
+        assertEquals(password2, response.getBody().getPassword());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testResetPasswordNotFound() throws IOException {
+        String username = "user";
+        String password = "pass";
+        User user = new User(0, username, password);
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<User> response = accountController.resetPassword(user);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testResetPasswordFailure() throws IOException {
+        String username = "user";
+        String password = "pass";
+        User user = new User(0, username, password);
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+        when(mockUserDAO.updateUser(user)).thenReturn(null);
+
+        ResponseEntity<User> response = accountController.resetPassword(user);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    public void testResetPasswordHandleException() throws IOException {
+        String username = "user";
+        String password = "pass";
+        User user = new User(0, username, password);
+        doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
+        when(mockUserDAO.getQuestion(user)).thenReturn(null);
+
+        ResponseEntity<User> response = accountController.resetPassword(user);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+
+    }
 }
