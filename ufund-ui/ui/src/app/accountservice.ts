@@ -91,4 +91,12 @@ export class AccountsService {
   deleteUser(id: string, key: string): Observable<string> {
     return this.http.delete('http://localhost:8080/user/' + id, { responseType: 'text', 'headers': { 'key': key } })
   }
+
+  forgotPassword(username: string): Observable<string[]> {
+    return this.http.get<string[]>(this.accountURL + '/' + username);
+  }
+
+  resetPassword(username: string, password: string): Observable<string> {
+    return this.http.put(this.accountURL + '/' + username, { "password": password }, { responseType: 'text' });
+  }
 }
