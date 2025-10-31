@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,9 +115,60 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             User user = userDAO.getUserByUsername(username);
-            User user_copy = new User(user.getId(), user.getUsername(), "");
+            User user_copy = new User(user.getId(), user.getUsername(), "", "", "");
             return new ResponseEntity<>(user_copy, HttpStatus.OK);
 
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/question/{username}")
+    public ResponseEntity<String> forgotPassword(@PathVariable String username) {
+        try {
+            User user = userDAO.getUserByUsername(username);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            String question = userDAO.getQuestion(user);
+            return new ResponseEntity<String>(question, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/answer/{username}")
+    public ResponseEntity<String> verifyUser(@PathVariable String username, @RequestBody String answer) {
+        try {
+            User user = userDAO.getUserByUsername(username);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            boolean response = userDAO.verifyAnswer(user, answer);
+            if (response) {
+                return new ResponseEntity<String>("", HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/reset")
+    public ResponseEntity<User> resetPassword(@RequestBody User user) {
+        try {
+            if (userDAO.getUserByUsername(user.getUsername()) == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            User update = userDAO.updateUser(user);
+            if (update == null) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+            return new ResponseEntity<>(update, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

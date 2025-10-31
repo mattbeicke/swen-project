@@ -174,7 +174,8 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getQuestion(),
+                    user.getAnswer());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -193,15 +194,16 @@ public class UserFileDAO implements UserDAO {
 
             User existing = getUserByUsername(user.getUsername());
             if (existing != null && existing.getId() != user.getId()) {
-                // if a user with this name exists and has a different ID, then you cannot do this
+                // if a user with this name exists and has a different ID, then you cannot do
+                // this
                 return null;
             }
 
             User prevUser = getUser(user.getId());
-            if(user.getUsername() != null) {
+            if (user.getUsername() != null) {
                 prevUser.updateUser(user.getUsername(), null);
             }
-            if(user.getPassword() != null) {
+            if (user.getPassword() != null) {
                 prevUser.updateUser(null, user.getPassword());
             }
             users.put(user.getId(), prevUser);
@@ -263,9 +265,9 @@ public class UserFileDAO implements UserDAO {
     }
 
     private boolean verifyKey(User user, String key) throws IOException {
-        if(user == null) 
+        if (user == null)
             return false;
-        if(!activeLogins.containsKey(user.getId()))
+        if (!activeLogins.containsKey(user.getId()))
             return false;
         return activeLogins.get(user.getId()).equals(key);
     }
@@ -302,5 +304,15 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean userIsManager(int id) throws IOException {
         return getUser(id).isManager();
+    }
+
+    @Override
+    public String getQuestion(User user) throws IOException {
+        return user.getQuestion();
+    }
+
+    @Override
+    public boolean verifyAnswer(User user, String answer) throws IOException {
+        return user.verifyAnswer(answer);
     }
 }

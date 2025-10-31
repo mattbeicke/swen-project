@@ -184,4 +184,8 @@ public interface UserDAO {
      * @throws IOException if underlying storage cannot be accessed
      */
     public boolean userIsManager(int id) throws IOException;
+
+    public String getQuestion(User user) throws IOException;
+
+    public boolean verifyAnswer(User user, String answer) throws IOException;
 }

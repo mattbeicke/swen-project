@@ -19,6 +19,10 @@ public class User {
     private String password; // User's password
     @JsonProperty("basket")
     private ArrayList<Integer> basket; // User's need basket
+    @JsonProperty("securityQuestion")
+    private String securityQuestion;
+    @JsonProperty("securityAnswer")
+    private String securityAnswer;
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
 
@@ -36,15 +40,26 @@ public class User {
         basket = new ArrayList<>();
     }
 
+    public User(int id, String username, String password, String securityQuestion, String securityAnswer) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
+        basket = new ArrayList<>();
+    }
+
     /**
-     * Constructor for a {@link User user} for the load() function, preventing reencrypting
+     * Constructor for a {@link User user} for the load() function, preventing
+     * reencrypting
      * 
      * @param id       UserID
      * @param username User's username
      * @param password User's password
      */
-    public static User generateUser(int id, String username, String password) {
-        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()));
+    public static User generateUser(int id, String username, String password, String securityQuestion,
+            String securityAnswer) {
+        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer);
         return user;
     }
 
@@ -143,9 +158,21 @@ public class User {
     public boolean inBasket(int needId) {
         return basket.contains((Integer) needId);
     }
-    
+
     public boolean isManager() {
         return username.equals(Manager.MANAGER_USERNAME);
+    }
+
+    public String getQuestion() {
+        return securityQuestion;
+    }
+
+    public String getAnswer() {
+        return securityAnswer;
+    }
+
+    public boolean verifyAnswer(String answer) {
+        return securityAnswer.equals(answer);
     }
 
     /**
