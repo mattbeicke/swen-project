@@ -11,19 +11,30 @@ import { Router } from '@angular/router';
 export class ForgotPassword {
   constructor(private accountsService: AccountsService, private router: Router) { }
 
-  answer = "";
   username = "";
+  question = "";
+
   @Input() response?: string;
   @Input() password?: string;
 
   passfield = false;
 
   verify() {
-    if (this.answer == this.response) {
-      this.passfield = true;
-    } else {
-      alert("Incorrect");
-    }
+    this.accountsService.verifyUser(this.username, this.response!).subscribe({
+      next: _ => {
+        this.passfield = true;
+      },
+      error: error => {
+        switch (error.status) {
+          //INCORRECT alert("Incorrect");
+          case 500:
+            alert("Internal server error");
+            break;
+          default:
+            alert("Unknown error, is server online?");
+        }
+      }
+    })
   }
 
   reset() {
@@ -51,14 +62,12 @@ export class ForgotPassword {
   }
 
   ngOnInit() {
-    let question = localStorage.getItem("question")!;
-    this.answer = localStorage.getItem("answer")!;
+    this.question = localStorage.getItem("question")!;
     this.username = localStorage.getItem("username")!;
-    if (question == "" || this.answer == "") {
+    if (this.question == "") {
       this.router.navigate(['/login']);
     }
     localStorage.setItem("question", "");
-    localStorage.setItem("answer", "");
     localStorage.setItem("username", "");
   }
 }

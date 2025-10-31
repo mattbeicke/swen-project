@@ -129,9 +129,8 @@ export class Login implements OnInit {
       return;
     }
     this.accountsService.forgotPassword(username).subscribe({
-      next: data => {
-        localStorage.setItem("question", data[0]);
-        localStorage.setItem("answer", data[1]);
+      next: question => {
+        localStorage.setItem("question", question);
         localStorage.setItem("username", username);
         this.router.navigate(['/forgotpassword']);
       },

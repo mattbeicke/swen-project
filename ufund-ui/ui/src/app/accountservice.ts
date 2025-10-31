@@ -92,10 +92,14 @@ export class AccountsService {
     return this.http.delete('http://localhost:8080/user/' + id, { responseType: 'text', 'headers': { 'key': key } })
   }
 
-  forgotPassword(username: string): Observable<string[]> {
-    return this.http.get<string[]>(this.accountURL + '/' + username);
+  forgotPassword(username: string): Observable<string> {
+    return this.http.get<string>(this.accountURL + '/question/' + username);
   }
 
+  verifyUser(username: string, answer: string): Observable<string> {
+    return this.http.post<string>(`${this.accountURL}/answer/${username}`, { answer }, { responseType: 'text' as 'json' });
+  }
+  
   resetPassword(username: string, password: string): Observable<string> {
     return this.http.put(this.accountURL + '/' + username, { "password": password }, { responseType: 'text' });
   }
