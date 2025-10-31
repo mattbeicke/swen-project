@@ -99,8 +99,8 @@ export class AccountsService {
   verifyUser(username: string, answer: string): Observable<string> {
     return this.http.post<string>(`${this.accountURL}/answer/${username}`, { answer }, { responseType: 'text' as 'json' });
   }
-  
-  resetPassword(username: string, password: string): Observable<string> {
-    return this.http.put(this.accountURL + '/' + username, { "password": password }, { responseType: 'text' });
+
+  resetPassword(username: string, password: string): Observable<User> {
+    return this.http.put<User>(this.accountURL + '/reset', { "username": username, "password": password }, { responseType: 'json' });
   }
 }

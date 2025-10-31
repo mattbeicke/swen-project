@@ -26,7 +26,13 @@ export class ForgotPassword {
       },
       error: error => {
         switch (error.status) {
-          //INCORRECT alert("Incorrect");
+          case 401:
+            alert("Wrong answer");
+            break;
+          case 404:
+            alert("User with that username does not exist!");
+            this.router.navigate(['/login']);
+            break;
           case 500:
             alert("Internal server error");
             break;
@@ -50,7 +56,14 @@ export class ForgotPassword {
       },
       error: error => {
         switch (error.status) {
-          //PASSWORD FAILED TO BE UPDATED
+          case 409:
+            alert("User does not exist");
+            this.router.navigate(['/login']);
+            break;
+          case 404:
+            alert("User with that username does not exist!");
+            this.router.navigate(['/login']);
+            break;
           case 500:
             alert("Internal server error");
             break;
