@@ -185,7 +185,22 @@ public interface UserDAO {
      */
     public boolean userIsManager(int id) throws IOException;
 
+    /**
+     * Returns the users security question
+     * 
+     * @param user user to get
+     * @return the users security question
+     * @throws IOException
+     */
     public String getQuestion(User user) throws IOException;
 
+    /**
+     * Checks if the given answer is correct to the given users security question
+     * 
+     * @param user   user to check
+     * @param answer answer to check
+     * @return true if it is correct, false if not
+     * @throws IOException
+     */
     public boolean verifyAnswer(User user, String answer) throws IOException;
 }

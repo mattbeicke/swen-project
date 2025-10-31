@@ -281,6 +281,9 @@ public class UserFileDAO implements UserDAO {
         return verifyKey(user, key);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
         User user = getUser(id);
@@ -306,11 +309,17 @@ public class UserFileDAO implements UserDAO {
         return getUser(id).isManager();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getQuestion(User user) throws IOException {
         return user.getQuestion();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);

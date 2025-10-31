@@ -21,6 +21,9 @@ export class ForgotPassword {
 
   passfield = false;
 
+  /**
+   * code for checking if the provided answer is correct and handing if it is or isnt
+   */
   verify() {
     console.log(this.username)
     console.log(this.response)
@@ -48,6 +51,9 @@ export class ForgotPassword {
     })
   }
 
+  /**
+   * code that resets a users password handling if something went wrong or not
+   */
   reset() {
     this.password = this.password?.trim();
     if (!this.password) {

@@ -92,14 +92,31 @@ export class AccountsService {
     return this.http.delete('http://localhost:8080/user/' + id, { responseType: 'text', 'headers': { 'key': key } })
   }
 
+  /**
+   * gets a users security question
+   * @param username username of user to get security question of
+   * @returns security question of user (if the user exists)
+   */
   forgotPassword(username: string): Observable<string> {
     return this.http.get(this.accountURL + '/question/' + username, { responseType: 'text' });
   }
 
+  /**
+   * checks if a users answer to the security question is correct
+   * @param username user to check
+   * @param answer provided answer
+   * @returns string as we had to return something 
+   */
   verifyUser(username: string, answer: string): Observable<string> {
-    return this.http.post<string>(`${this.accountURL}/answer/${username}`, answer, { responseType: 'text' as 'json' });
+    return this.http.post(`${this.accountURL}/answer/${username}`, answer, { responseType: 'text' });
   }
 
+  /**
+   * resets a users password
+   * @param username username of user to reset
+   * @param password password to reset to
+   * @returns updated user
+   */
   resetPassword(username: string, password: string): Observable<User> {
     return this.http.put<User>(this.accountURL + '/reset', { "username": username, "password": password }, { responseType: 'json' });
   }
