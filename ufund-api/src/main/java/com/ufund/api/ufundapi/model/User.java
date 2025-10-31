@@ -19,12 +19,16 @@ public class User {
     private String password; // User's password
     @JsonProperty("basket")
     private ArrayList<Integer> basket; // User's need basket
-    @JsonProperty("securityQuestion")
+    @JsonProperty("question")
     private String securityQuestion;
-    @JsonProperty("securityAnswer")
+    @JsonProperty("answer")
     private String securityAnswer;
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
+
+    public User() {
+        basket = new ArrayList<>();
+    }
 
     /**
      * Constructor for a {@link User user}
@@ -103,6 +107,10 @@ public class User {
      */
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

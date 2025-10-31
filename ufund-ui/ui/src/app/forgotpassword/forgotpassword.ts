@@ -14,30 +14,35 @@ export class ForgotPassword {
   username = "";
   question = "";
 
+  message?: string;
+
   @Input() response?: string;
   @Input() password?: string;
 
   passfield = false;
 
   verify() {
+    console.log(this.username)
+    console.log(this.response)
     this.accountsService.verifyUser(this.username, this.response!).subscribe({
       next: _ => {
         this.passfield = true;
+        this.message = "Correct";
       },
       error: error => {
         switch (error.status) {
           case 401:
-            alert("Wrong answer");
+            this.message = "Wrong answer";
             break;
           case 404:
             alert("User with that username does not exist!");
             this.router.navigate(['/login']);
             break;
           case 500:
-            alert("Internal server error");
+            this.message = "Internal server error";
             break;
           default:
-            alert("Unknown error, is server online?");
+            this.message = "Unknown error, is server online?";
         }
       }
     })

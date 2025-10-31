@@ -132,6 +132,9 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             String question = userDAO.getQuestion(user);
+            if (question == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<String>(question, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
@@ -146,8 +149,7 @@ public class AccountController {
             if (user == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            boolean response = userDAO.verifyAnswer(user, answer);
-            if (response) {
+            if (userDAO.verifyAnswer(user, answer)) {
                 return new ResponseEntity<String>("", HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -160,9 +162,11 @@ public class AccountController {
     @PutMapping("/reset")
     public ResponseEntity<User> resetPassword(@RequestBody User user) {
         try {
-            if (userDAO.getUserByUsername(user.getUsername()) == null) {
+            User actualUser = userDAO.getUserByUsername(user.getUsername());
+            if (actualUser == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+            user.setId(actualUser.getId());
 
             User update = userDAO.updateUser(user);
             if (update == null) {

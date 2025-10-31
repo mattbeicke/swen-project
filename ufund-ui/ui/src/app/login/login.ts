@@ -51,10 +51,12 @@ export class Login implements OnInit {
 
     this.question = prompt("Enter a security question\nOr press cancel to cancel account creation", this.question)!;
     if (this.question == null || this.question.trim() == "") {
+      this.question = "";
       return;
     }
     this.answer = prompt("Enter answer to:\n" + this.question, this.answer)!;
     if (this.answer == null || this.answer.trim() == "") {
+      this.answer = "";
       return;
     }
 

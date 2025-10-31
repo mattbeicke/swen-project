@@ -93,11 +93,11 @@ export class AccountsService {
   }
 
   forgotPassword(username: string): Observable<string> {
-    return this.http.get<string>(this.accountURL + '/question/' + username);
+    return this.http.get(this.accountURL + '/question/' + username, { responseType: 'text' });
   }
 
   verifyUser(username: string, answer: string): Observable<string> {
-    return this.http.post<string>(`${this.accountURL}/answer/${username}`, { answer }, { responseType: 'text' as 'json' });
+    return this.http.post<string>(`${this.accountURL}/answer/${username}`, answer, { responseType: 'text' as 'json' });
   }
 
   resetPassword(username: string, password: string): Observable<User> {

@@ -9,7 +9,7 @@ import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
-import { Forgotpassword } from './forgotpassword/forgotpassword';
+import { ForgotPassword } from './forgotpassword/forgotpassword';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { Forgotpassword } from './forgotpassword/forgotpassword';
     Login,
     Account,
     BasketTab,
-    Forgotpassword
+    ForgotPassword
   ],
   imports: [
     BrowserModule,
