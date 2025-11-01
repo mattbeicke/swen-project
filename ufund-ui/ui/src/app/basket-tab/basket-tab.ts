@@ -2,17 +2,19 @@ import { Component } from '@angular/core';
 import { Need } from '../need';
 import { NeedService } from '../needservice';
 import { Router } from '@angular/router';
+import { Sidebar }from '../sidebarmodule/sidebarmodule-module' ;
 
 /**
  * Code behind the basket tab
- * 
+ *
  * @author Zach Coy
  */
 @Component({
   selector: 'app-cupboard',
   standalone: false,
   templateUrl: './basket-tab.html',
-  styleUrl: './basket-tab.css'
+  styleUrl: './basket-tab.css',
+  imports: [Sidebarmodule]
 })
 export class BasketTab {
   constructor(private needService: NeedService, private router: Router) { }

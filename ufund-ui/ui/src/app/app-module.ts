@@ -9,7 +9,7 @@ import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
-import { Sidebar } from './sidebar/sidebar';
+import { Sidebar } from './sidebarmodule/sidebarmodule-module';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { Sidebar } from './sidebar/sidebar';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
