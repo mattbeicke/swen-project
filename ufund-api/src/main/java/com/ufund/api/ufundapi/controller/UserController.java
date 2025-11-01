@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Manager;
@@ -405,7 +406,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<User[]> searchUsers(@PathVariable String username,
+    public ResponseEntity<User[]> searchUsers(@RequestParam String username,
             @RequestHeader Map<String, String> headers) {
         try {
             User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);

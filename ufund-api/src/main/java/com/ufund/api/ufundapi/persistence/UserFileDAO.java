@@ -333,7 +333,7 @@ public class UserFileDAO implements UserDAO {
         ArrayList<User> userArrayList = new ArrayList<>();
 
         for (User user : users.values()) {
-            if (user.getPassword().equals(Manager.MANAGER_USERNAME)) {
+            if (user.getUsername().equals(Manager.MANAGER_USERNAME)) {
                 continue;
             }
             if (containsText == null || user.getUsername().contains(containsText)) {

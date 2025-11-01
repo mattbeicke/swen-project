@@ -34,6 +34,6 @@ export class UserService {
    * @returns list of all users whose username contains the term
    */
   searchUsers(term: string, key: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.userURL}/?name=${term}`, { responseType: 'json', 'headers': { 'key': key } });
+    return this.http.get<User[]>(`${this.userURL}/?username=${term}`, { responseType: 'json', 'headers': { 'key': key } });
   }
 }

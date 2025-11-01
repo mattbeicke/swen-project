@@ -29,7 +29,7 @@ export class UsersTab {
    */
   ngOnInit(): void {
     if (localStorage.getItem("role") != "manager") {
-      this.router.navigate(['/cupboard']);
+      this.router.navigate(['/login']);
     }
 
     this.userService.getUsers(localStorage.getItem("key") ?? "").subscribe({
@@ -43,7 +43,7 @@ export class UsersTab {
         switch (error.status) {
           case 401:
             alert("You are not authorized to see list of Users");
-            this.router.navigate(['/cupboard']);
+            this.router.navigate(['/login']);
             break;
           case 500:
             alert("Internal server error\nPlease try again later!");
