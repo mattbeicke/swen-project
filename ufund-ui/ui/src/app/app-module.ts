@@ -9,6 +9,7 @@ import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
+import { Sidebar } from './sidebar/sidebar';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     Cupboard,
     Login,
     Account,
-    BasketTab
+    BasketTab,
+    Sidebar
   ],
   imports: [
     BrowserModule,
