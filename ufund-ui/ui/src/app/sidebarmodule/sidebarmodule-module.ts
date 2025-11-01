@@ -13,5 +13,5 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [Sidebar]
 })
-export class SidebarmoduleModule { }
+export class Sidebarmodule { }
 

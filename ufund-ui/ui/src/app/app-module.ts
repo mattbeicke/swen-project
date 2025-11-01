@@ -9,7 +9,7 @@ import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
-import { SidebarmoduleModule } from './sidebarmodule/sidebarmodule-module';
+import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { SidebarmoduleModule } from './sidebarmodule/sidebarmodule-module';
     BasketTab
   ],
   imports: [
-    SidebarmoduleModule,
+    Sidebarmodule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
