@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
@@ -280,7 +281,8 @@ public class UserController {
      * @return ResponseEntity with created {@link User user} object and HTTP status
      *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
      *         {@link User user} object already exists. ResponseEntity with HTTP
-     *         status of BAD_REQUEST if the user is invalid (i.e has an empty password.)
+     *         status of BAD_REQUEST if the user is invalid (i.e has an empty
+     *         password.)
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("")
@@ -288,7 +290,7 @@ public class UserController {
         LOG.info("POST /user " + user);
 
         try {
-            if(user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
+            if (user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             User newuser = userDAO.createUser(user);
@@ -313,7 +315,8 @@ public class UserController {
      *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
      *         found. ResponseEntity with HTTP status of UNAUTHORIZED
      *         if not logged in as the right user. ResponseEntity with HTTP
-     *         status of BAD_REQUEST if the user is invalid (i.e has an empty password.)
+     *         status of BAD_REQUEST if the user is invalid (i.e has an empty
+     *         password.)
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PutMapping("")
@@ -350,7 +353,8 @@ public class UserController {
      * 
      * @return ResponseEntity HTTP status: OK if deleted. ResponseEntity with HTTP
      *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
-     *         UNAUTHORIZED if not logged in as the right user. ResponseEntity of FORBIDDEN if
+     *         UNAUTHORIZED if not logged in as the right user. ResponseEntity of
+     *         FORBIDDEN if
      *         deletion can not happen (i.e user is a Manager.)
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
@@ -371,12 +375,47 @@ public class UserController {
             if (userDAO.userIsManager(id)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-            
+
             boolean deleted = userDAO.deleteUser(id);
             if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<User[]> getUsers(@RequestHeader Map<String, String> headers) {
+        try {
+            User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(user.getId(), key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            User[] users = userDAO.getUsers();
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<User[]> searchUsers(@PathVariable String username,
+            @RequestHeader Map<String, String> headers) {
+        try {
+            User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(user.getId(), key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            User[] users = userDAO.searchUsers(username);
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

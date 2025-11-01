@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.User;
 
 /**
@@ -91,7 +91,7 @@ public class UserFileDAO implements UserDAO {
     }
 
     /**
-     * Generates the next id for a new {@link Need need}
+     * Generates the next id for a new {@link User user}
      * 
      * @return The next id
      */
@@ -193,15 +193,16 @@ public class UserFileDAO implements UserDAO {
 
             User existing = getUserByUsername(user.getUsername());
             if (existing != null && existing.getId() != user.getId()) {
-                // if a user with this name exists and has a different ID, then you cannot do this
+                // if a user with this name exists and has a different ID, then you cannot do
+                // this
                 return null;
             }
 
             User prevUser = getUser(user.getId());
-            if(user.getUsername() != null) {
+            if (user.getUsername() != null) {
                 prevUser.updateUser(user.getUsername(), null);
             }
-            if(user.getPassword() != null) {
+            if (user.getPassword() != null) {
                 prevUser.updateUser(null, user.getPassword());
             }
             users.put(user.getId(), prevUser);
@@ -263,9 +264,9 @@ public class UserFileDAO implements UserDAO {
     }
 
     private boolean verifyKey(User user, String key) throws IOException {
-        if(user == null) 
+        if (user == null)
             return false;
-        if(!activeLogins.containsKey(user.getId()))
+        if (!activeLogins.containsKey(user.getId()))
             return false;
         return activeLogins.get(user.getId()).equals(key);
     }
@@ -302,5 +303,34 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean userIsManager(int id) throws IOException {
         return getUser(id).isManager();
+    }
+
+    @Override
+    public User[] getUsers() {
+        return getUsers(null);
+    }
+
+    @Override
+    public User[] searchUsers(String containsText) {
+        synchronized (users) {
+            return getUsers(containsText);
+        }
+    }
+
+    public User[] getUsers(String containsText) { // if containsText == null, no filter
+        ArrayList<User> userArrayList = new ArrayList<>();
+
+        for (User user : users.values()) {
+            if (user.getPassword().equals(Manager.MANAGER_USERNAME)) {
+                continue;
+            }
+            if (containsText == null || user.getUsername().contains(containsText)) {
+                userArrayList.add(user);
+            }
+        }
+
+        User[] userArray = new User[userArrayList.size()];
+        userArrayList.toArray(userArray);
+        return userArray;
     }
 }
