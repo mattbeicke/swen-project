@@ -2,6 +2,7 @@ package com.ufund.api.ufundapi.persistence;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,11 @@ import com.ufund.api.ufundapi.model.User;
 @Component
 public class UserFileDAO implements UserDAO {
 
+    /// The length in characters of a generated key.
     private static final int KEY_CHARACTERS = 32;
+    /// How long a key should last, in seconds, before being invalidated.
+    private static final int KEY_EXPIRY_TIME = 3600; 
+    
 
     private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time
@@ -34,11 +39,13 @@ public class UserFileDAO implements UserDAO {
     private static int nextId;
     private String filename; // Filename to read from and write to
     private Map<Integer, String> activeLogins;
+    private Map<Integer, Long> loginExpiryTime;
 
     public UserFileDAO(@Value("${users.file}") String filename, ObjectMapper objectMapper) throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
         this.activeLogins = new HashMap<>();
+        this.loginExpiryTime = new HashMap<>();
         load();
     }
 
@@ -259,6 +266,7 @@ public class UserFileDAO implements UserDAO {
             return null;
         String new_key = createLoginKey();
         activeLogins.put(user.getId(), new_key);
+        loginExpiryTime.put(user.getId(), Instant.now().getEpochSecond());
         return new_key;
     }
 
@@ -267,6 +275,10 @@ public class UserFileDAO implements UserDAO {
             return false;
         if(!activeLogins.containsKey(user.getId()))
             return false;
+        if(Instant.now().getEpochSecond() > loginExpiryTime.get(user.getId()) + KEY_EXPIRY_TIME) {
+            attemptLogout(user.getUsername());
+            return false;
+        }
         return activeLogins.get(user.getId()).equals(key);
     }
 
