@@ -305,11 +305,17 @@ public class UserFileDAO implements UserDAO {
         return getUser(id).isManager();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User[] getUsers() {
         return getUsers(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User[] searchUsers(String containsText) {
         synchronized (users) {
@@ -317,6 +323,12 @@ public class UserFileDAO implements UserDAO {
         }
     }
 
+    /**
+     * Generates list of all users (except the manager)
+     * 
+     * @param containsText filter text, if null then no filter
+     * @return The array of users, may be empty
+     */
     public User[] getUsers(String containsText) { // if containsText == null, no filter
         ArrayList<User> userArrayList = new ArrayList<>();
 

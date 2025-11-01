@@ -185,7 +185,20 @@ public interface UserDAO {
      */
     public boolean userIsManager(int id) throws IOException;
 
+    /**
+     * Gets list of all users
+     * 
+     * @return list of all users
+     * @throws IOException
+     */
     public User[] getUsers() throws IOException;
 
+    /**
+     * Gets list of all users whose username contain the text
+     * 
+     * @param containsText term to search for
+     * @return list of all users whose username contain the text
+     * @throws IOException
+     */
     public User[] searchUsers(String containsText) throws IOException;
 }
