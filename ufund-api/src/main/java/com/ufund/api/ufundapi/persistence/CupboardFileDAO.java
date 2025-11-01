@@ -75,7 +75,7 @@ public class CupboardFileDAO implements CupboardDAO {
         ArrayList<Need> needArrayList = new ArrayList<>();
 
         for (Need need : needs.values()) {
-            if (containsText == null || need.getName().contains(containsText)) {
+            if (containsText == null || need.getName().toLowerCase().contains(containsText.toLowerCase())) {
                 needArrayList.add(need);
             }
         }
