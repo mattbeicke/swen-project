@@ -231,7 +231,7 @@ public class CupboardControllerTest {
     @Test
     public void testSearchNeeds() throws IOException { // searchNeeds may throw IOException
         // Setup
-        String searchString = "ay";
+        String searchString = "tay";
         Need[] needes = new Need[2];
         needes[0] = new Need("Taylor Swift", 99, "i know who this is");
         needes[1] = new Need("lil tay", 100, "never heard of this one");
