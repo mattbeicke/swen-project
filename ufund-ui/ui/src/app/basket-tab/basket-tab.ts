@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 /**
  * Code behind the basket tab
- * 
+ *
  * @author Zach Coy
  */
 @Component({

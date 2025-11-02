@@ -1,0 +1,9 @@
+<aside class="sidebar">
+    <nav>
+        <a routerLink="/cupboard">Needs</a><br>
+        <a routerLink="/account">Account Management</a><br>
+        <div *ngIf="!isManager">
+            <a routerLink="/basket">Basket</a><br>
+        </div>
+    </nav>
+</aside>

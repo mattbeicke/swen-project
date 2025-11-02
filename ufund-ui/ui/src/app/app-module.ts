@@ -9,6 +9,7 @@ import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
+import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
 
@@ -23,10 +24,11 @@ import { ForgotPassword } from './forgotpassword/forgotpassword';
     ForgotPassword
   ],
   imports: [
+    Sidebarmodule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
