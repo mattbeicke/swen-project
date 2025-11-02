@@ -54,7 +54,7 @@ export class Account {
       alert("You are not authorized to change the name of this account");
       return;
     }
-    this.username = this.username?.trim()
+   this.username = this.username?.trim()
     if (!this.username) {
       return;
     }
@@ -73,6 +73,12 @@ export class Account {
             case 403:
               alert("You are not allowed to change this name");
               break;
+            case 404:
+              alert("Could not verify that your account exists");
+              break;
+            case 409:
+              alert("User with that username already exists!");
+              break;
             case 500:
               alert("Internal server error\nPlease try again later!");
               break;
@@ -88,11 +94,11 @@ export class Account {
    */
   changePassword(): void {
     // verify a users role then do:
-    this.password = this.password?.trim()
+   this.password = this.password?.trim()
 
     if (!this.password){
       return
-    }
+   }
 
     this.accountsService.changePass(localStorage.getItem('id') ?? '', this.password, localStorage.getItem('key') || '')
       .subscribe({

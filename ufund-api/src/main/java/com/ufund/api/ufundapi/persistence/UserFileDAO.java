@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.User;
 
 /**
@@ -91,7 +91,7 @@ public class UserFileDAO implements UserDAO {
     }
 
     /**
-     * Generates the next id for a new {@link Need need}
+     * Generates the next id for a new {@link User user}
      * 
      * @return The next id
      */
@@ -174,7 +174,8 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(),
+                    user.getSecurityAnswer());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -193,15 +194,16 @@ public class UserFileDAO implements UserDAO {
 
             User existing = getUserByUsername(user.getUsername());
             if (existing != null && existing.getId() != user.getId()) {
-                // if a user with this name exists and has a different ID, then you cannot do this
+                // if a user with this name exists and has a different ID, then you cannot do
+                // this
                 return null;
             }
 
             User prevUser = getUser(user.getId());
-            if(user.getUsername() != null) {
+            if (user.getUsername() != null) {
                 prevUser.updateUser(user.getUsername(), null);
             }
-            if(user.getPassword() != null) {
+            if (user.getPassword() != null) {
                 prevUser.updateUser(null, user.getPassword());
             }
             users.put(user.getId(), prevUser);
@@ -263,9 +265,9 @@ public class UserFileDAO implements UserDAO {
     }
 
     private boolean verifyKey(User user, String key) throws IOException {
-        if(user == null) 
+        if (user == null)
             return false;
-        if(!activeLogins.containsKey(user.getId()))
+        if (!activeLogins.containsKey(user.getId()))
             return false;
         return activeLogins.get(user.getId()).equals(key);
     }
@@ -279,6 +281,9 @@ public class UserFileDAO implements UserDAO {
         return verifyKey(user, key);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
         User user = getUser(id);
@@ -302,5 +307,54 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean userIsManager(int id) throws IOException {
         return getUser(id).isManager();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User[] getUsers() {
+        return getUsers(null);
+    }
+     
+    public String getQuestion(User user) throws IOException {
+        return user.getSecurityQuestion();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User[] searchUsers(String containsText) {
+        synchronized (users) {
+            return getUsers(containsText);
+        }
+    }
+
+    /**
+     * Generates list of all users (except the manager)
+     * 
+     * @param containsText filter text, if null then no filter
+     * @return The array of users, may be empty
+     */
+    public User[] getUsers(String containsText) { // if containsText == null, no filter
+        ArrayList<User> userArrayList = new ArrayList<>();
+
+        for (User user : users.values()) {
+            if (user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+                continue;
+            }
+            if (containsText == null || user.getUsername().toLowerCase().contains(containsText.toLowerCase())) {
+                userArrayList.add(user);
+            }
+        }
+
+        User[] userArray = new User[userArrayList.size()];
+        userArrayList.toArray(userArray);
+        return userArray;
+    }
+  
+    public boolean verifyAnswer(User user, String answer) throws IOException {
+        return user.verifyAnswer(answer);
     }
 }

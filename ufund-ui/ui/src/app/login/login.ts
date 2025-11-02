@@ -22,6 +22,9 @@ export class Login implements OnInit {
   key?: string;
   message?: string;
 
+  question?: string = "";
+  answer?: string = "";
+
   /**
    * Forces user to cupboard if already logged in
    */
@@ -46,9 +49,22 @@ export class Login implements OnInit {
       return;
     }
 
+    this.question = prompt("Enter a security question\nOr press cancel to cancel account creation", this.question)!;
+    if (this.question == null || this.question.trim() == "") {
+      this.question = "";
+      return;
+    }
+    this.answer = prompt("Enter answer to:\n" + this.question, this.answer)!;
+    if (this.answer == null || this.answer.trim() == "") {
+      this.answer = "";
+      return;
+    }
+
     let username = this.username;
     let password = this.password;
-    this.accountsService.createAccount({ username, password } as User).subscribe({
+    let securityQuestion = this.question;
+    let securityAnswer = this.answer;
+    this.accountsService.createAccount({ username, password, securityQuestion, securityAnswer } as User).subscribe({
       next: () => {
         this.accountsService.login(username, password)
           .subscribe({
@@ -113,6 +129,36 @@ export class Login implements OnInit {
           }
         }
       });
+  }
+
+  forgotPassword() {
+    let username = prompt("Forgot Password:\nWhat is your username?");
+    if (username == null || username.trim() == "") {
+      return;
+    }
+    if (username == 'admin') {
+      alert("Contact development team if you forgot your password")
+      return;
+    }
+    this.accountsService.forgotPassword(username).subscribe({
+      next: question => {
+        localStorage.setItem("question", question);
+        localStorage.setItem("username", username);
+        this.router.navigate(['/forgotpassword']);
+      },
+      error: error => {
+        switch (error.status) {
+          case 404:
+            alert("User with that username does not exist");
+            break;
+          case 500:
+            this.message = "Internal server error";
+            break;
+          default:
+            this.message = "Unknown error, is server online?";
+        }
+      }
+    });
   }
 
   /**

@@ -9,7 +9,7 @@
 
     <div class="content">
         <div *ngIf="isHelper">
-            <button *ngIf="!showNameBox" (click)="flipUser()">
+           <button *ngIf="!showNameBox" (click)="flipUser()">
                 Change Username
             </button>
             <input *ngIf="showNameBox" [(ngModel)]="username" placeholder="New Username" class="input">

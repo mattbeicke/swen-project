@@ -184,4 +184,38 @@ public interface UserDAO {
      * @throws IOException if underlying storage cannot be accessed
      */
     public boolean userIsManager(int id) throws IOException;
+
+    /**
+     * Gets list of all users
+     * 
+     * @return list of all users
+     * @throws IOException
+     */
+    public User[] getUsers() throws IOException;
+
+    /**
+     * Gets list of all users whose username contain the text
+     * 
+     * @param containsText term to search for
+     * @return list of all users whose username contain the text
+     * @throws IOException
+     */
+    public User[] searchUsers(String containsText) throws IOException;
+     * Returns the users security question
+     * 
+     * @param user user to get
+     * @return the users security question
+     * @throws IOException
+     */
+    public String getQuestion(User user) throws IOException;
+
+    /**
+     * Checks if the given answer is correct to the given users security question
+     * 
+     * @param user   user to check
+     * @param answer answer to check
+     * @return true if it is correct, false if not
+     * @throws IOException
+     */
+    public boolean verifyAnswer(User user, String answer) throws IOException;
 }
