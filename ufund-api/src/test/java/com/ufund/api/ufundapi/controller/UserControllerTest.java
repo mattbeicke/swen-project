@@ -47,7 +47,7 @@ public class UserControllerTest {
     @Test
     public void testCreateUser() throws IOException { // createUser may throw IOException
         // Setup
-        User user = new User(16, "uname", "pword");
+        User user = new User(16, "uname", "pword", "", "");
         // when createUser is called, return true simulating successful
         // creation and save
         when(mockUserDAO.createUser(user)).thenReturn(user);
@@ -63,7 +63,7 @@ public class UserControllerTest {
     @Test
     public void testCreateUserBadRequest1() throws IOException { // createUser may throw IOException
         // Setup
-        User user = new User(16, "uname", "");
+        User user = new User(16, "uname", "", "", "");
         // when createUser is called, return true simulating successful
         // creation and save
         when(mockUserDAO.createUser(user)).thenReturn(user);
@@ -78,7 +78,7 @@ public class UserControllerTest {
     @Test
     public void testCreateUserBadRequest2() throws IOException { // createUser may throw IOException
         // Setup
-        User user = new User(16, "", "pword");
+        User user = new User(16, "", "pword", "", "");
         // when createUser is called, return true simulating successful
         // creation and save
         when(mockUserDAO.createUser(user)).thenReturn(user);
@@ -93,7 +93,7 @@ public class UserControllerTest {
     @Test
     public void testCreateUserFailed() throws IOException { // createUser may throw IOException
         // Setup
-        User user = new User(16, "uname", "pword");
+        User user = new User(16, "uname", "pword", "", "");
         // when createUser is called, return false simulating failed
         // creation and save
         when(mockUserDAO.createUser(user)).thenReturn(null);
@@ -108,7 +108,7 @@ public class UserControllerTest {
     @Test
     public void testCreateUserHandleException() throws IOException { // createUser may throw IOException
         // Setup
-        User user = new User(16, "uname", "pword");
+        User user = new User(16, "uname", "pword", "", "");
 
         // When createUser is called on the Mock User DAO, throw an IOException
         doThrow(new IOException()).when(mockUserDAO).createUser(user);
@@ -127,7 +127,7 @@ public class UserControllerTest {
         // when deleteUser is called return true, simulating successful deletion
         when(mockUserDAO.deleteUser(userId)).thenReturn(true);
         when(mockUserDAO.verifyKey(userId, "valid")).thenReturn(true);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
@@ -160,7 +160,7 @@ public class UserControllerTest {
     @Test
     public void testDeleteUserNotFound2() throws IOException { // deleteUser may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         // when deleteUser is called return false, simulating failed deletion
         when(mockUserDAO.deleteUser(99)).thenReturn(false);
         when(mockUserDAO.getUser(99)).thenReturn(user);
@@ -179,7 +179,7 @@ public class UserControllerTest {
     @Test
     public void testDeleteUserForbidden() throws IOException { // deleteUser may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         // when deleteUser is called return false, simulating failed deletion
         when(mockUserDAO.deleteUser(99)).thenReturn(false);
         when(mockUserDAO.getUser(99)).thenReturn(user);
@@ -202,7 +202,7 @@ public class UserControllerTest {
         int userId = 99;
         // When deleteUser is called on the Mock User DAO, throw an IOException
         doThrow(new IOException()).when(mockUserDAO).deleteUser(userId);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
         when(mockUserDAO.verifyKey(userId, "valid")).thenReturn(true);
 
         HashMap<String, String> header = new HashMap<>();
@@ -221,7 +221,7 @@ public class UserControllerTest {
         int userId = 99;
         // when deleteUser is called return true, simulating successful deletion
         when(mockUserDAO.deleteUser(userId)).thenReturn(true);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
         when(mockUserDAO.verifyKey(userId, "invalid")).thenReturn(false);
 
         HashMap<String, String> header = new HashMap<>();
@@ -282,11 +282,11 @@ public class UserControllerTest {
     public void testUpdateUser() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
-        User user = new User(userId, "uname", "pword");
+        User user = new User(userId, "uname", "pword", "", "");
         // when updateUser is called, return true simulating successful
         // update and save
         when(mockUserDAO.updateUser(user)).thenReturn(user);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
         when(mockUserDAO.verifyKey(99, "valid")).thenReturn(true);
 
         HashMap<String, String> header = new HashMap<>();
@@ -307,11 +307,11 @@ public class UserControllerTest {
     public void testUpdateUserConflict() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
-        User user = new User(userId, "uname", "pword");
+        User user = new User(userId, "uname", "pword", "", "");
         // when updateUser is called, return true simulating successful
         // update and save
         when(mockUserDAO.updateUser(user)).thenReturn(null);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
         when(mockUserDAO.verifyKey(99, "valid")).thenReturn(true);
 
         HashMap<String, String> header = new HashMap<>();
@@ -331,7 +331,7 @@ public class UserControllerTest {
     public void testUpdateUserFailed() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
-        User user = new User(userId, "uname", "pword");
+        User user = new User(userId, "uname", "pword", "", "");
         // when updateUser is called, return null simulating non existant User
         // update and save
         when(mockUserDAO.updateUser(user)).thenReturn(null);
@@ -350,10 +350,10 @@ public class UserControllerTest {
     public void testUpdateNeedHandleException() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
-        User user = new User(userId, "uname", "pword");
+        User user = new User(userId, "uname", "pword", "", "");
         // When updateUser is called on the Mock User DAO, throw an IOException
         doThrow(new IOException()).when(mockUserDAO).updateUser(user);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
         when(mockUserDAO.verifyKey(userId, "valid")).thenReturn(true);
 
         HashMap<String, String> header = new HashMap<>();
@@ -370,11 +370,11 @@ public class UserControllerTest {
     public void testUpdateUserNoAuth() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
-        User user = new User(userId, "uname", "pword");
+        User user = new User(userId, "uname", "pword", "", "");
         // when updateUser is called, return true simulating successful
         // update and save
         when(mockUserDAO.updateUser(user)).thenReturn(user);
-        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", ""));
+        when(mockUserDAO.getUser(userId)).thenReturn(new User(-1, "", "", "", ""));
         when(mockUserDAO.verifyKey(userId, "invalid")).thenReturn(false);
 
         HashMap<String, String> header = new HashMap<>();
@@ -394,8 +394,8 @@ public class UserControllerTest {
     public void testAddNeedToBasket() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return a Need object simulating successful
@@ -422,8 +422,8 @@ public class UserControllerTest {
     public void testAddNeedToBasketForbidden() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return a Need object simulating successful
@@ -451,7 +451,7 @@ public class UserControllerTest {
         // Setup
         int needId = 10;
         int needId2 = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId2);
 
         // when addNeedToBasket is called, return a Need object simulating successful
@@ -478,8 +478,8 @@ public class UserControllerTest {
     public void testAddNeedToBasketNotFound2() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return a Need object simulating successful
@@ -506,8 +506,8 @@ public class UserControllerTest {
     public void testAddNeedToBasketNoAuth() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return a Need object simulating successful
@@ -532,8 +532,8 @@ public class UserControllerTest {
     public void testAddNeedToBasketFailed() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called, return null simulating failure
@@ -558,8 +558,8 @@ public class UserControllerTest {
     public void testAddNeedToBasketHandleException() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when addNeedToBasket is called on the Mock User DAO, throw an IOException
@@ -586,9 +586,9 @@ public class UserControllerTest {
     public void testRemoveNeedFromBasket() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname2", "pword");
+        User user2 = new User(99, "uname2", "pword", "", "");
 
         // when removeNeedFromBasket is called, return a Need object simulating success
         // update and save
@@ -614,9 +614,9 @@ public class UserControllerTest {
     public void testRemoveNeedFromBasketForbidden() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname2", "pword");
+        User user2 = new User(99, "uname2", "pword", "", "");
 
         // when removeNeedFromBasket is called, return a Need object simulating success
         // update and save
@@ -642,9 +642,9 @@ public class UserControllerTest {
     public void testRemoveNeedFromBasketNotFound1() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname2", "pword");
+        User user2 = new User(99, "uname2", "pword", "", "");
 
         // when removeNeedFromBasket is called, return a Need object simulating success
         // update and save
@@ -670,7 +670,7 @@ public class UserControllerTest {
     public void testRemoveNeedFromBasketNotFound2() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when removeNeedFromBasket is called, return a Need object simulating success
@@ -697,9 +697,9 @@ public class UserControllerTest {
     public void testRemoveNeedFromBasketNoAuth() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname2", "pword");
+        User user2 = new User(99, "uname2", "pword", "", "");
 
         // when removeNeedFromBasket is called, return a Need object simulating success
         // update and save
@@ -723,9 +723,9 @@ public class UserControllerTest {
     public void testRemoveNeedFromBasketFailed() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
-        User user2 = new User(99, "uname2", "pword");
+        User user2 = new User(99, "uname2", "pword", "", "");
 
         // when removeNeedFromBasket is called, return null simulating failure
         // update and save
@@ -750,8 +750,8 @@ public class UserControllerTest {
                                                                                // IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
-        User user2 = new User(99, "uname2", "pword");
+        User user = new User(99, "uname", "pword", "", "");
+        User user2 = new User(99, "uname2", "pword", "", "");
         user2.addToBasket(needId);
 
         // when removeNeedFromBasket is called on the Mock User DAO, throw an
@@ -779,7 +779,7 @@ public class UserControllerTest {
     public void testCheckout() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when checkout is called, return true simulating successful
@@ -802,7 +802,7 @@ public class UserControllerTest {
     public void testCheckoutForbidden() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when checkout is called, return true simulating successful
@@ -825,7 +825,7 @@ public class UserControllerTest {
     public void testCheckoutNotFound() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when checkout is called, return true simulating successful
@@ -848,7 +848,7 @@ public class UserControllerTest {
     public void testCheckoutNoAuth() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when checkout is called, return true simulating successful
@@ -869,7 +869,7 @@ public class UserControllerTest {
     public void testCheckoutFailed() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when checkout is called, return false simulating failure
@@ -890,7 +890,7 @@ public class UserControllerTest {
     public void testCheckoutHandleException() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
         user.addToBasket(needId);
 
         // when checkout is called on the Mock User DAO, throw an IOException
@@ -911,7 +911,7 @@ public class UserControllerTest {
     @Test
     public void testViewBasket() throws IOException { // viewBasket may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
 
         // when viewBasket is called, return an ArrayList simulating success
         // update and save
@@ -932,7 +932,7 @@ public class UserControllerTest {
     @Test
     public void testViewBasketForbidden() throws IOException { // viewBasket may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
 
         // when viewBasket is called, return an ArrayList simulating success
         // update and save
@@ -953,7 +953,7 @@ public class UserControllerTest {
     @Test
     public void testViewBasketNoAuth() throws IOException { // viewBasket may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
 
         // when viewBasket is called, return an ArrayList simulating success
         // update and save
@@ -972,7 +972,7 @@ public class UserControllerTest {
     @Test
     public void testViewBasketFailed() throws IOException { // viewBasket may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
 
         // when viewBasket is called, return null simulating failure (empty basket)
         // update and save
@@ -992,7 +992,7 @@ public class UserControllerTest {
     @Test
     public void testViewBasketHandleException() throws IOException { // viewBasket may throw IOException
         // Setup
-        User user = new User(99, "uname", "pword");
+        User user = new User(99, "uname", "pword", "", "");
 
         // when viewBasket is called on the Mock User DAO, throw an IOException
         // update and save

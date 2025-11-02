@@ -174,8 +174,8 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getQuestion(),
-                    user.getAnswer());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(),
+                    user.getSecurityAnswer());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -318,7 +318,7 @@ public class UserFileDAO implements UserDAO {
     }
      
     public String getQuestion(User user) throws IOException {
-        return user.getQuestion();
+        return user.getSecurityQuestion();
     }
 
     /**

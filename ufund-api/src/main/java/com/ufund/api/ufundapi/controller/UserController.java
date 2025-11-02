@@ -287,6 +287,11 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody User user) {
         LOG.info("POST /user " + user);
 
+        LOG.info(user.getUsername());
+        LOG.info(user.getPassword());
+        LOG.info(user.getSecurityQuestion());
+        LOG.info(user.getSecurityAnswer());
+
         try {
             if (user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
