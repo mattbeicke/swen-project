@@ -19,9 +19,9 @@ public class User {
     private String password; // User's password
     @JsonProperty("basket")
     private ArrayList<Integer> basket; // User's need basket
-    @JsonProperty("question")
+    @JsonProperty("securityQuestion")
     private String securityQuestion; // User's security question
-    @JsonProperty("answer")
+    @JsonProperty("securityAnswer")
     private String securityAnswer; // Answer to the security question
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
@@ -30,6 +30,7 @@ public class User {
      * Constructor used by Spring Boot (not quite sure why its needed but it didnt
      * run otherwise)
      */
+
     public User() {
         basket = new ArrayList<>();
     }
@@ -199,7 +200,7 @@ public class User {
      * 
      * @return the users security question
      */
-    public String getQuestion() {
+    public String getSecurityQuestion() {
         return securityQuestion;
     }
 
@@ -208,7 +209,7 @@ public class User {
      * 
      * @return answer to the users security question
      */
-    public String getAnswer() {
+    public String getSecurityAnswer() {
         return securityAnswer;
     }
 
