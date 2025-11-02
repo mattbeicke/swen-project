@@ -7,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
+  isManager?: boolean;
+  ngOnInit(): void {
+    if (localStorage.getItem('role') == 'manager') {
+      this.isManager = true;
+    } else {
+      this.isManager = false;
+    }
+  }
 
 }
