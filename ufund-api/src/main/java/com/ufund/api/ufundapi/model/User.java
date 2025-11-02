@@ -27,29 +27,6 @@ public class User {
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
 
     /**
-     * Constructor used by Spring Boot (not quite sure why its needed but it didnt
-     * run otherwise)
-     */
-
-    public User() {
-        basket = new ArrayList<>();
-    }
-
-    /**
-     * Constructor for a {@link User user} used for testing primarily
-     * 
-     * @param id       UserID
-     * @param username User's username
-     * @param password User's encrypted password
-     */
-    public User(int id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        basket = new ArrayList<>();
-    }
-
-    /**
      * Super mega constructor for a {@link User user}
      * 
      * @param id               id of user

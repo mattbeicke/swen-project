@@ -165,7 +165,7 @@ public class AccountControllerTest {
         String key = "key";
         int id = 1;
         when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
-        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User(id, username, ""));
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User(id, username, "", "", ""));
         HashMap<String, String> headers = new HashMap<>();
         headers.put("key", key);
 
@@ -315,8 +315,8 @@ public class AccountControllerTest {
         String username = "user";
         String password = "pass";
         String password2 = "pass2";
-        User user = new User(0, username, password);
-        User user2 = new User(0, username, password2);
+        User user = new User(0, username, password, "", "");
+        User user2 = new User(0, username, password2, "", "");
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.updateUser(user)).thenReturn(user2);
 
@@ -330,7 +330,7 @@ public class AccountControllerTest {
     public void testResetPasswordNotFound() throws IOException {
         String username = "user";
         String password = "pass";
-        User user = new User(0, username, password);
+        User user = new User(0, username, password, "", "");
         when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
 
         ResponseEntity<User> response = accountController.resetPassword(user);
@@ -342,7 +342,7 @@ public class AccountControllerTest {
     public void testResetPasswordFailure() throws IOException {
         String username = "user";
         String password = "pass";
-        User user = new User(0, username, password);
+        User user = new User(0, username, password, "", "");
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.updateUser(user)).thenReturn(null);
 
@@ -355,7 +355,7 @@ public class AccountControllerTest {
     public void testResetPasswordHandleException() throws IOException {
         String username = "user";
         String password = "pass";
-        User user = new User(0, username, password);
+        User user = new User(0, username, password, "", "");
         doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
         when(mockUserDAO.getQuestion(user)).thenReturn(null);
 
