@@ -336,7 +336,7 @@ public class UserFileDAO implements UserDAO {
             if (user.getUsername().equals(Manager.MANAGER_USERNAME)) {
                 continue;
             }
-            if (containsText == null || user.getUsername().contains(containsText)) {
+            if (containsText == null || user.getUsername().toLowerCase().contains(containsText.toLowerCase())) {
                 userArrayList.add(user);
             }
         }
