@@ -240,8 +240,8 @@ public class UserController {
 
         try {
             User user = userDAO.getUser(id);
-            ArrayList<Integer> basket = userDAO.viewBasket(user);
-            if (basket == null) {
+            ArrayList<Integer> oldBasket = userDAO.viewBasket(user);
+            if (oldBasket == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
@@ -253,16 +253,13 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
-            ArrayList<Integer> oldBasket = user.getBasket();
-            for (int need : oldBasket) {
-                if (cupboardDAO.getNeed(need) == null) {
-                    user.removeFromBasket(need);
-                }
-            }
-
             ArrayList<Need> retBasket = new ArrayList<>();
-            for (int i : basket) {
-                retBasket.add(cupboardDAO.getNeed(i));
+            for (int i = 0; i < oldBasket.size(); i++) {
+                if (cupboardDAO.getNeed(oldBasket.get(i)) == null) {
+                    userDAO.removeFromBasket(user, oldBasket.get(i));
+                } else {
+                    retBasket.add(cupboardDAO.getNeed(oldBasket.get(i)));
+                }
             }
 
             return new ResponseEntity<>(retBasket, HttpStatus.OK);
@@ -280,7 +277,8 @@ public class UserController {
      * @return ResponseEntity with created {@link User user} object and HTTP status
      *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
      *         {@link User user} object already exists. ResponseEntity with HTTP
-     *         status of BAD_REQUEST if the user is invalid (i.e has an empty password.)
+     *         status of BAD_REQUEST if the user is invalid (i.e has an empty
+     *         password.)
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("")
@@ -288,7 +286,7 @@ public class UserController {
         LOG.info("POST /user " + user);
 
         try {
-            if(user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
+            if (user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             User newuser = userDAO.createUser(user);
@@ -313,7 +311,8 @@ public class UserController {
      *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
      *         found. ResponseEntity with HTTP status of UNAUTHORIZED
      *         if not logged in as the right user. ResponseEntity with HTTP
-     *         status of BAD_REQUEST if the user is invalid (i.e has an empty password.)
+     *         status of BAD_REQUEST if the user is invalid (i.e has an empty
+     *         password.)
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @PutMapping("")
@@ -350,7 +349,8 @@ public class UserController {
      * 
      * @return ResponseEntity HTTP status: OK if deleted. ResponseEntity with HTTP
      *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
-     *         UNAUTHORIZED if not logged in as the right user. ResponseEntity of FORBIDDEN if
+     *         UNAUTHORIZED if not logged in as the right user. ResponseEntity of
+     *         FORBIDDEN if
      *         deletion can not happen (i.e user is a Manager.)
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
@@ -371,7 +371,7 @@ public class UserController {
             if (userDAO.userIsManager(id)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-            
+
             boolean deleted = userDAO.deleteUser(id);
             if (!deleted) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
