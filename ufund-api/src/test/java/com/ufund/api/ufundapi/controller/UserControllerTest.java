@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
+import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
@@ -1005,6 +1006,129 @@ public class UserControllerTest {
         ResponseEntity<ArrayList<Need>> response = userController.viewBasket(user.getId(), header);
 
         // Analyze
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetUsers() throws IOException {
+        User[] users = new User[2];
+        users[0] = new User(0, "uname1", "pass1");
+        users[1] = new User(1, "uname2", "pass2");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+
+        when(mockUserDAO.getUsers()).thenReturn(users);
+
+        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        when(mockUserDAO.verifyKey(admin.getId(), "valid")).thenReturn(true);
+
+        ResponseEntity<User[]> response = userController.getUsers(header);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users, response.getBody());
+    }
+
+    @Test
+    public void testGetUsersUnauthorized() throws IOException {
+        User[] users = new User[2];
+        users[0] = new User(0, "uname1", "pass1");
+        users[1] = new User(1, "uname2", "pass2");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+
+        when(mockUserDAO.getUsers()).thenReturn(users);
+
+        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        when(mockUserDAO.verifyKey(admin.getId(), "valid")).thenReturn(false);
+
+        ResponseEntity<User[]> response = userController.getUsers(header);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetUsersHandleException() throws IOException {
+        User[] users = new User[2];
+        users[0] = new User(0, "uname1", "pass1");
+        users[1] = new User(1, "uname2", "pass2");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+
+        doThrow(new IOException()).when(mockUserDAO).getUsers();
+
+        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        when(mockUserDAO.verifyKey(admin.getId(), "valid")).thenReturn(true);
+
+        ResponseEntity<User[]> response = userController.getUsers(header);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testSearchUsers() throws IOException {
+        User[] users = new User[2];
+        users[0] = new User(0, "uname1", "pass1");
+        users[1] = new User(1, "uname2", "pass2");
+        String searchTerm = "ame";
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+
+        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+
+        when(mockUserDAO.searchUsers(searchTerm)).thenReturn(users);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        when(mockUserDAO.verifyKey(admin.getId(), "valid")).thenReturn(true);
+
+        ResponseEntity<User[]> response = userController.searchUsers(searchTerm, header);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users, response.getBody());
+    }
+
+    @Test
+    public void testSearchUsersUnauthorized() throws IOException {
+        User[] users = new User[2];
+        users[0] = new User(0, "uname1", "pass1");
+        users[1] = new User(1, "uname2", "pass2");
+        String searchTerm = "ame";
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+
+        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        when(mockUserDAO.verifyKey(admin.getId(), "valid")).thenReturn(false);
+
+        ResponseEntity<User[]> response = userController.searchUsers(searchTerm, header);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testSearchUsersHandleException() throws IOException {
+        User[] users = new User[2];
+        users[0] = new User(0, "uname1", "pass1");
+        users[1] = new User(1, "uname2", "pass2");
+        String searchTerm = "ame";
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+
+        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+
+        doThrow(new IOException()).when(mockUserDAO).searchUsers(searchTerm);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        when(mockUserDAO.verifyKey(admin.getId(), "valid")).thenReturn(true);
+
+        ResponseEntity<User[]> response = userController.searchUsers(searchTerm, header);
+
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 }
