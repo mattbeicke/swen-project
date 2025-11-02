@@ -4,13 +4,21 @@
 
     <div class="content">
         <div *ngIf="isHelper">
-            <button type="button" class="add-button" (click)="changeUsername()">
+           <button *ngIf="!showNameBox" (click)="flipUser()">
                 Change Username
+            </button>
+            <input *ngIf="showNameBox" [(ngModel)]="username" placeholder="New Username" class="input">
+            <button type="button" class="add-button" (click)="changeUsername()" *ngIf="showNameBox">
+                Confirm
             </button>
         </div>
 
-        <button type="button" class="add-button" (click)="changePassword()">
+        <button type="button" *ngIf="!showPassBox" (click)="flipPass()">
             Change Password
+        </button>
+        <input type="password" [(ngModel)]="password" placeholder="New Password" *ngIf="showPassBox" class="input">
+        <button type="button" class="add-button" *ngIf="showPassBox" (click)="changePassword()">
+            Confirm
         </button>
 
         <button type="button" (click)="logout()">Log out</button>

@@ -10,6 +10,8 @@ import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
 import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
+import { UsersTab } from './userstab/userstab';
+import { ForgotPassword } from './forgotpassword/forgotpassword';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
     Cupboard,
     Login,
     Account,
-    BasketTab
+    BasketTab,
+    UsersTab,
+    ForgotPassword
   ],
   imports: [
     Sidebarmodule,
