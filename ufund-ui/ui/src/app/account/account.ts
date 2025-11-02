@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AccountsService } from '../accountservice';
 import { Router } from '@angular/router';
 
@@ -16,6 +16,10 @@ import { Router } from '@angular/router';
 export class Account {
   constructor(private accountsService: AccountsService, private router: Router) { }
 
+  @Input() password? : string;
+  @Input() username? : string;
+  showPassBox = false;
+  showNameBox = false;
   isHelper = false;
 
   ngOnInit(): void {
@@ -50,12 +54,12 @@ export class Account {
       alert("You are not authorized to change the name of this account");
       return;
     }
-    let id = +(localStorage.getItem('id') ?? '');
-    let username = prompt("Enter New Username", "johndoe");
-    if (username == null || username == '') {
+    this.username = this.username?.trim()
+    if (!this.username) {
       return;
     }
-    this.accountsService.changeName(localStorage.getItem('id') ?? '', username, localStorage.getItem('key') || '')
+
+    this.accountsService.changeName(localStorage.getItem('id') ?? '', this.username, localStorage.getItem('key') || '')
       .subscribe({
         next: () => {
           alert("Username changed successfully");
@@ -84,35 +88,34 @@ export class Account {
    */
   changePassword(): void {
     // verify a users role then do:
-    let password = prompt("Enter New Password", "password");
-    if (password == null || password == '') {
-      return;
+    this.password = this.password?.trim()
+
+    if (!this.password){
+      return
     }
-    let response = confirm("Are you sure you want to change your password?");
-    if (response) {
-      this.accountsService.changePass(localStorage.getItem('id') ?? '', password, localStorage.getItem('key') || '')
-        .subscribe({
-          next: () => {
-            alert("Password changed successfully");
-            this.logout();
-          },
-          error: error => {
-            switch (error.status) {
-              case 401:
-                alert("You are not authorized to change your password");
-                break;
-              case 403:
-                alert("You are not allowed to change your password");
-                break;
-              case 500:
-                alert("Internal server error\nPlease try again later!");
-                break;
-              default:
-                alert("Unknown error, is server online?");
-            }
+
+    this.accountsService.changePass(localStorage.getItem('id') ?? '', this.password, localStorage.getItem('key') || '')
+      .subscribe({
+        next: () => {
+          alert("Password changed successfully");
+          this.logout();
+        },
+        error: error => {
+          switch (error.status) {
+            case 401:
+              alert("You are not authorized to change your password");
+              break;
+            case 403:
+              alert("You are not allowed to change your password");
+              break;
+            case 500:
+              alert("Internal server error\nPlease try again later!");
+              break;
+            default:
+              alert("Unknown error, is server online?");
           }
-        });
-    }
+        }
+      });
   }
 
   /**
@@ -149,5 +152,13 @@ export class Account {
           }
         });
     }
+  }
+
+  flipPass() {
+    this.showPassBox = true
+  }
+
+  flipUser() {
+    this.showNameBox = true
   }
 }
