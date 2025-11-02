@@ -7,4 +7,6 @@ export interface User {
     password: string;
     manager: boolean;
     basket: number[];
+    securityQuestion: string;
+    securityAnswer: string;
 }

@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
-
 
 @Tag("Model-tier")
 public class UserTest {
@@ -24,16 +25,16 @@ public class UserTest {
         assertEquals(password, user.getPassword());
         assertEquals(id, user.getId());
         assertEquals(0, user.getBasket().size());
-    
+
     }
-    
+
     @Test
     public void testGeneration() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
 
-        User user = User.generateUser(id, name, password);
+        User user = User.generateUser(id, name, password, "", "");
 
         assertEquals(name, user.getUsername());
         assertTrue(BCrypt.checkpw(password, user.getPassword()));
@@ -51,7 +52,7 @@ public class UserTest {
         String new_password = "*******";
 
         User user = new User(id, name, password); // Password's being overwritten here
-        
+
         user.updateUser(new_name, new_password);
 
         assertEquals(new_name, user.getUsername());
@@ -63,7 +64,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = User.generateUser(id, name, password);
+        User user = User.generateUser(id, name, password, "", "");
 
         String new_name = "Jane Doe";
         String new_password = "*******";
@@ -82,7 +83,7 @@ public class UserTest {
 
         user.updateUser(null, new_password); // Change only password
 
-        assertTrue(BCrypt.checkpw(new_password, user.getPassword()));        
+        assertTrue(BCrypt.checkpw(new_password, user.getPassword()));
 
         user.updateUser(newest_name, newest_password); // Change both
 
@@ -111,11 +112,11 @@ public class UserTest {
         String password = "hunter2";
         int id = 1001;
         User user = new User(id, name, password);
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
             user.addToBasket(30);
         assertEquals(1, user.getBasket().size());
     }
-    
+
     @Test
     public void testRemoveFromBasket() {
         String name = "John Doe";
@@ -129,7 +130,7 @@ public class UserTest {
         assertEquals(2, user.getBasket().size());
         assertEquals(33, user.getBasket().get(1));
     }
-    
+
     @Test
     public void testInBasket() {
         String name = "John Doe";
@@ -152,6 +153,46 @@ public class UserTest {
 
         String expected = "User [id=1001, username=John Doe]";
         assertEquals(expected, user.toString());
+    }
 
+    @Test
+    public void testSetId() {
+        String name = "John Doe";
+        String password = "hunter2";
+        int id = 1001;
+        User user = new User(id, name, password);
+        int newId = 1002;
+        user.setId(newId);
+
+        assertEquals(user.getId(), newId);
+    }
+
+    @Test
+    public void testCheckoutEmpty() {
+        String name = "John Doe";
+        String password = "hunter2";
+        int id = 1001;
+        User user = new User(id, name, password);
+
+        boolean response = user.checkout();
+        assertEquals(response, false);
+    }
+
+    @Test
+    public void testVerifyAnswer() {
+        String name = "John Doe";
+        String password = "hunter2";
+        String answer = "test";
+        int id = 1001;
+        User user = new User(id, name, password, "", answer);
+
+        boolean response = user.verifyAnswer(answer);
+        assertEquals(response, true);
+    }
+
+    @Test
+    public void testEmptyConstructor() {
+        User user = new User();
+        assertEquals(user.getBasket(), new ArrayList<>());
     }
 }
