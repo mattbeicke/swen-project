@@ -1012,9 +1012,9 @@ public class UserControllerTest {
     @Test
     public void testGetUsers() throws IOException {
         User[] users = new User[2];
-        users[0] = new User(0, "uname1", "pass1");
-        users[1] = new User(1, "uname2", "pass2");
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+        users[0] = new User(0, "uname1", "pass1", "", "");
+        users[1] = new User(1, "uname2", "pass2", "", "");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUsers()).thenReturn(users);
 
@@ -1033,9 +1033,9 @@ public class UserControllerTest {
     @Test
     public void testGetUsersUnauthorized() throws IOException {
         User[] users = new User[2];
-        users[0] = new User(0, "uname1", "pass1");
-        users[1] = new User(1, "uname2", "pass2");
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+        users[0] = new User(0, "uname1", "pass1", "", "");
+        users[1] = new User(1, "uname2", "pass2", "", "");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUsers()).thenReturn(users);
 
@@ -1053,9 +1053,9 @@ public class UserControllerTest {
     @Test
     public void testGetUsersHandleException() throws IOException {
         User[] users = new User[2];
-        users[0] = new User(0, "uname1", "pass1");
-        users[1] = new User(1, "uname2", "pass2");
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+        users[0] = new User(0, "uname1", "pass1", "", "");
+        users[1] = new User(1, "uname2", "pass2", "", "");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
 
         doThrow(new IOException()).when(mockUserDAO).getUsers();
 
@@ -1073,10 +1073,10 @@ public class UserControllerTest {
     @Test
     public void testSearchUsers() throws IOException {
         User[] users = new User[2];
-        users[0] = new User(0, "uname1", "pass1");
-        users[1] = new User(1, "uname2", "pass2");
+        users[0] = new User(0, "uname1", "pass1", "", "");
+        users[1] = new User(1, "uname2", "pass2", "", "");
         String searchTerm = "ame";
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
 
@@ -1095,10 +1095,10 @@ public class UserControllerTest {
     @Test
     public void testSearchUsersUnauthorized() throws IOException {
         User[] users = new User[2];
-        users[0] = new User(0, "uname1", "pass1");
-        users[1] = new User(1, "uname2", "pass2");
+        users[0] = new User(0, "uname1", "pass1", "", "");
+        users[1] = new User(1, "uname2", "pass2", "", "");
         String searchTerm = "ame";
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
 
@@ -1114,10 +1114,10 @@ public class UserControllerTest {
     @Test
     public void testSearchUsersHandleException() throws IOException {
         User[] users = new User[2];
-        users[0] = new User(0, "uname1", "pass1");
-        users[1] = new User(1, "uname2", "pass2");
+        users[0] = new User(0, "uname1", "pass1", "", "");
+        users[1] = new User(1, "uname2", "pass2", "", "");
         String searchTerm = "ame";
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password");
+        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
 
