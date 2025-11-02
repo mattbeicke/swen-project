@@ -9,6 +9,7 @@ import { Login } from './login/login';
 import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
+import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ForgotPassword } from './forgotpassword/forgotpassword';
     Login,
     Account,
     BasketTab,
+    UsersTab
     ForgotPassword
   ],
   imports: [

@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.User;
 
 /**
@@ -91,7 +91,7 @@ public class UserFileDAO implements UserDAO {
     }
 
     /**
-     * Generates the next id for a new {@link Need need}
+     * Generates the next id for a new {@link User user}
      * 
      * @return The next id
      */
@@ -313,6 +313,10 @@ public class UserFileDAO implements UserDAO {
      * {@inheritDoc}
      */
     @Override
+    public User[] getUsers() {
+        return getUsers(null);
+    }
+     
     public String getQuestion(User user) throws IOException {
         return user.getQuestion();
     }
@@ -321,6 +325,35 @@ public class UserFileDAO implements UserDAO {
      * {@inheritDoc}
      */
     @Override
+    public User[] searchUsers(String containsText) {
+        synchronized (users) {
+            return getUsers(containsText);
+        }
+    }
+
+    /**
+     * Generates list of all users (except the manager)
+     * 
+     * @param containsText filter text, if null then no filter
+     * @return The array of users, may be empty
+     */
+    public User[] getUsers(String containsText) { // if containsText == null, no filter
+        ArrayList<User> userArrayList = new ArrayList<>();
+
+        for (User user : users.values()) {
+            if (user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+                continue;
+            }
+            if (containsText == null || user.getUsername().toLowerCase().contains(containsText.toLowerCase())) {
+                userArrayList.add(user);
+            }
+        }
+
+        User[] userArray = new User[userArrayList.size()];
+        userArrayList.toArray(userArray);
+        return userArray;
+    }
+  
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);
     }

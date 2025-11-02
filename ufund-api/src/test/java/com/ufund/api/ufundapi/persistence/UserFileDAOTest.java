@@ -38,10 +38,11 @@ public class UserFileDAOTest {
     @BeforeEach
     public void setupUserFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
-        testUsers = new User[3];
+        testUsers = new User[4];
         testUsers[0] = new User(61, "uname1", "pword1");
-        testUsers[2] = new User(63, "uname3", "pword3");
-        testUsers[1] = new User(62, "uname2", "pword2");
+        testUsers[2] = new User(63, "uname2", "pword3");
+        testUsers[1] = new User(62, "uname2, but more", "pword2");
+        testUsers[3] = new User(1, "admin", "adminpw");
 
         // When the object mapper is supposed to read from the file
         // the mock object mapper will return the hero array above
@@ -371,24 +372,38 @@ public class UserFileDAOTest {
 
 	@Test
 	public void testIsManager() {
-        String username = "admin";
-        String password = "pass";
         String username2 = "name";
         String password2 = "pass";
 
-        User adminuser_temp = new User(15, username, password);
-        User adminuser = assertDoesNotThrow(() -> userFileDAO.createUser(adminuser_temp),
-                "Create user failed (Unexpected exception)");
         User user_temp = new User(16, username2, password2);
         User user = assertDoesNotThrow(() -> userFileDAO.createUser(user_temp),
                 "Create user failed (Unexpected exception)");
 		
-		boolean result = assertDoesNotThrow(() -> userFileDAO.userIsManager(adminuser.getId()));
+		boolean result = assertDoesNotThrow(() -> userFileDAO.userIsManager(testUsers[3].getId()));
 		assertTrue(result);
 		
 		boolean result2 = assertDoesNotThrow(() -> userFileDAO.userIsManager(user.getId()));
 		assertFalse(result2);
 	}
+        
+    @Test
+    public void testGetAllUsers() {
+        User[] users = userFileDAO.getUsers();
+
+        assertEquals(users.length, 3);
+        for (int i = 0; i < 3; ++i) {
+            assertEquals(users[i], testUsers[i]);
+        }
+    }
+
+    @Test
+    public void testSearchUsers() {
+        User[] users = userFileDAO.searchUsers("ame2");
+
+        assertEquals(users.length, 2);
+        assertEquals(users[0], testUsers[1]);
+        assertEquals(users[1], testUsers[2]);
+    }
 
         @Test
         public void testGetQuestion(){
