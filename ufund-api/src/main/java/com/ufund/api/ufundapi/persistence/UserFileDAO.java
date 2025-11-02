@@ -174,7 +174,8 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getQuestion(),
+                    user.getAnswer());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -280,6 +281,9 @@ public class UserFileDAO implements UserDAO {
         return verifyKey(user, key);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean verifyKey(int id, String key) throws IOException {
         User user = getUser(id);
@@ -311,6 +315,10 @@ public class UserFileDAO implements UserDAO {
     @Override
     public User[] getUsers() {
         return getUsers(null);
+    }
+     
+    public String getQuestion(User user) throws IOException {
+        return user.getQuestion();
     }
 
     /**
@@ -344,5 +352,9 @@ public class UserFileDAO implements UserDAO {
         User[] userArray = new User[userArrayList.size()];
         userArrayList.toArray(userArray);
         return userArray;
+    }
+  
+    public boolean verifyAnswer(User user, String answer) throws IOException {
+        return user.verifyAnswer(answer);
     }
 }

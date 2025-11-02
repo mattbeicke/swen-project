@@ -8,4 +8,6 @@ export interface User {
     manager: boolean;
     basket: number[];
     banned: boolean;
+    securityQuestion: string;
+    securityAnswer: string;
 }

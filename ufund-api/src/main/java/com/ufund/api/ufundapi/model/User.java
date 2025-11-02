@@ -19,11 +19,23 @@ public class User {
     private String password; // User's password
     @JsonProperty("basket")
     private ArrayList<Integer> basket; // User's need basket
+    @JsonProperty("question")
+    private String securityQuestion; // User's security question
+    @JsonProperty("answer")
+    private String securityAnswer; // Answer to the security question
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
 
     /**
-     * Constructor for a {@link User user}
+     * Constructor used by Spring Boot (not quite sure why its needed but it didnt
+     * run otherwise)
+     */
+    public User() {
+        basket = new ArrayList<>();
+    }
+
+    /**
+     * Constructor for a {@link User user} used for testing primarily
      * 
      * @param id       UserID
      * @param username User's username
@@ -37,14 +49,34 @@ public class User {
     }
 
     /**
-     * Constructor for a {@link User user} for the load() function, preventing reencrypting
+     * Super mega constructor for a {@link User user}
+     * 
+     * @param id               id of user
+     * @param username         username of user
+     * @param password         password of user
+     * @param securityQuestion security question of user
+     * @param securityAnswer   answer to security question of user
+     */
+    public User(int id, String username, String password, String securityQuestion, String securityAnswer) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
+        basket = new ArrayList<>();
+    }
+
+    /**
+     * Constructor for a {@link User user} for the load() function, preventing
+     * reencrypting
      * 
      * @param id       UserID
      * @param username User's username
      * @param password User's password
      */
-    public static User generateUser(int id, String username, String password) {
-        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()));
+    public static User generateUser(int id, String username, String password, String securityQuestion,
+            String securityAnswer) {
+        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer);
         return user;
     }
 
@@ -88,6 +120,15 @@ public class User {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * sets a users id
+     * 
+     * @param id id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -143,9 +184,42 @@ public class User {
     public boolean inBasket(int needId) {
         return basket.contains((Integer) needId);
     }
-    
+
+    /**
+     * checks if a user is manager
+     * 
+     * @return true if a manager, false if not
+     */
     public boolean isManager() {
         return username.equals(Manager.MANAGER_USERNAME);
+    }
+
+    /**
+     * gets the users security question
+     * 
+     * @return the users security question
+     */
+    public String getQuestion() {
+        return securityQuestion;
+    }
+
+    /**
+     * gets the answer to the security question
+     * 
+     * @return answer to the users security question
+     */
+    public String getAnswer() {
+        return securityAnswer;
+    }
+
+    /**
+     * checks if the supplied answer to the security question is correct
+     * 
+     * @param answer answer to check
+     * @return true if answer is correct, false if not
+     */
+    public boolean verifyAnswer(String answer) {
+        return securityAnswer.equals(answer);
     }
 
     /**

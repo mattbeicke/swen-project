@@ -10,6 +10,7 @@ import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { FormsModule } from '@angular/forms';
 import { UsersTab } from './userstab/userstab';
+import { ForgotPassword } from './forgotpassword/forgotpassword';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { UsersTab } from './userstab/userstab';
     Account,
     BasketTab,
     UsersTab
+    ForgotPassword
   ],
   imports: [
     BrowserModule,
