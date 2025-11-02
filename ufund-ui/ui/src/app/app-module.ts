@@ -19,7 +19,7 @@ import { ForgotPassword } from './forgotpassword/forgotpassword';
     Login,
     Account,
     BasketTab,
-    UsersTab
+    UsersTab,
     ForgotPassword
   ],
   imports: [

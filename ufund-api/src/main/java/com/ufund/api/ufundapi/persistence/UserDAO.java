@@ -201,6 +201,8 @@ public interface UserDAO {
      * @throws IOException
      */
     public User[] searchUsers(String containsText) throws IOException;
+
+    /**
      * Returns the users security question
      * 
      * @param user user to get
