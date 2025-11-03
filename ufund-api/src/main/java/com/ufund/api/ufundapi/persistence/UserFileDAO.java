@@ -322,10 +322,16 @@ public class UserFileDAO implements UserDAO {
         return getUser(id).isManager();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBanned(User user) {
         return user.getBanned();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void toggleBan(User user) throws IOException {
         synchronized (users) {
             user.toggleBanStatus();
@@ -341,6 +347,9 @@ public class UserFileDAO implements UserDAO {
         return getUsers(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getQuestion(User user) throws IOException {
         return user.getSecurityQuestion();
     }
@@ -378,6 +387,9 @@ public class UserFileDAO implements UserDAO {
         return userArray;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);
     }

@@ -221,7 +221,19 @@ public interface UserDAO {
      */
     public boolean verifyAnswer(User user, String answer) throws IOException;
 
+    /**
+     * Gets the ban status of a user
+     * 
+     * @param user user to check
+     * @return true if the user is banned, false if not
+     */
     public boolean isBanned(User user);
 
+    /**
+     * toggles ban status of a user
+     * 
+     * @param user user whose ban status is being toggled
+     * @throws IOException
+     */
     public void toggleBan(User user) throws IOException;
 }

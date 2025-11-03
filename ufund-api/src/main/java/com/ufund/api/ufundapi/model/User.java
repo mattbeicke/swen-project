@@ -36,6 +36,7 @@ public class User {
      * @param password         password of user
      * @param securityQuestion security question of user
      * @param securityAnswer   answer to security question of user
+     * @param banned           ban status of user
      */
     public User(int id, String username, String password, String securityQuestion, String securityAnswer,
             boolean banned) {
@@ -52,9 +53,13 @@ public class User {
      * Constructor for a {@link User user} for the load() function, preventing
      * reencrypting
      * 
-     * @param id       UserID
-     * @param username User's username
-     * @param password User's password
+     * @param id               UserID
+     * @param username         User's username
+     * @param password         User's username
+     * @param securityQuestion User's security question
+     * @param securityAnswer   User's answer to their security question
+     * @param banned           User's ban status
+     * @return the user, now with an encrpyted password
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
             String securityAnswer, boolean banned) {
@@ -195,10 +200,18 @@ public class User {
         return securityAnswer;
     }
 
+    /**
+     * gets the ban status of a user
+     * 
+     * @return the ban status of a user
+     */
     public boolean getBanned() {
         return banned;
     }
 
+    /**
+     * toggles the ban status of a user (banned->unbanned or unbanned->banned)
+     */
     public void toggleBanStatus() {
         banned = !banned;
     }

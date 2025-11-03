@@ -196,7 +196,6 @@ public class ManagerController {
 
     @PostMapping("/toggle")
     public ResponseEntity<User> toggle(@RequestBody String username, @RequestHeader Map<String, String> headers) {
-
         try {
             String key = headers.get("key");
             if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {

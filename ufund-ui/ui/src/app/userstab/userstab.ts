@@ -62,7 +62,7 @@ export class UsersTab {
    */
   onSelect(user: User): void {
     this.userService.toggleBan(user.username, localStorage.getItem("key") ?? "").subscribe({
-      next: ret => {
+      next: _ => {
         this.searchTerms.next(this.searchValue);
       },
       error: error => {
@@ -82,7 +82,6 @@ export class UsersTab {
         }
       }
     });
-    // ban/unban stuff here
   }
 
   /**
