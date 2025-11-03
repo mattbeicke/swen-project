@@ -220,4 +220,8 @@ public interface UserDAO {
      * @throws IOException
      */
     public boolean verifyAnswer(User user, String answer) throws IOException;
+
+    public boolean isBanned(User user);
+
+    public void toggleBan(User user) throws IOException;
 }

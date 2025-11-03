@@ -126,6 +126,7 @@ public class UserFileDAO implements UserDAO {
     public User removeFromBasket(User user, int needId) throws IOException {
         synchronized (users) {
             user.removeFromBasket(needId);
+            save();
             return user;
         }
     }
@@ -325,8 +326,11 @@ public class UserFileDAO implements UserDAO {
         return user.getBanned();
     }
 
-    public void toggleBan(User user) {
-        user.toggleBanStatus();
+    public void toggleBan(User user) throws IOException {
+        synchronized (users) {
+            user.toggleBanStatus();
+            save();
+        }
     }
 
     /**

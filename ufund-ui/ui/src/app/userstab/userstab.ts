@@ -61,12 +61,19 @@ export class UsersTab {
    * @param user User to ban/unban
    */
   onSelect(user: User): void {
-    this.userService.toggleBan(user, localStorage.getItem("key") ?? "").subscribe({
-      next: _ => {
+    this.userService.toggleBan(user.username, localStorage.getItem("key") ?? "").subscribe({
+      next: ret => {
         this.searchTerms.next(this.searchValue);
       },
       error: error => {
         switch (error.status) {
+          case 401:
+            alert("You are not authorized to ban or unban a user");
+            this.router.navigate(['/login']);
+            break;
+          case 404:
+            alert("User you are trying to ban no longer exists");
+            break;
           case 500:
             alert("Internal server error\nPlease try again later!");
             break;

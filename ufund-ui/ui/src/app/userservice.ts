@@ -38,7 +38,7 @@ export class UserService {
     return this.http.get<User[]>(`${this.userURL}/?username=${term}`, { responseType: 'json', 'headers': { 'key': key } });
   }
 
-  toggleBan(user: User, key: string): Observable<User[]> {
-    return this.http.post<User[]>(this.managerURL + 'toggle', user, { responseType: 'json', 'headers': { 'key': key } });
+  toggleBan(username: string, key: string): Observable<User> {
+    return this.http.post<User>(this.managerURL + '/toggle', username, { responseType: 'json', 'headers': { 'key': key } });
   }
 }
