@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -188,5 +186,31 @@ public class UserTest {
 
         boolean response = user.verifyAnswer(answer);
         assertEquals(response, true);
+    }
+
+    @Test
+    public void testToggleBanStatus1() {
+        String name = "John Doe";
+        String password = "hunter2";
+        boolean banned = false;
+        int id = 1001;
+        User user = new User(id, name, password, "", "", banned);
+
+        user.toggleBanStatus();
+
+        assertEquals(!banned, user.getBanned());
+    }
+
+    @Test
+    public void testToggleBanStatus2() {
+        String name = "John Doe";
+        String password = "hunter2";
+        boolean banned = true;
+        int id = 1001;
+        User user = new User(id, name, password, "", "", banned);
+
+        user.toggleBanStatus();
+
+        assertEquals(!banned, user.getBanned());
     }
 }

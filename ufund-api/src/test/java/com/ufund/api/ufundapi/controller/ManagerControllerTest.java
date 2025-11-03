@@ -386,4 +386,70 @@ public class ManagerControllerTest {
         // Analyze
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
+
+    @Test
+    public void testToggle() throws IOException {
+        String username = "uname";
+        boolean banned = false;
+        User user = new User(0, username, "", "", "", banned);
+        User user2 = new User(0, username, "", "", "", !banned);
+
+        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(!banned, user2.getBanned());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    public void testToggleNoAuth() throws IOException {
+        String username = "uname";
+
+        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(false);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testToggleNotFound() throws IOException {
+        String username = "uname";
+
+        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    public void testToggleHandleException() throws IOException {
+        String username = "uname";
+        boolean banned = false;
+        User user = new User(0, username, "", "", "", banned);
+
+        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+
+        doThrow(new IOException()).when(mockUserDAO).toggleBan(user);
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

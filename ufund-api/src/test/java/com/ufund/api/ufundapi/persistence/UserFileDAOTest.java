@@ -40,7 +40,7 @@ public class UserFileDAOTest {
                 mockObjectMapper = mock(ObjectMapper.class);
                 testUsers = new User[4];
                 testUsers[0] = new User(61, "uname1", "pword1", "", "", false);
-                testUsers[2] = new User(63, "uname2", "pword3", "", "", false);
+                testUsers[2] = new User(63, "uname2", "pword3", "", "", true);
                 testUsers[1] = new User(62, "uname2, but more", "pword2", "", "", false);
                 testUsers[3] = new User(1, "admin", "adminpw", "", "", false);
 
@@ -372,14 +372,9 @@ public class UserFileDAOTest {
 
         @Test
         public void testIsManager() {
-                String username = "admin";
-                String password = "pass";
                 String username2 = "name";
                 String password2 = "pass";
 
-                User adminuser_temp = new User(15, username, password, "", "", false);
-                User adminuser = assertDoesNotThrow(() -> userFileDAO.createUser(adminuser_temp),
-                                "Create user failed (Unexpected exception)");
                 User user_temp = new User(16, username2, password2, "", "", false);
                 User user = assertDoesNotThrow(() -> userFileDAO.createUser(user_temp),
                                 "Create user failed (Unexpected exception)");
@@ -432,5 +427,19 @@ public class UserFileDAOTest {
                 assertEquals(users.length, 2);
                 assertEquals(users[0], testUsers[1]);
                 assertEquals(users[1], testUsers[2]);
+        }
+
+        @Test
+        public void testIsBanned() {
+                assertEquals(true, userFileDAO.isBanned(testUsers[2]));
+                assertEquals(false, userFileDAO.isBanned(testUsers[0]));
+        }
+
+        @Test
+        public void testtoggleBan() {
+                assertDoesNotThrow(() -> userFileDAO.toggleBan(testUsers[0]),
+                                "Create user failed (Unexpected exception)");
+
+                assertEquals(true, userFileDAO.isBanned(testUsers[0]));
         }
 }

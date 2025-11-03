@@ -362,6 +362,5 @@ public class AccountControllerTest {
         ResponseEntity<User> response = accountController.resetPassword(user);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-
     }
 }
