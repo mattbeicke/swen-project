@@ -19,7 +19,7 @@ public class UserTest {
         String password = "hunter2";
         int id = 1001;
 
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
 
         assertEquals(name, user.getUsername());
         assertEquals(password, user.getPassword());
@@ -34,7 +34,7 @@ public class UserTest {
         String password = "hunter2";
         int id = 1001;
 
-        User user = User.generateUser(id, name, password, "", "");
+        User user = User.generateUser(id, name, password, "", "", false);
 
         assertEquals(name, user.getUsername());
         assertTrue(BCrypt.checkpw(password, user.getPassword()));
@@ -51,7 +51,7 @@ public class UserTest {
         String new_name = "Jane Doe";
         String new_password = "*******";
 
-        User user = new User(id, name, password, "", ""); // Password's being overwritten here
+        User user = new User(id, name, password, "", "", false); // Password's being overwritten here
 
         user.updateUser(new_name, new_password);
 
@@ -64,7 +64,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = User.generateUser(id, name, password, "", "");
+        User user = User.generateUser(id, name, password, "", "", false);
 
         String new_name = "Jane Doe";
         String new_password = "*******";
@@ -96,7 +96,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
         user.addToBasket(30);
         assertEquals(1, user.getBasket().size());
         assertEquals(30, user.getBasket().getLast());
@@ -111,7 +111,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
         for (int i = 0; i < 10; i++)
             user.addToBasket(30);
         assertEquals(1, user.getBasket().size());
@@ -122,7 +122,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
         user.addToBasket(30);
         user.addToBasket(32);
         user.addToBasket(33);
@@ -136,7 +136,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
         user.addToBasket(30);
         assertTrue(user.inBasket(30));
         assertFalse(user.inBasket(123456));
@@ -149,7 +149,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
 
         String expected = "User [id=1001, username=John Doe]";
         assertEquals(expected, user.toString());
@@ -160,7 +160,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
         int newId = 1002;
         user.setId(newId);
 
@@ -172,7 +172,7 @@ public class UserTest {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
-        User user = new User(id, name, password, "", "");
+        User user = new User(id, name, password, "", "", false);
 
         boolean response = user.checkout();
         assertEquals(response, false);
@@ -184,7 +184,7 @@ public class UserTest {
         String password = "hunter2";
         String answer = "test";
         int id = 1001;
-        User user = new User(id, name, password, "", answer);
+        User user = new User(id, name, password, "", answer, false);
 
         boolean response = user.verifyAnswer(answer);
         assertEquals(response, true);

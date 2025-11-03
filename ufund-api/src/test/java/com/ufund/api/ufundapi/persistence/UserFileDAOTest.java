@@ -39,10 +39,10 @@ public class UserFileDAOTest {
         public void setupUserFileDAO() throws IOException {
                 mockObjectMapper = mock(ObjectMapper.class);
                 testUsers = new User[4];
-                testUsers[0] = new User(61, "uname1", "pword1", "", "");
-                testUsers[2] = new User(63, "uname2", "pword3", "", "");
-                testUsers[1] = new User(62, "uname2, but more", "pword2", "", "");
-                testUsers[3] = new User(1, "admin", "adminpw", "", "");
+                testUsers[0] = new User(61, "uname1", "pword1", "", "", false);
+                testUsers[2] = new User(63, "uname2", "pword3", "", "", false);
+                testUsers[1] = new User(62, "uname2, but more", "pword2", "", "", false);
+                testUsers[3] = new User(1, "admin", "adminpw", "", "", false);
 
                 // When the object mapper is supposed to read from the file
                 // the mock object mapper will return the hero array above
@@ -54,7 +54,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testAddToBasket() {
-                User user = new User(1, "name", "pass", "", "");
+                User user = new User(1, "name", "pass", "", "", false);
                 ArrayList<Integer> basket = new ArrayList<>();
                 basket.add(10);
                 User newuser = assertDoesNotThrow(() -> userFileDAO.addToBasket(user, 10),
@@ -65,7 +65,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testRemoveFromBasket() {
-                User user = new User(1, "name", "pass", "", "");
+                User user = new User(1, "name", "pass", "", "", false);
                 user.addToBasket(10);
                 ArrayList<Integer> basket = new ArrayList<>();
                 User newuser = assertDoesNotThrow(() -> userFileDAO.removeFromBasket(user, 10),
@@ -76,7 +76,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testViewBasket() throws IOException {
-                User user = new User(80, "gaming", "pass", "", "");
+                User user = new User(80, "gaming", "pass", "", "", false);
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Unexpected exception thrown");
                 assertNotNull(result);
@@ -93,7 +93,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testCheckout() {
-                User user = new User(1, "name", "pass", "", "");
+                User user = new User(1, "name", "pass", "", "", false);
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Unexpected exception thrown");
                 assertNotNull(result);
@@ -115,7 +115,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testGetUser() {
-                User user = new User(13, "name", "pass", "", "");
+                User user = new User(13, "name", "pass", "", "", false);
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Unexpected exception thrown");
                 assertNotNull(result);
@@ -126,7 +126,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testCreateUser() {
-                User user = new User(15, "name", "pass", "", "");
+                User user = new User(15, "name", "pass", "", "", false);
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Unexpected exception thrown");
                 assertNotNull(result);
@@ -140,7 +140,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testCreateUserAlreadyExists() {
-                User user = new User(15, "name", "pass", "", "");
+                User user = new User(15, "name", "pass", "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "First create user failed (Unexpected exception)");
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
@@ -150,7 +150,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testUpdateUser() {
-                User user = new User(16, "name", "pass", "", "");
+                User user = new User(16, "name", "pass", "", "", false);
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Unexpected exception thrown");
                 assertNotNull(result);
@@ -158,7 +158,7 @@ public class UserFileDAOTest {
                 String newUsername = "nam2";
                 String newPassword = "pass2";
 
-                User updated = new User(result.getId(), newUsername, newPassword, "", "");
+                User updated = new User(result.getId(), newUsername, newPassword, "", "", false);
 
                 User new_result = assertDoesNotThrow(() -> userFileDAO.updateUser(updated),
                                 "Unexpected exception thrown");
@@ -170,14 +170,14 @@ public class UserFileDAOTest {
 
         @Test
         public void testUpdateUserAlreadyExists() {
-                User user = new User(15, "unique", "pass", "", "");
+                User user = new User(15, "unique", "pass", "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Initial create user failed (Unexpected exception)");
-                User user2 = new User(15, "name2", "pass2", "", "");
+                User user2 = new User(15, "name2", "pass2", "", "", false);
                 User added_user = assertDoesNotThrow(() -> userFileDAO.createUser(user2),
                                 "Initial create user failed (Unexpected exception)");
 
-                User copy = new User(added_user.getId(), "unique", "pass2", "", "");
+                User copy = new User(added_user.getId(), "unique", "pass2", "", "", false);
                 User updated = assertDoesNotThrow(() -> userFileDAO.updateUser(copy),
                                 "Unexpected exception thrown");
                 assertNull(updated);
@@ -185,7 +185,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testUpdateUserDoesNotExist() {
-                User user = new User(15, "name", "pass", "", "");
+                User user = new User(15, "name", "pass", "", "", false);
                 // User with ID 15 does not exist
                 User result = assertDoesNotThrow(() -> userFileDAO.updateUser(user),
                                 "Unexpected exception thrown");
@@ -194,7 +194,7 @@ public class UserFileDAOTest {
 
         @Test
         public void testDeleteUser() {
-                User user = new User(17, "name", "pass", "", "");
+                User user = new User(17, "name", "pass", "", "", false);
                 User result = assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Unexpected exception thrown");
                 assertNotNull(result);
@@ -222,7 +222,7 @@ public class UserFileDAOTest {
                 String username = "name";
                 String password = "pass";
 
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -244,7 +244,7 @@ public class UserFileDAOTest {
                                 "Unexpected exception thrown");
                 assertNull(result);
 
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -258,7 +258,7 @@ public class UserFileDAOTest {
         public void testAttemptLogout() {
                 String username = "name";
                 String password = "pass";
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -282,7 +282,7 @@ public class UserFileDAOTest {
         public void testVerifyLogin() {
                 String username = "name";
                 String password = "pass";
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -294,7 +294,7 @@ public class UserFileDAOTest {
         public void testVerifyLoginInvalid() {
                 String username = "name";
                 String password = "pass";
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -309,7 +309,7 @@ public class UserFileDAOTest {
         public void testVerifyKeyByUsername() {
                 String username = "name";
                 String password = "pass";
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -331,7 +331,7 @@ public class UserFileDAOTest {
         public void testVerifyKeyByID() {
                 String username = "name";
                 String password = "pass";
-                User temp_user = new User(15, username, password, "", "");
+                User temp_user = new User(15, username, password, "", "", false);
                 User user = assertDoesNotThrow(() -> userFileDAO.createUser(temp_user),
                                 "Create user failed (Unexpected exception)");
                 int userID = user.getId();
@@ -355,7 +355,7 @@ public class UserFileDAOTest {
                 String username = "name";
                 String password = "pass";
 
-                User user = new User(15, username, password, "", "");
+                User user = new User(15, username, password, "", "", false);
                 assertDoesNotThrow(() -> userFileDAO.createUser(user),
                                 "Create user failed (Unexpected exception)");
 
@@ -377,10 +377,10 @@ public class UserFileDAOTest {
                 String username2 = "name";
                 String password2 = "pass";
 
-                User adminuser_temp = new User(15, username, password, "", "");
+                User adminuser_temp = new User(15, username, password, "", "", false);
                 User adminuser = assertDoesNotThrow(() -> userFileDAO.createUser(adminuser_temp),
                                 "Create user failed (Unexpected exception)");
-                User user_temp = new User(16, username2, password2, "", "");
+                User user_temp = new User(16, username2, password2, "", "", false);
                 User user = assertDoesNotThrow(() -> userFileDAO.createUser(user_temp),
                                 "Create user failed (Unexpected exception)");
 
@@ -396,7 +396,7 @@ public class UserFileDAOTest {
                 String username = "user";
                 String password = "pass";
                 String question = "quest";
-                User user = new User(15, username, password, question, "");
+                User user = new User(15, username, password, question, "", false);
 
                 String response = assertDoesNotThrow(() -> userFileDAO.getQuestion(user),
                                 "Create user failed (Unexpected exception)");
@@ -408,7 +408,7 @@ public class UserFileDAOTest {
                 String username = "user";
                 String password = "pass";
                 String answer = "hello";
-                User user = new User(15, username, password, "", answer);
+                User user = new User(15, username, password, "", answer, false);
 
                 boolean response = assertDoesNotThrow(() -> userFileDAO.verifyAnswer(user, "hello"),
                                 "Create user failed (Unexpected exception)");
