@@ -39,9 +39,9 @@ public class UserFileDAOTest {
         public void setupUserFileDAO() throws IOException {
                 mockObjectMapper = mock(ObjectMapper.class);
                 testUsers = new User[4];
-                testUsers[0] = new User(61, "uname1", "pword1", "", "", 0);
-                testUsers[2] = new User(63, "uname2", "pword3", "", "", 0);
-                testUsers[1] = new User(62, "uname2, but more", "pword2", "", "", 0);
+                testUsers[0] = new User(61, "uname1", "pword1", "", "", 1);
+                testUsers[2] = new User(63, "uname2", "pword3", "", "", 2);
+                testUsers[1] = new User(62, "uname2, but more", "pword2", "", "", 3);
                 testUsers[3] = new User(1, "admin", "adminpw", "", "", 0);
 
                 // When the object mapper is supposed to read from the file
@@ -432,5 +432,21 @@ public class UserFileDAOTest {
                 assertEquals(users.length, 2);
                 assertEquals(users[0], testUsers[1]);
                 assertEquals(users[1], testUsers[2]);
+        }
+
+        @Test
+        public void testGetMaxUsers() {
+                int max = userFileDAO.getMaxUsers();
+
+                assertEquals(testUsers.length - 1, max);
+        }
+
+        @Test
+        public void testGetTopNUsers() {
+                User[] output = userFileDAO.getTopNUsers(userFileDAO.getMaxUsers());
+                
+                assertEquals(testUsers[1],output[0]);
+                assertEquals(testUsers[2],output[1]);
+                assertEquals(testUsers[0],output[2]);
         }
 }

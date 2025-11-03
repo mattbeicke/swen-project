@@ -261,7 +261,7 @@ public class AccountControllerTest {
         String username = "user";
         String question = "quest";
         String answer = "yeah";
-        User user = new User(0, username, "", question, answer,0);
+        User user = new User(0, username, "", question, answer, 0);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.verifyAnswer(user, answer)).thenReturn(true);
 
@@ -287,7 +287,7 @@ public class AccountControllerTest {
         String username = "user";
         String question = "quest";
         String answer = "yeah";
-        User user = new User(0, username, "", question, answer,0);
+        User user = new User(0, username, "", question, answer, 0);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.verifyAnswer(user, answer)).thenReturn(false);
 
@@ -301,7 +301,7 @@ public class AccountControllerTest {
         String username = "user";
         String question = "quest";
         String answer = "yeah";
-        User user = new User(0, username, "", question, answer,0);
+        User user = new User(0, username, "", question, answer, 0);
         doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
         when(mockUserDAO.getQuestion(user)).thenReturn(null);
 
@@ -362,6 +362,5 @@ public class AccountControllerTest {
         ResponseEntity<User> response = accountController.resetPassword(user);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-
     }
 }

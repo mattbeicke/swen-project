@@ -1131,4 +1131,59 @@ public class UserControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    public void testGetMaxUsers() throws IOException {
+        User[] users = new User[3];
+        users[0] = new User(0, "", "", "", "", 0);
+        users[1] = new User(0, "", "", "", "", 0);
+        users[2] = new User(0, "admin", "", "", "", 0);
+
+        when(mockUserDAO.getMaxUsers()).thenReturn(users.length - 1);
+
+        ResponseEntity<Integer> response = userController.getMaxUsers();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users.length - 1, response.getBody());
+    }
+
+    @Test
+    public void testGetMaxUsersHandleException() throws IOException {
+        doThrow(new IOException()).when(mockUserDAO).getMaxUsers();
+
+        ResponseEntity<Integer> response = userController.getMaxUsers();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testGetTopNUsers() throws IOException {
+        int n = 2;
+        User[] users = new User[3];
+        users[0] = new User(0, "", "", "", "", 0);
+        users[1] = new User(0, "", "", "", "", 0);
+        users[2] = new User(0, "admin", "", "", "", 0);
+
+        User[] users2 = new User[2];
+        users2[0] = users[0];
+        users2[1] = users[1];
+
+        when(mockUserDAO.getTopNUsers(n)).thenReturn(users2);
+
+        ResponseEntity<User[]> response = userController.getTopNUsers(n);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(users2, response.getBody());
+    }
+
+    @Test
+    public void testGetTopNUsersHandleException() throws IOException {
+        int n = 2;
+
+        doThrow(new IOException()).when(mockUserDAO).getTopNUsers(n);
+
+        ResponseEntity<User[]> response = userController.getTopNUsers(n);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }
