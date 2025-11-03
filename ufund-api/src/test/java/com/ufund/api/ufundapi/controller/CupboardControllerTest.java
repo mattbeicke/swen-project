@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -25,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 public class CupboardControllerTest {
     private CupboardController cupboardController, noDevCController;
     private CupboardDAO mockCupboardDAO;
+    private CompletedNeedDAO mockCompletedNeedDAO;
 
     /**
      * Before each test, create a new CupboardController object and inject
@@ -33,8 +35,9 @@ public class CupboardControllerTest {
     @BeforeEach
     public void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
-        cupboardController = new CupboardController(mockCupboardDAO, true);
-        noDevCController = new CupboardController(mockCupboardDAO, false);
+        mockCompletedNeedDAO = mock(CompletedNeedDAO.class);
+        cupboardController = new CupboardController(mockCupboardDAO, mockCompletedNeedDAO, true);
+        noDevCController = new CupboardController(mockCupboardDAO,  mockCompletedNeedDAO, false);
     }
 
     @Test

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,18 +38,22 @@ public class UserController {
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
     private UserDAO userDAO;
     private CupboardDAO cupboardDAO;
+    private CompletedNeedDAO completedNeedDAO;
 
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param userDAO     The {@link userDAO User Data Access Object} to
+     * @param userDAO     The {@link UserDAO User Data Access Object} to
      *                    perform CRUD operations
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
+     * @param completedNeedDAO The {@link CompletedNeedDAO Cupboard Data Access Object} to
+     *                    perform CRUD operations
      */
-    public UserController(UserDAO userDAO, CupboardDAO cupboardDAO) {
+    public UserController(UserDAO userDAO, CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO) {
         this.userDAO = userDAO;
         this.cupboardDAO = cupboardDAO;
+        this.completedNeedDAO = completedNeedDAO;
     }
 
     /**
@@ -188,6 +193,7 @@ public class UserController {
             }
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
+                completedNeedDAO.completeNeed(cupboardDAO.getNeed(need), user);
                 cupboardDAO.deleteNeed(need);
             }
             if (userDAO.checkout(user)) {

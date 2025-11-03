@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
+import com.ufund.api.ufundapi.model.CompletedNeed;
+import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 
 /**
  * Handles the REST API requests for the Cupboard resource
@@ -31,6 +33,7 @@ import com.ufund.api.ufundapi.persistence.CupboardDAO;
 public class CupboardController {
     private static final Logger LOG = Logger.getLogger(CupboardController.class.getName());
     private CupboardDAO cupboardDAO;
+    private CompletedNeedDAO completedNeedDAO;
 
     
     private boolean DEVELOPMENT_MODE;
@@ -40,9 +43,13 @@ public class CupboardController {
      * 
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
+     * @param completedNeedDAO The {@link CompletedNeedDAO Completed Need Data Access Object} to
+     *                    perform CRUD operations
+     * @param development_mode true if developer tasks should be enabled, false if it should return a FORBIDDEN error code instead
      */
-    public CupboardController(CupboardDAO cupboardDAO, @Value("${development-mode}") boolean development_mode) {
+    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO, @Value("${development-mode}") boolean development_mode) {
         this.cupboardDAO = cupboardDAO;
+        this.completedNeedDAO = completedNeedDAO;
         this.DEVELOPMENT_MODE = development_mode;
 
     }
@@ -55,7 +62,6 @@ public class CupboardController {
      * @return ResponseEntity with {@link Need need} object and HTTP status of OK if
      *         found. ResponseEntity with HTTP status of NOT_FOUND if not found.
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
@@ -78,7 +84,6 @@ public class CupboardController {
      * @return ResponseEntity with array of {@link Need need} objects (may be empty)
      *         and HTTP status of OK. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
      */
     @GetMapping("")
     public ResponseEntity<Need[]> getNeeds() {
@@ -101,7 +106,6 @@ public class CupboardController {
      * @return ResponseEntity with array of {@link Need need} objects (may be empty)
      *         and HTTP status of OK. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
      */
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
@@ -177,9 +181,9 @@ public class CupboardController {
 
     /**
      * Deletes a {@link Need need} with the given id
-     * 
+     *
      * @param id The id of the {@link Need need} to deleted
-     * 
+     *
      * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
      *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
@@ -203,4 +207,48 @@ public class CupboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Responds to the GET request for all {@link CompletedNeed completed needs}
+     *
+     * @return ResponseEntity with array of {@link CompletedNeed completed need} objects (may be empty)
+     *         and HTTP status of OK. ResponseEntity with HTTP status of
+     *         INTERNAL_SERVER_ERROR otherwise.
+     */
+    @GetMapping("/completed")
+    public ResponseEntity<CompletedNeed[]> getCompletedNeeds() {
+        LOG.info("GET /completed");
+
+        try {
+            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds();
+            return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Responds to the GET request for all {@link CompletedNeed completed needs}
+     *
+     * @return ResponseEntity with array of {@link CompletedNeed completed need} objects (may be empty)
+     *         and HTTP status of OK. If requesting an invalid page, returns an HTTP status of BAD_REQUEST.
+     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
+     */
+    @GetMapping("/completed/{page}")
+    public ResponseEntity<CompletedNeed[]> getCompletedNeedsPage(@PathVariable int page) {
+        LOG.info("GET /completed/" + page);
+        if(page <= 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds((page-1)*30, page*30); // [0, 30) most recent on page 1
+            return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

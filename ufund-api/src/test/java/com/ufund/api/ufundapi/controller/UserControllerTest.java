@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 import com.ufund.api.ufundapi.model.Manager;
@@ -18,6 +19,7 @@ import com.ufund.api.ufundapi.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -31,6 +33,7 @@ public class UserControllerTest {
     private UserController userController;
     private UserDAO mockUserDAO;
     private CupboardDAO mockCupboardDAO;
+    private CompletedNeedDAO mockCompletedNeedDAO;
 
     /**
      * Before each test, create new UserController and CupboardController objects
@@ -41,7 +44,8 @@ public class UserControllerTest {
     public void setupUserController() {
         mockUserDAO = mock(UserDAO.class);
         mockCupboardDAO = mock(CupboardDAO.class);
-        userController = new UserController(mockUserDAO, mockCupboardDAO);
+        mockCompletedNeedDAO = mock(CompletedNeedDAO.class);
+        userController = new UserController(mockUserDAO, mockCupboardDAO, mockCompletedNeedDAO);
     }
 
     @Test
