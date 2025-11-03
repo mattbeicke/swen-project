@@ -17,7 +17,7 @@ import { UserService } from '../userservice';
 export class Leaderboard {
   constructor(private userService: UserService) { }
 
-  max?: number;
+  maxn?: number;
   n?: number;
   display?: number;
 
@@ -25,11 +25,11 @@ export class Leaderboard {
 
   ngOnInit(): void {
     this.userService.getMaxUsers().subscribe({
-      next: max => {
-        this.max = max;
-        if (max < 5) {
-          this.n = max;
-          this.display = max;
+      next: maxn => {
+        this.maxn = maxn;
+        if (maxn < 5) {
+          this.n = maxn;
+          this.display = maxn;
         } else {
           this.n = 5;
           this.display = 5;
@@ -58,7 +58,7 @@ export class Leaderboard {
       return;
     }
     if (n < 1) n = 1;
-    else if (n > this.max!) n = this.max!;
+    else if (n > this.maxn!) n = this.maxn!;
 
     this.n = n;
     this.display = n;
@@ -77,22 +77,5 @@ export class Leaderboard {
         }
       }
     });
-  }
-
-  /**
-   * locks down the input values for setting max amount of people you can see
-   * 
-   * @param event what was entered
-   */
-  preventInvalid(event: KeyboardEvent): void {
-    const allowed = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
-    if (allowed.includes(event.key)) return;
-
-    const nextValue = (event.target as HTMLInputElement).value + event.key;
-    const num = parseInt(nextValue, 10);
-
-    if (isNaN(num) || num < 1 || num > this.max!) {
-      event.preventDefault();
-    }
   }
 }
