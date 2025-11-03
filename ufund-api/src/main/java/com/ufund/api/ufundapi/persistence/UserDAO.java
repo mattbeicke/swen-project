@@ -48,7 +48,7 @@ public interface UserDAO {
     ArrayList<Integer> viewBasket(User user) throws IOException;
 
     /**
-     * "Checks out" all {@link Need needs} in basket
+     * "Checks out" all {@link Need needs} in basket and increases their contribution count by that amount
      * 
      * @param user {@link User user} object who is being checked out
      * 
@@ -221,7 +221,20 @@ public interface UserDAO {
      */
     public boolean verifyAnswer(User user, String answer) throws IOException;
 
+    /**
+     * gets the max number of users someone can set filter by on frontend
+     * 
+     * @return max number of users (total users - 1)
+     * @throws IOException
+     */
     public int getMaxUsers() throws IOException;
 
+    /**
+     * gets the top n people who've contributed the most
+     * 
+     * @param n number to limit top by
+     * @return top number of users
+     * @throws IOException
+     */
     public User[] getTopNUsers(int n) throws IOException;
 }

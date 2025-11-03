@@ -53,3 +53,7 @@ th {
   top: 33px;
   background-color: #ffffff;
 }
+
+td {
+  padding-bottom: 15px;
+}

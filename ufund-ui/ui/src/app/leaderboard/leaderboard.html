@@ -3,7 +3,7 @@
 
     <div>
         <div class="content">
-            <h1 class="stick">Top {{n}} Highest Contributors</h1>
+            <h1 class="stick">Top {{display}} Highest Contributors</h1>
             <table class="users">
                 <thead>
                     <tr>
@@ -22,6 +22,7 @@
     </div>
 
     <aside class="sidebarr">
-        <input type="number" [(ngModel)]="n" #maxNumber class="amount" (input)="getTop(maxNumber.valueAsNumber)" placeholder="# of Displayed Users">
+        <input type="number" [(ngModel)]="n" class="amount" [min]="1" [max]="max" (ngModelChange)="getTop($event)"
+            (keydown)="preventInvalid($event)" placeholder="# of Displayed Users">
     </aside>
 </div>

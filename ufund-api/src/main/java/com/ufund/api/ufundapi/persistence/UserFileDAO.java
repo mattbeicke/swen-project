@@ -153,7 +153,12 @@ public class UserFileDAO implements UserDAO {
         }
     }
 
-    // TODO:
+    /**
+     * changes the contributions of a user
+     * 
+     * @param user user to alter
+     * @param n    how much to alter by
+     */
     private void alterContributions(User user, int n) {
         user.alterContributions(n);
     }
@@ -378,23 +383,30 @@ public class UserFileDAO implements UserDAO {
         return user.verifyAnswer(answer);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public int getMaxUsers() {
         return users.size() - 1; // -1 beacuse admin doesnt count
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public User[] getTopNUsers(int n) {
         User[] top = new User[n];
 
-        HashMap<Integer, User> contributeMap = new HashMap<>();
+        List<User> userList = new ArrayList<>();
         for (User user : users.values()) {
-            contributeMap.put(user.getContributions(), user);
+            if (!user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+                userList.add(user);
+            }
         }
 
-        List<Integer> keys = new ArrayList<>(contributeMap.keySet());
-        Collections.sort(keys, Collections.reverseOrder());
+        userList.sort((u1, u2) -> Integer.compare(u2.getContributions(), u1.getContributions()));
 
         for (int i = 0; i < n; i++) {
-            top[i] = contributeMap.get(keys.get(i));
+            top[i] = userList.get(i);
         }
 
         return top;
