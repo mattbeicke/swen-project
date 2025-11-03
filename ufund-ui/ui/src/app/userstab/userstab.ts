@@ -61,6 +61,20 @@ export class UsersTab {
    * @param user User to ban/unban
    */
   onSelect(user: User): void {
+    this.userService.toggleBan(user, localStorage.getItem("key") ?? "").subscribe({
+      next: _ => {
+        this.searchTerms.next(this.searchValue);
+      },
+      error: error => {
+        switch (error.status) {
+          case 500:
+            alert("Internal server error\nPlease try again later!");
+            break;
+          default:
+            alert("Unknown error, is server online?");
+        }
+      }
+    });
     // ban/unban stuff here
   }
 

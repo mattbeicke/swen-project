@@ -15,6 +15,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   private userURL = 'http://localhost:8080/user';
+  private managerURL = 'http://localhost:8080/manager';
 
   /**
    * Handles HTTP request to get all Users
@@ -35,5 +36,9 @@ export class UserService {
    */
   searchUsers(term: string, key: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.userURL}/?username=${term}`, { responseType: 'json', 'headers': { 'key': key } });
+  }
+
+  toggleBan(user: User, key: string): Observable<User[]> {
+    return this.http.post<User[]>(this.managerURL + 'toggle', user, { responseType: 'json', 'headers': { 'key': key } });
   }
 }
