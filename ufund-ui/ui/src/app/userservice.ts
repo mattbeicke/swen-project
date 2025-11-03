@@ -36,4 +36,12 @@ export class UserService {
   searchUsers(term: string, key: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.userURL}/?username=${term}`, { responseType: 'json', 'headers': { 'key': key } });
   }
+
+  getMaxUsers(): Observable<number> {
+    return this.http.get<number>(this.userURL + '/max/');
+  }
+
+  getTopNUsers(n: number): Observable<User[]> {
+    return this.http.get<User[]>(this.userURL + '/top/?n=' + n, { responseType: 'json' });
+  }
 }

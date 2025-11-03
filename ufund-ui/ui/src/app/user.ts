@@ -10,4 +10,5 @@ export interface User {
     banned: boolean;
     securityQuestion: string;
     securityAnswer: string;
+    contributions: number;
 }

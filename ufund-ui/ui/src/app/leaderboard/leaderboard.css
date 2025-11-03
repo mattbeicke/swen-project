@@ -1,0 +1,55 @@
+.overall {
+  display: grid;
+  grid-template-columns: 159px 60rem 150px;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 150px;
+}
+
+.sidebarr {
+  margin-left: 75px;
+  width: 150px;
+}
+
+.amount {
+  position: sticky;
+  top: 50px;
+}
+
+.content {
+  margin-left: 75px;
+  width: 60rem;
+}
+
+.stick {
+  position: sticky;
+  top: 0;
+  width: 60rem;
+  background-color: white;
+  z-index: 10
+}
+
+.users {
+  margin: 0 0 2em 0;
+  width: 60rem;
+}
+
+table {
+  table-layout: fixed;
+}
+
+th {
+  font-size: 25px;
+  text-align: left;
+  padding-bottom: 10px;
+  position: sticky;
+  z-index: 1;
+  top: 33px;
+  background-color: #ffffff;
+}
