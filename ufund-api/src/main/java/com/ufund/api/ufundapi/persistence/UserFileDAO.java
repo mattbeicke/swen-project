@@ -409,6 +409,9 @@ public class UserFileDAO implements UserDAO {
             top[i] = userList.get(i);
         }
 
+        if (top[0].getContributions() == 0) {
+            return new User[0];
+        }
         return top;
     }
 }
