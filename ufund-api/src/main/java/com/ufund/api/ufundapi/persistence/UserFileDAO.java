@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -29,8 +31,7 @@ public class UserFileDAO implements UserDAO {
     /// The length in characters of a generated key.
     private static final int KEY_CHARACTERS = 32;
     /// How long a key should last, in seconds, before being invalidated.
-    private static final int KEY_EXPIRY_TIME = 3600; 
-    
+    private static final int KEY_EXPIRY_TIME = 3600;
 
     private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time
@@ -145,10 +146,16 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean checkout(User user) throws IOException {
         synchronized (users) {
+            alterContributions(user, user.getBasket().size());
             boolean retval = user.checkout();
             save();
             return retval;
         }
+    }
+
+    // TODO:
+    private void alterContributions(User user, int n) {
+        user.alterContributions(n);
     }
 
     /**
@@ -181,8 +188,9 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(),
-                    user.getSecurityAnswer());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(),
+                    user.getSecurityQuestion(),
+                    user.getSecurityAnswer(), user.getContributions());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -277,7 +285,7 @@ public class UserFileDAO implements UserDAO {
             return false;
         if (!activeLogins.containsKey(user.getId()))
             return false;
-        if(Instant.now().getEpochSecond() > loginExpiryTime.get(user.getId()) + KEY_EXPIRY_TIME) {
+        if (Instant.now().getEpochSecond() > loginExpiryTime.get(user.getId()) + KEY_EXPIRY_TIME) {
             attemptLogout(user.getUsername());
             return false;
         }
@@ -328,7 +336,7 @@ public class UserFileDAO implements UserDAO {
     public User[] getUsers() {
         return getUsers(null);
     }
-     
+
     public String getQuestion(User user) throws IOException {
         return user.getSecurityQuestion();
     }
@@ -365,8 +373,30 @@ public class UserFileDAO implements UserDAO {
         userArrayList.toArray(userArray);
         return userArray;
     }
-  
+
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);
+    }
+
+    public int getMaxUsers() {
+        return users.size() - 1; // -1 beacuse admin doesnt count
+    }
+
+    public User[] getTopNUsers(int n) {
+        User[] top = new User[n];
+
+        HashMap<Integer, User> contributeMap = new HashMap<>();
+        for (User user : users.values()) {
+            contributeMap.put(user.getContributions(), user);
+        }
+
+        List<Integer> keys = new ArrayList<>(contributeMap.keySet());
+        Collections.sort(keys, Collections.reverseOrder());
+
+        for (int i = 0; i < n; i++) {
+            top[i] = contributeMap.get(keys.get(i));
+        }
+
+        return top;
     }
 }

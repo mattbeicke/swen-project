@@ -220,4 +220,8 @@ public interface UserDAO {
      * @throws IOException
      */
     public boolean verifyAnswer(User user, String answer) throws IOException;
+
+    public int getMaxUsers() throws IOException;
+
+    public User[] getTopNUsers(int n) throws IOException;
 }

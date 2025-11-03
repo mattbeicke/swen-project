@@ -38,7 +38,7 @@ export class UserService {
   }
 
   getMaxUsers(): Observable<number> {
-    return this.http.get<number>(this.userURL + '/max/');
+    return this.http.get<number>(this.userURL + '/max');
   }
 
   getTopNUsers(n: number): Observable<User[]> {

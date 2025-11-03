@@ -23,6 +23,8 @@ public class User {
     private String securityQuestion; // User's security question
     @JsonProperty("securityAnswer")
     private String securityAnswer; // Answer to the security question
+    @JsonProperty("contributions")
+    private int contributions; // Number of things a user has checked out
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
 
@@ -35,12 +37,14 @@ public class User {
      * @param securityQuestion security question of user
      * @param securityAnswer   answer to security question of user
      */
-    public User(int id, String username, String password, String securityQuestion, String securityAnswer) {
+    public User(int id, String username, String password, String securityQuestion, String securityAnswer,
+            int contributions) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+        this.contributions = contributions;
         basket = new ArrayList<>();
     }
 
@@ -53,8 +57,9 @@ public class User {
      * @param password User's password
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
-            String securityAnswer) {
-        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer);
+            String securityAnswer, int contributions) {
+        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
+                contributions);
         return user;
     }
 
@@ -188,6 +193,14 @@ public class User {
      */
     public String getSecurityAnswer() {
         return securityAnswer;
+    }
+
+    public int getContributions() {
+        return contributions;
+    }
+
+    public void alterContributions(int alter) {
+        contributions += alter;
     }
 
     /**

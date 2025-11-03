@@ -115,7 +115,7 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             User user = userDAO.getUserByUsername(username);
-            User user_copy = new User(user.getId(), user.getUsername(), "", "", "");
+            User user_copy = new User(user.getId(), user.getUsername(), "", "", "", 0);
             return new ResponseEntity<>(user_copy, HttpStatus.OK);
 
         } catch (IOException e) {
