@@ -41,9 +41,9 @@ public class CupboardController {
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
      */
-    public CupboardController(CupboardDAO cupboardDAO, @Value("${development-mode}") boolean development_mode) {
+    public CupboardController(CupboardDAO cupboardDAO, @Value("${development-mode}") boolean developmentMode) {
         this.cupboardDAO = cupboardDAO;
-        this.DEVELOPMENT_MODE = development_mode;
+        this.DEVELOPMENT_MODE = developmentMode;
 
     }
 

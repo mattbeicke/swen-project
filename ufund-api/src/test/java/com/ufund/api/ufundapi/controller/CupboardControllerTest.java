@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
  * @author Matthew Beicke
  */
 @Tag("Controller-tier")
-public class CupboardControllerTest {
+class CupboardControllerTest {
     private CupboardController cupboardController, noDevCController;
     private CupboardDAO mockCupboardDAO;
 
@@ -31,14 +31,14 @@ public class CupboardControllerTest {
      * a mock Need DAO
      */
     @BeforeEach
-    public void setupCupboardController() {
+    void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
         cupboardController = new CupboardController(mockCupboardDAO, true);
         noDevCController = new CupboardController(mockCupboardDAO, false);
     }
 
     @Test
-    public void testGetNeed() throws IOException { // getNeed may throw IOException
+    void testGetNeed() throws IOException { // getNeed may throw IOException
         // Setup
         Need need = new Need("Water Bottles", 99, "plastic, fiji if possible");
         // When the same id is passed in, our mock Need DAO will return the Need object
@@ -53,7 +53,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
+    void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
         // When the same id is passed in, our mock Need DAO will return null, simulating
@@ -68,7 +68,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
+    void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
         // When getNeed is called on the Mock Need DAO, throw an IOException
@@ -82,7 +82,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testCreateNeed() throws IOException { // createNeed may throw IOException
+    void testCreateNeed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Cookies", 99, "chocolate chip");
         // when createNeed is called, return true simulating successful
@@ -98,7 +98,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testCreateNeedNotDeveloperMode() throws IOException { // createNeed may throw IOException
+    void testCreateNeedNotDeveloperMode() { // createNeed may throw IOException
         // Setup
         Need need = new Need("Cookies", 99, "chocolate chip");
 
@@ -110,7 +110,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testCreateNeedFailed() throws IOException { // createNeed may throw IOException
+    void testCreateNeedFailed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Plates", 99, "paper");
         // when createNeed is called, return false simulating failed
@@ -125,7 +125,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testCreateNeedHandleException() throws IOException { // createNeed may throw IOException
+    void testCreateNeedHandleException() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Bread", 99, "Whole grain loaf");
 
@@ -140,7 +140,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testUpdateNeed() throws IOException { // updateNeed may throw IOException
+    void testUpdateNeed() throws IOException { // updateNeed may throw IOException
         // Setup
         Need need = new Need("Slop", 99, "canned please!");
         // when updateNeed is called, return true simulating successful
@@ -158,7 +158,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testUpdateNeedNotDeveloperMode() throws IOException { // updateNeed may throw IOException
+    void testUpdateNeedNotDeveloperMode() { // updateNeed may throw IOException
         // Setup
         Need need = new Need("Cookies", 99, "chocolate chip");
 
@@ -170,7 +170,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
+    void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
         // Setup
         Need need = new Need("Cheerios", 99, "Family sized");
         // when updateNeed is called, return true simulating successful
@@ -185,7 +185,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testUpdateNeedHandleException() throws IOException { // updateNeed may throw IOException
+    void testUpdateNeedHandleException() throws IOException { // updateNeed may throw IOException
         // Setup
         Need need = new Need("Sadness", 99, "More Sadness");
         // When updateNeed is called on the Mock Need DAO, throw an IOException
@@ -199,7 +199,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeeds() throws IOException { // getNeeds may throw IOException
+    void testGetNeeds() throws IOException { // getNeeds may throw IOException
         // Setup
         Need[] needs = new Need[2];
         needs[0] = new Need("Pop culture reference 1", 99, "67");
@@ -216,7 +216,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeedsHandleException() throws IOException { // getNeeds may throw IOException
+    void testGetNeedsHandleException() throws IOException { // getNeeds may throw IOException
         // Setup
         // When getNeeds is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).getNeeds();
@@ -229,7 +229,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testSearchNeeds() throws IOException { // searchNeeds may throw IOException
+    void testSearchNeeds() throws IOException { // searchNeeds may throw IOException
         // Setup
         String searchString = "tay";
         Need[] needes = new Need[2];
@@ -248,7 +248,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testSearchNeedsHandleException() throws IOException { // searchNeeds may throw IOException
+    void testSearchNeedsHandleException() throws IOException { // searchNeeds may throw IOException
         // Setup
         String searchString = "an";
         // When createNeed is called on the Mock Need DAO, throw an IOException
@@ -262,7 +262,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
         // Setup
         int needId = 99;
         // when deleteNeeds is called return true, simulating successful deletion
@@ -276,7 +276,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNotDeveloperMode() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeedNotDeveloperMode() { // deleteNeeds may throw IOException
         // Setup
         int needId = 99;
 
@@ -288,7 +288,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
         // Setup
         int needId = 99;
         // when deleteNeeds is called return false, simulating failed deletion
@@ -302,7 +302,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
         // Setup
         int needId = 99;
         // When deleteNeeds is called on the Mock Need DAO, throw an IOException

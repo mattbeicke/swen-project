@@ -27,7 +27,7 @@ import org.springframework.http.ResponseEntity;
  * @author Matthew Beicke
  */
 @Tag("Controller-tier")
-public class UserControllerTest {
+class UserControllerTest {
     private UserController userController;
     private UserDAO mockUserDAO;
     private CupboardDAO mockCupboardDAO;
@@ -38,14 +38,14 @@ public class UserControllerTest {
      * a mock User DAO
      */
     @BeforeEach
-    public void setupUserController() {
+    void setupUserController() {
         mockUserDAO = mock(UserDAO.class);
         mockCupboardDAO = mock(CupboardDAO.class);
         userController = new UserController(mockUserDAO, mockCupboardDAO);
     }
 
     @Test
-    public void testCreateUser() throws IOException { // createUser may throw IOException
+    void testCreateUser() throws IOException { // createUser may throw IOException
         // Setup
         User user = new User(16, "uname", "pword", "", "");
         // when createUser is called, return true simulating successful
@@ -61,7 +61,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreateUserBadRequest1() throws IOException { // createUser may throw IOException
+    void testCreateUserBadRequest1() throws IOException { // createUser may throw IOException
         // Setup
         User user = new User(16, "uname", "", "", "");
         // when createUser is called, return true simulating successful
@@ -76,7 +76,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreateUserBadRequest2() throws IOException { // createUser may throw IOException
+    void testCreateUserBadRequest2() throws IOException { // createUser may throw IOException
         // Setup
         User user = new User(16, "", "pword", "", "");
         // when createUser is called, return true simulating successful
@@ -91,7 +91,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreateUserFailed() throws IOException { // createUser may throw IOException
+    void testCreateUserFailed() throws IOException { // createUser may throw IOException
         // Setup
         User user = new User(16, "uname", "pword", "", "");
         // when createUser is called, return false simulating failed
@@ -106,7 +106,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreateUserHandleException() throws IOException { // createUser may throw IOException
+    void testCreateUserHandleException() throws IOException { // createUser may throw IOException
         // Setup
         User user = new User(16, "uname", "pword", "", "");
 
@@ -121,7 +121,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUser() throws IOException { // deleteUser may throw IOException
+    void testDeleteUser() throws IOException { // deleteUser may throw IOException
         // Setup
         int userId = 99;
         // when deleteUser is called return true, simulating successful deletion
@@ -140,7 +140,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUserNotFound1() throws IOException { // deleteUser may throw IOException
+    void testDeleteUserNotFound1() throws IOException { // deleteUser may throw IOException
         // Setup
         int userId = 99;
         // when deleteUser is called return false, simulating failed deletion
@@ -158,7 +158,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUserNotFound2() throws IOException { // deleteUser may throw IOException
+    void testDeleteUserNotFound2() throws IOException { // deleteUser may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
         // when deleteUser is called return false, simulating failed deletion
@@ -177,7 +177,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUserForbidden() throws IOException { // deleteUser may throw IOException
+    void testDeleteUserForbidden() throws IOException { // deleteUser may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
         // when deleteUser is called return false, simulating failed deletion
@@ -197,7 +197,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUserHandleException() throws IOException { // deleteUser may throw IOException
+    void testDeleteUserHandleException() throws IOException { // deleteUser may throw IOException
         // Setup
         int userId = 99;
         // When deleteUser is called on the Mock User DAO, throw an IOException
@@ -216,7 +216,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testDeleteUserNoAuth() throws IOException { // deleteUser may throw IOException
+    void testDeleteUserNoAuth() throws IOException { // deleteUser may throw IOException
         // Setup
         int userId = 99;
         // when deleteUser is called return true, simulating successful deletion
@@ -235,7 +235,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetNeed() throws IOException { // getNeed may throw IOException
+    void testGetNeed() throws IOException { // getNeed may throw IOException
         // Setup
         Need need = new Need("Water Bottles", 99, "plastic, fiji if possible");
         // When the same id is passed in, our mock Need DAO will return the Need object
@@ -250,7 +250,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetNeedNotFound() throws Exception { // getNeed may throw IOException
+    void testGetNeedNotFound() throws Exception { // getNeed may throw IOException
         // Setup
         int needId = 99;
         // When the same id is passed in, our mock Need DAO will return null, simulating
@@ -265,7 +265,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetNeedHandleException() throws Exception { // getNeed may throw IOException
+    void testGetNeedHandleException() throws Exception { // getNeed may throw IOException
         // Setup
         int needId = 99;
         // When getNeed is called on the Mock Need DAO, throw an IOException
@@ -279,7 +279,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateUser() throws IOException { // updateUser may throw IOException
+    void testUpdateUser() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
         User user = new User(userId, "uname", "pword", "", "");
@@ -304,7 +304,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateUserConflict() throws IOException { // updateUser may throw IOException
+    void testUpdateUserConflict() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
         User user = new User(userId, "uname", "pword", "", "");
@@ -328,7 +328,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateUserFailed() throws IOException { // updateUser may throw IOException
+    void testUpdateUserFailed() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
         User user = new User(userId, "uname", "pword", "", "");
@@ -347,7 +347,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateNeedHandleException() throws IOException { // updateUser may throw IOException
+    void testUpdateNeedHandleException() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
         User user = new User(userId, "uname", "pword", "", "");
@@ -367,7 +367,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdateUserNoAuth() throws IOException { // updateUser may throw IOException
+    void testUpdateUserNoAuth() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;
         User user = new User(userId, "uname", "pword", "", "");
@@ -391,7 +391,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasket() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasket() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -419,7 +419,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasketForbidden() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasketForbidden() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -447,7 +447,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasketNotFound1() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasketNotFound1() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         int needId2 = 10;
@@ -475,7 +475,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasketNotFound2() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasketNotFound2() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -503,7 +503,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasketNoAuth() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasketNoAuth() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -529,7 +529,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasketFailed() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasketFailed() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -555,7 +555,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testAddNeedToBasketHandleException() throws IOException { // addNeedToBasket may throw IOException
+    void testAddNeedToBasketHandleException() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -583,7 +583,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasket() throws IOException { // removeNeedFromBasket may throw IOException
+    void testRemoveNeedFromBasket() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -611,7 +611,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasketForbidden() throws IOException { // removeNeedFromBasket may throw IOException
+    void testRemoveNeedFromBasketForbidden() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -639,7 +639,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasketNotFound1() throws IOException { // removeNeedFromBasket may throw IOException
+    void testRemoveNeedFromBasketNotFound1() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -667,7 +667,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasketNotFound2() throws IOException { // removeNeedFromBasket may throw IOException
+    void testRemoveNeedFromBasketNotFound2() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -694,7 +694,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasketNoAuth() throws IOException { // removeNeedFromBasket may throw IOException
+    void testRemoveNeedFromBasketNoAuth() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -720,7 +720,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasketFailed() throws IOException { // removeNeedFromBasket may throw IOException
+    void testRemoveNeedFromBasketFailed() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -746,7 +746,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRemoveNeedFromBasketHandleException() throws IOException { // removeNeedFromBasket may throw
+    void testRemoveNeedFromBasketHandleException() throws IOException { // removeNeedFromBasket may throw
                                                                                // IOException
         // Setup
         int needId = 10;
@@ -776,7 +776,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCheckout() throws IOException { // checkout may throw IOException
+    void testCheckout() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -799,7 +799,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCheckoutForbidden() throws IOException { // checkout may throw IOException
+    void testCheckoutForbidden() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -822,7 +822,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCheckoutNotFound() throws IOException { // checkout may throw IOException
+    void testCheckoutNotFound() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -845,7 +845,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCheckoutNoAuth() throws IOException { // checkout may throw IOException
+    void testCheckoutNoAuth() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -866,7 +866,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCheckoutFailed() throws IOException { // checkout may throw IOException
+    void testCheckoutFailed() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -887,7 +887,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCheckoutHandleException() throws IOException { // checkout may throw IOException
+    void testCheckoutHandleException() throws IOException { // checkout may throw IOException
         // Setup
         int needId = 10;
         User user = new User(99, "uname", "pword", "", "");
@@ -909,7 +909,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testViewBasket() throws IOException { // viewBasket may throw IOException
+    void testViewBasket() throws IOException { // viewBasket may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
 
@@ -930,7 +930,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testViewBasketForbidden() throws IOException { // viewBasket may throw IOException
+    void testViewBasketForbidden() throws IOException { // viewBasket may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
 
@@ -951,7 +951,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testViewBasketNoAuth() throws IOException { // viewBasket may throw IOException
+    void testViewBasketNoAuth() throws IOException { // viewBasket may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
 
@@ -970,7 +970,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testViewBasketFailed() throws IOException { // viewBasket may throw IOException
+    void testViewBasketFailed() throws IOException { // viewBasket may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
 
@@ -990,7 +990,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testViewBasketHandleException() throws IOException { // viewBasket may throw IOException
+    void testViewBasketHandleException() throws IOException { // viewBasket may throw IOException
         // Setup
         User user = new User(99, "uname", "pword", "", "");
 
@@ -1010,7 +1010,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetUsers() throws IOException {
+    void testGetUsers() throws IOException {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
@@ -1031,7 +1031,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetUsersUnauthorized() throws IOException {
+    void testGetUsersUnauthorized() throws IOException {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
@@ -1051,7 +1051,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testGetUsersHandleException() throws IOException {
+    void testGetUsersHandleException() throws IOException {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
@@ -1071,7 +1071,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testSearchUsers() throws IOException {
+    void testSearchUsers() throws IOException {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
@@ -1093,7 +1093,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testSearchUsersUnauthorized() throws IOException {
+    void testSearchUsersUnauthorized() throws IOException {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
@@ -1112,7 +1112,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testSearchUsersHandleException() throws IOException {
+    void testSearchUsersHandleException() throws IOException {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");

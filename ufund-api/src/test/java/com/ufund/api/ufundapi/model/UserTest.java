@@ -4,17 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Tag("Model-tier")
-public class UserTest {
+class UserTest {
     @Test
-    public void testCreation() {
+    void testCreation() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -29,7 +27,7 @@ public class UserTest {
     }
 
     @Test
-    public void testGeneration() {
+    void testGeneration() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -43,7 +41,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUpdateUser() {
+    void testUpdateUser() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -60,7 +58,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUpdateUserWithNulls() {
+    void testUpdateUserWithNulls() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -92,7 +90,7 @@ public class UserTest {
     }
 
     @Test
-    public void testAddToBasket() {
+    void testAddToBasket() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -107,7 +105,7 @@ public class UserTest {
     }
 
     @Test
-    public void testAddDuplicates() {
+    void testAddDuplicates() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -118,7 +116,7 @@ public class UserTest {
     }
 
     @Test
-    public void testRemoveFromBasket() {
+    void testRemoveFromBasket() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -132,7 +130,7 @@ public class UserTest {
     }
 
     @Test
-    public void testInBasket() {
+    void testInBasket() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -145,7 +143,7 @@ public class UserTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -156,7 +154,7 @@ public class UserTest {
     }
 
     @Test
-    public void testSetId() {
+    void testSetId() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -168,7 +166,7 @@ public class UserTest {
     }
 
     @Test
-    public void testCheckoutEmpty() {
+    void testCheckoutEmpty() {
         String name = "John Doe";
         String password = "hunter2";
         int id = 1001;
@@ -179,7 +177,7 @@ public class UserTest {
     }
 
     @Test
-    public void testVerifyAnswer() {
+    void testVerifyAnswer() {
         String name = "John Doe";
         String password = "hunter2";
         String answer = "test";
