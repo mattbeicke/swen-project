@@ -62,10 +62,8 @@ public class User {
      * @return the user, now with an encrpyted password
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
-            String securityAnswer, boolean banned) {
-        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
-                banned);
-        return user;
+                                    String securityAnswer, boolean banned) {
+      return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer, banned);
     }
 
     /**
@@ -170,7 +168,7 @@ public class User {
      *         false otherwise
      */
     public boolean inBasket(int needId) {
-        return basket.contains((Integer) needId);
+        return basket.contains(needId);
     }
 
     /**
@@ -233,6 +231,6 @@ public class User {
      */
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT, id, username, password);
+        return String.format(STRING_FORMAT, id, username);
     }
 }

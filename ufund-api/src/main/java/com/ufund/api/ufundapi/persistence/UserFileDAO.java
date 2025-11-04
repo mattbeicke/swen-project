@@ -2,11 +2,11 @@ package com.ufund.api.ufundapi.persistence;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +30,7 @@ public class UserFileDAO implements UserDAO {
     private static final int KEY_CHARACTERS = 32;
     /// How long a key should last, in seconds, before being invalidated.
     private static final int KEY_EXPIRY_TIME = 3600;
+    private final SecureRandom rand = new SecureRandom();
 
     private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time
@@ -249,12 +250,11 @@ public class UserFileDAO implements UserDAO {
      ** {@inheritDoc}
      */
     private String createLoginKey() {
-        Random rand = new Random();
-        String key = "";
+        StringBuilder key = new StringBuilder();
         for (int i = 0; i < KEY_CHARACTERS; i++) {
-            key = key + Integer.toHexString(rand.nextInt(16));
+            key.append(Integer.toHexString(rand.nextInt(16)));
         }
-        return key;
+        return key.toString();
     }
 
     /**

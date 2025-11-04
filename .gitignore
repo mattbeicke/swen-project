@@ -30,3 +30,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### ###
+/ufund-ui/ui/.scannerwork/

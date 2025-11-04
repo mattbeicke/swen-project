@@ -60,7 +60,7 @@ public class ManagerController {
         try {
             Need need = cupboardDAO.getNeed(needID);
             if (need != null)
-                return new ResponseEntity<Need>(need, HttpStatus.OK);
+                return new ResponseEntity<>(need, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -97,7 +97,7 @@ public class ManagerController {
 
             Need newNeed = cupboardDAO.createNeed(need);
             if (newNeed != null) {
-                return new ResponseEntity<Need>(newNeed, HttpStatus.OK);
+                return new ResponseEntity<>(newNeed, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -184,7 +184,7 @@ public class ManagerController {
             }
             Need need2 = cupboardDAO.updateNeed(need);
             if (need2 != null) {
-                return new ResponseEntity<Need>(need2, HttpStatus.OK);
+                return new ResponseEntity<>(need2, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

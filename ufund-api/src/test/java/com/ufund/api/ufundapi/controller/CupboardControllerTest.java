@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
  * @author Matthew Beicke
  */
 @Tag("Controller-tier")
-public class CupboardControllerTest {
+class CupboardControllerTest {
     private CupboardController cupboardController, noDevCController;
     private CupboardDAO mockCupboardDAO;
 
@@ -31,13 +31,13 @@ public class CupboardControllerTest {
      * a mock Need DAO
      */
     @BeforeEach
-    public void setupCupboardController() {
+    void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
         cupboardController = new CupboardController(mockCupboardDAO);
     }
 
     @Test
-    public void testGetNeed() throws IOException { // getNeed may throw IOException
+    void testGetNeed() throws IOException { // getNeed may throw IOException
         // Setup
         Need need = new Need("Water Bottles", 99, "plastic, fiji if possible");
         // When the same id is passed in, our mock Need DAO will return the Need object
@@ -52,7 +52,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
+    void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
         // When the same id is passed in, our mock Need DAO will return null, simulating
@@ -67,7 +67,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
+    void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
         // When getNeed is called on the Mock Need DAO, throw an IOException
@@ -80,9 +80,8 @@ public class CupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-
     @Test
-    public void testGetNeeds() throws IOException { // getNeeds may throw IOException
+    void testGetNeeds() throws IOException { // getNeeds may throw IOException
         // Setup
         Need[] needs = new Need[2];
         needs[0] = new Need("Pop culture reference 1", 99, "67");
@@ -99,7 +98,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testGetNeedsHandleException() throws IOException { // getNeeds may throw IOException
+    void testGetNeedsHandleException() throws IOException { // getNeeds may throw IOException
         // Setup
         // When getNeeds is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).getNeeds();
@@ -112,7 +111,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testSearchNeeds() throws IOException { // searchNeeds may throw IOException
+    void testSearchNeeds() throws IOException { // searchNeeds may throw IOException
         // Setup
         String searchString = "tay";
         Need[] needes = new Need[2];
@@ -131,7 +130,7 @@ public class CupboardControllerTest {
     }
 
     @Test
-    public void testSearchNeedsHandleException() throws IOException { // searchNeeds may throw IOException
+    void testSearchNeedsHandleException() throws IOException { // searchNeeds may throw IOException
         // Setup
         String searchString = "an";
         // When createNeed is called on the Mock Need DAO, throw an IOException
