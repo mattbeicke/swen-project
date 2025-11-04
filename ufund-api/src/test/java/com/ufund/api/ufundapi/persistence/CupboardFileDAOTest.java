@@ -31,7 +31,7 @@ public class CupboardFileDAOTest {
      * @throws IOException
      */
     @BeforeEach
-    public void setupHeroFileDAO() throws IOException {
+    public void setupCupboardFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testNeeds = new Need[3];
         testNeeds[0] = new Need("First Example", 61, "Requires one thing to be correct");
@@ -39,13 +39,12 @@ public class CupboardFileDAOTest {
         testNeeds[2] = new Need("Second Example, Continued", 63, "Requires everything to be correct");
 
         // When the object mapper is supposed to read from the file
-        // the mock object mapper will return the hero array above
+        // the mock object mapper will return the need array above
         when(mockObjectMapper
                 .readValue(new File("doesnt_matter.txt"), Need[].class))
                 .thenReturn(testNeeds);
         cupboardFileDAO = new CupboardFileDAO("doesnt_matter.txt", mockObjectMapper);
     }
-
 
     @Test
     public void testGetAllNeeds() {

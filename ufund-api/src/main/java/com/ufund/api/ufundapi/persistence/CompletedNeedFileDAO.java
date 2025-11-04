@@ -17,7 +17,7 @@ import java.util.List;
 @Component
 public class CompletedNeedFileDAO implements CompletedNeedDAO {
 
-    private ArrayList<CompletedNeed> completedNeeds;   // Provides a local cache of the need objects
+    private ArrayList<CompletedNeed> completedNeeds; // Provides a local cache of the need objects
     // so that we don't need to read from the file
     // each time
     private ObjectMapper objectMapper; // Provides conversion between Need
@@ -34,7 +34,8 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
      *
      * @throws IOException when file cannot be accessed or read from
      */
-    public CompletedNeedFileDAO(@Value("${completed_needs.file}") String filename, ObjectMapper objectMapper) throws IOException {
+    public CompletedNeedFileDAO(@Value("${completed_needs.file}") String filename, ObjectMapper objectMapper)
+            throws IOException {
         this.filename = filename;
         this.objectMapper = objectMapper;
         load(); // load the needs from the file
@@ -42,15 +43,15 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
 
     @Override
     public CompletedNeed[] getRecentNeeds(int count, int offset) {
-        if(offset >= completedNeeds.size()) {
+        if (offset >= completedNeeds.size()) {
             return new CompletedNeed[0];
         }
-        if((offset+count) >= completedNeeds.size()) {
+        if ((offset + count) >= completedNeeds.size()) {
             count = completedNeeds.size() - offset;
         }
-        List<CompletedNeed> needArrayList = completedNeeds.subList(offset, count);
+        List<CompletedNeed> needArrayList = completedNeeds.subList(offset, offset + count);
         CompletedNeed[] needArray = new CompletedNeed[needArrayList.size()];
-        completedNeeds.subList(offset, offset+count).toArray(needArray);
+        needArrayList.toArray(needArray);
         return needArray;
     }
 
@@ -69,7 +70,8 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
     }
 
     /**
-     * Saves the {@link CompletedNeed completed needs} from the map into the file as an array
+     * Saves the {@link CompletedNeed completed needs} from the map into the file as
+     * an array
      * of JSON objects
      *
      * @return true if the {@link CompletedNeed needs} were written successfully

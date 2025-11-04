@@ -8,14 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.User;
@@ -433,4 +436,24 @@ public class UserFileDAOTest {
         assertEquals(users[0], testUsers[1]);
         assertEquals(users[1], testUsers[2]);
     }
+
+    @Test
+    public void testVerifyKeyOvertime() {
+        String username = "uname";
+        String password = "pword";
+        User user = new User(0, username, password, "", "");
+
+        assertDoesNotThrow(() -> userFileDAO.createUser(user));
+        String key = assertDoesNotThrow(() -> userFileDAO.attemptLogin(username, password));
+
+        Instant fakeNow = Instant.now().plusSeconds(3601);
+
+        try (MockedStatic<Instant> mockedInstant = mockStatic(Instant.class)) {
+            mockedInstant.when(Instant::now).thenReturn(fakeNow);
+
+            boolean result = assertDoesNotThrow(() -> userFileDAO.verifyKey(username, key));
+            assertFalse(result);
+        }
+    }
+
 }
