@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
@@ -85,7 +85,7 @@ public class ManagerController {
         LOG.info("POST /add" + need.getId());
         try {
             String key = headers.get("key");
-            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
+            if (!userDAO.verifyKey(User.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -135,11 +135,11 @@ public class ManagerController {
      *         INTERNAL_SERVER_ERROR otherwise.
      */
     @PostMapping("/delete/{id}")
-    public ResponseEntity<Manager> deleteNeed(@PathVariable int id, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<User> deleteNeed(@PathVariable int id, @RequestHeader Map<String, String> headers) {
         LOG.info("POST /delete/" + id);
         try {
             String key = headers.get("key");
-            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
+            if (!userDAO.verifyKey(User.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -173,7 +173,7 @@ public class ManagerController {
         LOG.info("POST /edit/" + need.getId());
         try {
             String key = headers.get("key");
-            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
+            if (!userDAO.verifyKey(User.MANAGER_USERNAME, key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 

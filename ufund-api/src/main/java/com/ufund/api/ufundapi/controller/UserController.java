@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
@@ -394,7 +393,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<User[]> getUsers(@RequestHeader Map<String, String> headers) {
         try {
-            User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);
+            User user = userDAO.getUserByUsername(User.MANAGER_USERNAME);
             String key = headers.get("key");
             if (!userDAO.verifyKey(user.getId(), key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -412,7 +411,7 @@ public class UserController {
     public ResponseEntity<User[]> searchUsers(@RequestParam String username,
             @RequestHeader Map<String, String> headers) {
         try {
-            User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);
+            User user = userDAO.getUserByUsername(User.MANAGER_USERNAME);
             String key = headers.get("key");
             if (!userDAO.verifyKey(user.getId(), key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

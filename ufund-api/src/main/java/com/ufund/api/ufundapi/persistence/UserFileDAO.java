@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.User;
 
 /**
@@ -353,7 +352,7 @@ public class UserFileDAO implements UserDAO {
         ArrayList<User> userArrayList = new ArrayList<>();
 
         for (User user : users.values()) {
-            if (user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+            if (user.getUsername().equals(User.MANAGER_USERNAME)) {
                 continue;
             }
             if (containsText == null || user.getUsername().toLowerCase().contains(containsText.toLowerCase())) {

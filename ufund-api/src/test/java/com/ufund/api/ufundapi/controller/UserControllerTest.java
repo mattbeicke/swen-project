@@ -12,14 +12,12 @@ import java.util.HashMap;
 import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -1018,11 +1016,11 @@ public class UserControllerTest {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
+        User admin = new User(2, User.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUsers()).thenReturn(users);
 
-        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+        when(mockUserDAO.getUserByUsername(User.MANAGER_USERNAME)).thenReturn(admin);
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
@@ -1039,11 +1037,11 @@ public class UserControllerTest {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
+        User admin = new User(2, User.MANAGER_USERNAME, "password", "", "");
 
         when(mockUserDAO.getUsers()).thenReturn(users);
 
-        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+        when(mockUserDAO.getUserByUsername(User.MANAGER_USERNAME)).thenReturn(admin);
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
@@ -1059,11 +1057,11 @@ public class UserControllerTest {
         User[] users = new User[2];
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
+        User admin = new User(2, User.MANAGER_USERNAME, "password", "", "");
 
         doThrow(new IOException()).when(mockUserDAO).getUsers();
 
-        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+        when(mockUserDAO.getUserByUsername(User.MANAGER_USERNAME)).thenReturn(admin);
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
@@ -1080,9 +1078,9 @@ public class UserControllerTest {
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
         String searchTerm = "ame";
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
+        User admin = new User(2, User.MANAGER_USERNAME, "password", "", "");
 
-        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+        when(mockUserDAO.getUserByUsername(User.MANAGER_USERNAME)).thenReturn(admin);
 
         when(mockUserDAO.searchUsers(searchTerm)).thenReturn(users);
 
@@ -1102,9 +1100,9 @@ public class UserControllerTest {
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
         String searchTerm = "ame";
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
+        User admin = new User(2, User.MANAGER_USERNAME, "password", "", "");
 
-        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+        when(mockUserDAO.getUserByUsername(User.MANAGER_USERNAME)).thenReturn(admin);
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
@@ -1121,9 +1119,9 @@ public class UserControllerTest {
         users[0] = new User(0, "uname1", "pass1", "", "");
         users[1] = new User(1, "uname2", "pass2", "", "");
         String searchTerm = "ame";
-        User admin = new User(2, Manager.MANAGER_USERNAME, "password", "", "");
+        User admin = new User(2, User.MANAGER_USERNAME, "password", "", "");
 
-        when(mockUserDAO.getUserByUsername(Manager.MANAGER_USERNAME)).thenReturn(admin);
+        when(mockUserDAO.getUserByUsername(User.MANAGER_USERNAME)).thenReturn(admin);
 
         doThrow(new IOException()).when(mockUserDAO).searchUsers(searchTerm);
 
