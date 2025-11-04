@@ -31,7 +31,6 @@ public class UserFileDAO implements UserDAO {
     /// How long a key should last, in seconds, before being invalidated.
     private static final int KEY_EXPIRY_TIME = 3600;
     private final SecureRandom rand = new SecureRandom();
-    
 
     private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time

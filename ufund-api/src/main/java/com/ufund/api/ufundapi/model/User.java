@@ -61,7 +61,7 @@ public class User {
      * @param banned           User's ban status
      * @return the user, now with an encrpyted password
      */
-    public static User generateUser(int id, String username, String password, String securityQuestion, \
+    public static User generateUser(int id, String username, String password, String securityQuestion,
                                     String securityAnswer, boolean banned) {
       return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer, banned);
     }
