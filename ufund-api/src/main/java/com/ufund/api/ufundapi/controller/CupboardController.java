@@ -35,19 +35,22 @@ public class CupboardController {
     private CupboardDAO cupboardDAO;
     private CompletedNeedDAO completedNeedDAO;
 
-    
     private boolean DEVELOPMENT_MODE;
 
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
-     *                    perform CRUD operations
-     * @param completedNeedDAO The {@link CompletedNeedDAO Completed Need Data Access Object} to
-     *                    perform CRUD operations
-     * @param development_mode true if developer tasks should be enabled, false if it should return a FORBIDDEN error code instead
+     * @param cupboardDAO      The {@link CupboardDAO Cupboard Data Access Object}
+     *                         to
+     *                         perform CRUD operations
+     * @param completedNeedDAO The {@link CompletedNeedDAO Completed Need Data
+     *                         Access Object} to
+     *                         perform CRUD operations
+     * @param development_mode true if developer tasks should be enabled, false if
+     *                         it should return a FORBIDDEN error code instead
      */
-    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO, @Value("${development-mode}") boolean development_mode) {
+    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO,
+            @Value("${development-mode}") boolean development_mode) {
         this.cupboardDAO = cupboardDAO;
         this.completedNeedDAO = completedNeedDAO;
         this.DEVELOPMENT_MODE = development_mode;
@@ -132,7 +135,7 @@ public class CupboardController {
     @PostMapping("")
     public ResponseEntity<Need> createNeed(@RequestBody Need need) {
         LOG.info("POST /cupboard " + need);
-        if(!DEVELOPMENT_MODE) {
+        if (!DEVELOPMENT_MODE) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -163,7 +166,7 @@ public class CupboardController {
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need) {
         LOG.info("PUT /cupboard " + need);
-        if(!DEVELOPMENT_MODE) {
+        if (!DEVELOPMENT_MODE) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -192,7 +195,7 @@ public class CupboardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteNeeds(@PathVariable int id) {
         LOG.info("DELETE /cupboard/" + id);
-        if(!DEVELOPMENT_MODE) {
+        if (!DEVELOPMENT_MODE) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -211,7 +214,8 @@ public class CupboardController {
     /**
      * Responds to the GET request for all {@link CompletedNeed completed needs}
      *
-     * @return ResponseEntity with array of {@link CompletedNeed completed need} objects (may be empty)
+     * @return ResponseEntity with array of {@link CompletedNeed completed need}
+     *         objects (may be empty)
      *         and HTTP status of OK. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
      */
@@ -231,24 +235,27 @@ public class CupboardController {
     /**
      * Responds to the GET request for all {@link CompletedNeed completed needs}
      *
-     * @return ResponseEntity with array of {@link CompletedNeed completed need} objects (may be empty)
-     *         and HTTP status of OK. If requesting an invalid page, returns an HTTP status of BAD_REQUEST.
+     * @return ResponseEntity with array of {@link CompletedNeed completed need}
+     *         objects (may be empty)
+     *         and HTTP status of OK. If requesting an invalid page, returns an HTTP
+     *         status of BAD_REQUEST.
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
      */
     @GetMapping("/completed/{page}")
     public ResponseEntity<CompletedNeed[]> getCompletedNeedsPage(@PathVariable int page) {
         LOG.info("GET /completed/" + page);
-        if(page <= 0) {
+        if (page <= 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds((page-1)*30, page*30); // [0, 30) most recent on page 1
+            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds((page - 1) * 30, page * 30); // [0, 30)
+                                                                                                          // most recent
+                                                                                                          // on page 1
             return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

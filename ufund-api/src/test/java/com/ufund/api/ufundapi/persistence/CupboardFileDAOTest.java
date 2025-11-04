@@ -34,7 +34,7 @@ public class CupboardFileDAOTest {
     public void setupCupboardFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testNeeds = new Need[3];
-        testNeeds[0] = new Need("First Example", 61, "Requires one thing to be correct");
+        testNeeds[0] = new Need("First Example", 0, "Requires one thing to be correct");
         testNeeds[1] = new Need("Second Example", 62, "Requires many things to be correct");
         testNeeds[2] = new Need("Second Example, Continued", 63, "Requires everything to be correct");
 
