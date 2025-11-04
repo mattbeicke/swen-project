@@ -12,16 +12,16 @@ public class NeedTest {
         String name = "U-Fund Testing";
         int id = 123;
         String description = "Requires that someone dedicate time to test.";
-        
+
         Need need = new Need(name, id, description);
-        
+
         assertEquals(name, need.getName());
         assertEquals(id, need.getId());
         assertEquals(description, need.getDescription());
     }
 
     @Test
-    public void testUpdateNeed() {
+    public void testUpdateNeed1() {
         String name = "U-Fund Testing";
         int id = 123;
         String description = "Requires that someone dedicate time to test.";
@@ -29,11 +29,25 @@ public class NeedTest {
         String updated_name = "Tested U-Fund";
         String updated_description = "Will require tests to be added.";
 
-        
         Need need = new Need(name, id, description);
         need.updateNeed(updated_name, updated_description);
 
         assertEquals(updated_name, need.getName());
+        assertEquals(updated_description, need.getDescription());
+    }
+
+    @Test
+    public void testUpdateNeed2() {
+        String name = "U-Fund Testing";
+        int id = 123;
+        String description = "Requires that someone dedicate time to test.";
+
+        String updated_description = "Will require tests to be added.";
+
+        Need need = new Need(name, id, description);
+        need.updateNeed(null, updated_description);
+
+        assertEquals(name, need.getName());
         assertEquals(updated_description, need.getDescription());
     }
 
@@ -44,7 +58,7 @@ public class NeedTest {
         String description = "TestDesc";
 
         Need need = new Need(name, id, description);
-        
+
         String expectation = "Need [id=124, name=UFund, description=TestDesc]";
 
         assertEquals(expectation, need.toString());
