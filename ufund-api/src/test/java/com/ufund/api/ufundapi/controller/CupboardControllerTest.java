@@ -33,8 +33,7 @@ public class CupboardControllerTest {
     @BeforeEach
     public void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
-        cupboardController = new CupboardController(mockCupboardDAO, true);
-        noDevCController = new CupboardController(mockCupboardDAO, false);
+        cupboardController = new CupboardController(mockCupboardDAO);
     }
 
     @Test
@@ -81,122 +80,6 @@ public class CupboardControllerTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 
-    @Test
-    public void testCreateNeed() throws IOException { // createNeed may throw IOException
-        // Setup
-        Need need = new Need("Cookies", 99, "chocolate chip");
-        // when createNeed is called, return true simulating successful
-        // creation and save
-        when(mockCupboardDAO.createNeed(need)).thenReturn(need);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.createNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(need, response.getBody());
-    }
-
-    @Test
-    public void testCreateNeedNotDeveloperMode() throws IOException { // createNeed may throw IOException
-        // Setup
-        Need need = new Need("Cookies", 99, "chocolate chip");
-
-        // Invoke
-        ResponseEntity<Need> response = noDevCController.createNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-    }
-
-    @Test
-    public void testCreateNeedFailed() throws IOException { // createNeed may throw IOException
-        // Setup
-        Need need = new Need("Plates", 99, "paper");
-        // when createNeed is called, return false simulating failed
-        // creation and save
-        when(mockCupboardDAO.createNeed(need)).thenReturn(null);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.createNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-    }
-
-    @Test
-    public void testCreateNeedHandleException() throws IOException { // createNeed may throw IOException
-        // Setup
-        Need need = new Need("Bread", 99, "Whole grain loaf");
-
-        // When createNeed is called on the Mock Need DAO, throw an IOException
-        doThrow(new IOException()).when(mockCupboardDAO).createNeed(need);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.createNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-    @Test
-    public void testUpdateNeed() throws IOException { // updateNeed may throw IOException
-        // Setup
-        Need need = new Need("Slop", 99, "canned please!");
-        // when updateNeed is called, return true simulating successful
-        // update and save
-        when(mockCupboardDAO.updateNeed(need)).thenReturn(need);
-        ResponseEntity<Need> response = cupboardController.updateNeed(need);
-        need.updateNeed("Soup", null);
-
-        // Invoke
-        response = cupboardController.updateNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(need, response.getBody());
-    }
-
-    @Test
-    public void testUpdateNeedNotDeveloperMode() throws IOException { // updateNeed may throw IOException
-        // Setup
-        Need need = new Need("Cookies", 99, "chocolate chip");
-
-        // Invoke
-        ResponseEntity<Need> response = noDevCController.updateNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-    }
-
-    @Test
-    public void testUpdateNeedFailed() throws IOException { // updateNeed may throw IOException
-        // Setup
-        Need need = new Need("Cheerios", 99, "Family sized");
-        // when updateNeed is called, return true simulating successful
-        // update and save
-        when(mockCupboardDAO.updateNeed(need)).thenReturn(null);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.updateNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-    @Test
-    public void testUpdateNeedHandleException() throws IOException { // updateNeed may throw IOException
-        // Setup
-        Need need = new Need("Sadness", 99, "More Sadness");
-        // When updateNeed is called on the Mock Need DAO, throw an IOException
-        doThrow(new IOException()).when(mockCupboardDAO).updateNeed(need);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.updateNeed(need);
-
-        // Analyze
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
 
     @Test
     public void testGetNeeds() throws IOException { // getNeeds may throw IOException
@@ -256,60 +139,6 @@ public class CupboardControllerTest {
 
         // Invoke
         ResponseEntity<Need[]> response = cupboardController.searchNeeds(searchString);
-
-        // Analyze
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-    @Test
-    public void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-        // when deleteNeeds is called return true, simulating successful deletion
-        when(mockCupboardDAO.deleteNeed(needId)).thenReturn(true);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.deleteNeeds(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-    @Test
-    public void testDeleteNeedNotDeveloperMode() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-
-        // Invoke
-        ResponseEntity<Need> response = noDevCController.deleteNeeds(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-    }
-
-    @Test
-    public void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-        // when deleteNeeds is called return false, simulating failed deletion
-        when(mockCupboardDAO.deleteNeed(needId)).thenReturn(false);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.deleteNeeds(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-    @Test
-    public void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-        // When deleteNeeds is called on the Mock Need DAO, throw an IOException
-        doThrow(new IOException()).when(mockCupboardDAO).deleteNeed(needId);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.deleteNeeds(needId);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
