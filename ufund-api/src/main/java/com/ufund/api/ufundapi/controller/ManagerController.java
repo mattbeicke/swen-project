@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 
@@ -71,12 +72,13 @@ public class ManagerController {
     /**
      * Creates a {@link Need need} with the provided {@link Need need} object
      * 
-     * @param need The {@link Need need} to create
+     * @param need    The {@link Need need} to create
      * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with created {@link Need need} object and HTTP status
      *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
-     *         {@link Need need} object already exists. ResponseEntity with HTTP status
+     *         {@link Need need} object already exists. ResponseEntity with HTTP
+     *         status
      *         of BAD_REQUEST if the need is invalid. ResponseEntity with HTTP
      *         status of INTERNAL_SERVER_ERROR otherwise.
      */
@@ -89,7 +91,7 @@ public class ManagerController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            if(need.getName().isEmpty()) {
+            if (need.getName().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
@@ -127,7 +129,7 @@ public class ManagerController {
     /**
      * Deletes a {@link Need need} with the given id
      * 
-     * @param id The id of the {@link Need need} to deleted
+     * @param id      The id of the {@link Need need} to deleted
      * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
@@ -159,12 +161,12 @@ public class ManagerController {
      * Edit the {@link Need need} with the provided {@link Need need} object, if
      * it exists
      * 
-     * @param need The {@link Need need} to edit
+     * @param need    The {@link Need need} to edit
      * @param headers Map of all headers, must include key
      * 
      * @return ResponseEntity with edited {@link Need need} object and HTTP status
      *         of OK if edited. ResponseEntity with HTTP status of NOT_FOUND if not
-     *         found. ResponseEntity with HTTP status of BAD_REQUEST if the need 
+     *         found. ResponseEntity with HTTP status of BAD_REQUEST if the need
      *         is invalid. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
      *         otherwise.
      */
@@ -177,7 +179,7 @@ public class ManagerController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
-            if(need.getName().isEmpty()) {
+            if (need.getName().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Need need2 = cupboardDAO.updateNeed(need);
@@ -186,6 +188,27 @@ public class ManagerController {
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/toggle")
+    public ResponseEntity<User> toggle(@RequestBody String username, @RequestHeader Map<String, String> headers) {
+        try {
+            String key = headers.get("key");
+            if (!userDAO.verifyKey(Manager.MANAGER_USERNAME, key)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            User user = userDAO.getUserByUsername(username);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            userDAO.toggleBan(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
