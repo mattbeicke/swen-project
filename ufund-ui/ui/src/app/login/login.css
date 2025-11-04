@@ -1,6 +1,6 @@
 #login-form {
     background-color: #B0B0B0;
-    color:black;
+    color: black;
     padding: 30px;
     display: inline-block;
     text-align: center;
@@ -13,4 +13,8 @@
 
 .login-form-input {
     font-size: inherit;
+}
+
+.back {
+    float: left;
 }

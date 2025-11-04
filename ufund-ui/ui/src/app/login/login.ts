@@ -34,6 +34,10 @@ export class Login implements OnInit {
     }
   }
 
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
+
   /**
    * Function to create an account, takes in input via the page.
    */
