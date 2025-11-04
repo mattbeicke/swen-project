@@ -19,6 +19,13 @@ export class Home {
     }
 
     //get 5 most recent contributions and format them and display them
+    this.recent = "Thank you + username + for fulfilling + need name"
+    this.recent += "\nThank you + username + for fulfilling + need name"
+    this.recent += "\nThank you + username + for fulfilling + need name"
+    this.recent += "\nThank you + username + for fulfilling + need name"
+    this.recent += "\nThank you + username + for fulfilling + need name"
+    
+    this.recent = this.recent.replace(/\n/g, '<br/>');
   }
 
   login(): void {
