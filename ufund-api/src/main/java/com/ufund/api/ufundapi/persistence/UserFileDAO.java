@@ -29,8 +29,7 @@ public class UserFileDAO implements UserDAO {
     /// The length in characters of a generated key.
     private static final int KEY_CHARACTERS = 32;
     /// How long a key should last, in seconds, before being invalidated.
-    private static final int KEY_EXPIRY_TIME = 3600; 
-    
+    private static final int KEY_EXPIRY_TIME = 3600;
 
     private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time
@@ -127,6 +126,7 @@ public class UserFileDAO implements UserDAO {
     public User removeFromBasket(User user, int needId) throws IOException {
         synchronized (users) {
             user.removeFromBasket(needId);
+            save();
             return user;
         }
     }
@@ -181,8 +181,9 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(),
-                    user.getSecurityAnswer());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(),
+                    user.getSecurityQuestion(),
+                    user.getSecurityAnswer(), user.getBanned());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -277,7 +278,7 @@ public class UserFileDAO implements UserDAO {
             return false;
         if (!activeLogins.containsKey(user.getId()))
             return false;
-        if(Instant.now().getEpochSecond() > loginExpiryTime.get(user.getId()) + KEY_EXPIRY_TIME) {
+        if (Instant.now().getEpochSecond() > loginExpiryTime.get(user.getId()) + KEY_EXPIRY_TIME) {
             attemptLogout(user.getUsername());
             return false;
         }
@@ -324,11 +325,31 @@ public class UserFileDAO implements UserDAO {
     /**
      * {@inheritDoc}
      */
+    public boolean isBanned(User user) {
+        return user.getBanned();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleBan(User user) throws IOException {
+        synchronized (users) {
+            user.toggleBanStatus();
+            save();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User[] getUsers() {
         return getUsers(null);
     }
-     
+
+    /**
+     * {@inheritDoc}
+     */
     public String getQuestion(User user) throws IOException {
         return user.getSecurityQuestion();
     }
@@ -365,7 +386,10 @@ public class UserFileDAO implements UserDAO {
         userArrayList.toArray(userArray);
         return userArray;
     }
-  
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);
     }
