@@ -32,19 +32,14 @@ public class CupboardController {
     private static final Logger LOG = Logger.getLogger(CupboardController.class.getName());
     private CupboardDAO cupboardDAO;
 
-    
-    private boolean DEVELOPMENT_MODE;
-
     /**
      * Creates a REST API controller to reponds to requests
      * 
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
      */
-    public CupboardController(CupboardDAO cupboardDAO, @Value("${development-mode}") boolean developmentMode) {
+    public CupboardController(CupboardDAO cupboardDAO) {
         this.cupboardDAO = cupboardDAO;
-        this.DEVELOPMENT_MODE = developmentMode;
-
     }
 
     /**
@@ -55,7 +50,6 @@ public class CupboardController {
      * @return ResponseEntity with {@link Need need} object and HTTP status of OK if
      *         found. ResponseEntity with HTTP status of NOT_FOUND if not found.
      *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
@@ -78,7 +72,6 @@ public class CupboardController {
      * @return ResponseEntity with array of {@link Need need} objects (may be empty)
      *         and HTTP status of OK. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
      */
     @GetMapping("")
     public ResponseEntity<Need[]> getNeeds() {
@@ -101,103 +94,12 @@ public class CupboardController {
      * @return ResponseEntity with array of {@link Need need} objects (may be empty)
      *         and HTTP status of OK. ResponseEntity with HTTP status of
      *         INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
      */
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
         LOG.info("GET /cupboard/?name=" + name);
         try {
             return new ResponseEntity<>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
-        } catch (IOException e) {
-            LOG.log(Level.SEVERE, e.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * Creates a {@link Need need} with the provided {@link Need need} object
-     * 
-     * @param need The {@link Need need} to create
-     * 
-     * @return ResponseEntity with created {@link Need need} object and HTTP status
-     *         of CREATED. ResponseEntity with HTTP status of CONFLICT if
-     *         {@link Need need} object already exists. ResponseEntity with HTTP
-     *         status of INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
-     */
-    @PostMapping("")
-    public ResponseEntity<Need> createNeed(@RequestBody Need need) {
-        LOG.info("POST /cupboard " + need);
-        if(!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            Need new_need = cupboardDAO.createNeed(need);
-            if (new_need == null) {
-                return new ResponseEntity<>(HttpStatus.CONFLICT);
-            }
-            return new ResponseEntity<>(need, HttpStatus.CREATED);
-        } catch (IOException e) {
-            LOG.log(Level.SEVERE, e.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * Updates the {@link Need need} with the provided {@link Need need} object, if
-     * it exists
-     * 
-     * @param need The {@link Need need} to update
-     * 
-     * @return ResponseEntity with updated {@link Need need} object and HTTP status
-     *         of OK if updated. ResponseEntity with HTTP status of NOT_FOUND if not
-     *         found. ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR
-     *         otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
-     */
-    @PutMapping("")
-    public ResponseEntity<Need> updateNeed(@RequestBody Need need) {
-        LOG.info("PUT /cupboard " + need);
-        if(!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            Need update = cupboardDAO.updateNeed(need);
-            if (update == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(update, HttpStatus.OK);
-        } catch (IOException e) {
-            LOG.log(Level.SEVERE, e.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * Deletes a {@link Need need} with the given id
-     * 
-     * @param id The id of the {@link Need need} to deleted
-     * 
-     * @return ResponseEntity HTTP status of OK if deleted. ResponseEntity with HTTP
-     *         status of NOT_FOUND if not found. ResponseEntity with HTTP status of
-     *         INTERNAL_SERVER_ERROR otherwise.
-     *         Only returns HTTP status of FORBIDDEN when not in development mode.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Need> deleteNeeds(@PathVariable int id) {
-        LOG.info("DELETE /cupboard/" + id);
-        if(!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            boolean deleted = cupboardDAO.deleteNeed(id);
-            if (!deleted) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
