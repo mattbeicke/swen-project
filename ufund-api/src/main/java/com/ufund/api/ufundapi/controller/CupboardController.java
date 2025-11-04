@@ -63,7 +63,7 @@ public class CupboardController {
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
-                return new ResponseEntity<Need>(need, HttpStatus.OK);
+                return new ResponseEntity<>(need, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -84,7 +84,7 @@ public class CupboardController {
     public ResponseEntity<Need[]> getNeeds() {
         LOG.info("GET /cupboard");
         try {
-            return new ResponseEntity<Need[]>(cupboardDAO.getNeeds(), HttpStatus.OK);
+            return new ResponseEntity<>(cupboardDAO.getNeeds(), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,7 +107,7 @@ public class CupboardController {
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
         LOG.info("GET /cupboard/?name=" + name);
         try {
-            return new ResponseEntity<Need[]>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
+            return new ResponseEntity<>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -137,7 +137,7 @@ public class CupboardController {
             if (new_need == null) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            return new ResponseEntity<Need>(need, HttpStatus.CREATED);
+            return new ResponseEntity<>(need, HttpStatus.CREATED);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
