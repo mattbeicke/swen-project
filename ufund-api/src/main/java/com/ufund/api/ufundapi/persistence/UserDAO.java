@@ -48,7 +48,8 @@ public interface UserDAO {
     ArrayList<Integer> viewBasket(User user) throws IOException;
 
     /**
-     * "Checks out" all {@link Need needs} in basket and increases their contribution count by that amount
+     * "Checks out" all {@link Need needs} in basket and increases their
+     * contribution count by that amount
      * 
      * @param user {@link User user} object who is being checked out
      * 
@@ -237,4 +238,20 @@ public interface UserDAO {
      * @throws IOException
      */
     public User[] getTopNUsers(int n) throws IOException;
+
+    /**
+     * Gets the ban status of a user
+     * 
+     * @param user user to check
+     * @return true if the user is banned, false if not
+     */
+    public boolean isBanned(User user);
+
+    /**
+     * toggles ban status of a user
+     * 
+     * @param user user whose ban status is being toggled
+     * @throws IOException
+     */
+    public void toggleBan(User user) throws IOException;
 }

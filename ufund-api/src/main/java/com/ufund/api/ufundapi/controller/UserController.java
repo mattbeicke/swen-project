@@ -94,7 +94,7 @@ public class UserController {
                         newuser.removeFromBasket(need);
                     }
                 }
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -149,7 +149,7 @@ public class UserController {
                         newuser.removeFromBasket(need);
                     }
                 }
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -191,7 +191,7 @@ public class UserController {
                 cupboardDAO.deleteNeed(need);
             }
             if (userDAO.checkout(user)) {
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -215,7 +215,7 @@ public class UserController {
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
-                return new ResponseEntity<Need>(need, HttpStatus.OK);
+                return new ResponseEntity<>(need, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -295,7 +295,7 @@ public class UserController {
             if (newuser == null) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            return new ResponseEntity<User>(newuser, HttpStatus.CREATED);
+            return new ResponseEntity<>(newuser, HttpStatus.CREATED);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

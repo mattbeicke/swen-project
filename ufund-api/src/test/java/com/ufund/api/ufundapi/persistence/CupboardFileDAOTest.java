@@ -19,7 +19,7 @@ import com.ufund.api.ufundapi.model.Need;
 import java.io.File;
 
 @Tag("Persistence-tier")
-public class CupboardFileDAOTest {
+class CupboardFileDAOTest {
     CupboardFileDAO cupboardFileDAO;
     Need[] testNeeds;
     ObjectMapper mockObjectMapper;
@@ -31,7 +31,7 @@ public class CupboardFileDAOTest {
      * @throws IOException
      */
     @BeforeEach
-    public void setupHeroFileDAO() throws IOException {
+    void setupHeroFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testNeeds = new Need[3];
         testNeeds[0] = new Need("First Example", 61, "Requires one thing to be correct");
@@ -48,7 +48,7 @@ public class CupboardFileDAOTest {
 
 
     @Test
-    public void testGetAllNeeds() {
+    void testGetAllNeeds() {
         Need[] needs = cupboardFileDAO.getNeeds();
 
         assertEquals(needs.length, testNeeds.length);
@@ -58,7 +58,7 @@ public class CupboardFileDAOTest {
     }
 
     @Test
-    public void testSearchNeeds() {
+    void testSearchNeeds() {
         Need[] needs = cupboardFileDAO.searchNeeds("Second"); // "Second .." and "Second .., Continued"
 
         assertEquals(needs.length, 2);
@@ -67,14 +67,14 @@ public class CupboardFileDAOTest {
     }
 
     @Test
-    public void testGetNeed() {
+    void testGetNeed() {
         Need need = cupboardFileDAO.getNeed(62);
 
         assertEquals(need, testNeeds[1]);
     }
 
     @Test
-    public void testCreateNeed() {
+    void testCreateNeed() {
         Need need = new Need("UFund", 5, "Testing Ex1");
 
         Need result = assertDoesNotThrow(() -> cupboardFileDAO.createNeed(need),
@@ -88,7 +88,7 @@ public class CupboardFileDAOTest {
     }
 
     @Test
-    public void testUpdateNeed() {
+    void testUpdateNeed() {
         Need need = new Need("UFund", 5, "Testing Ex2");
 
         Need result = assertDoesNotThrow(() -> cupboardFileDAO.createNeed(need),
@@ -110,7 +110,7 @@ public class CupboardFileDAOTest {
     }
 
     @Test
-    public void testUpdateNeedDoesNotExist() {
+    void testUpdateNeedDoesNotExist() {
         Need need = new Need("UFund", 5, "Testing Ex2");
 
         // No need exists with id 5
@@ -121,7 +121,7 @@ public class CupboardFileDAOTest {
     }
 
     @Test
-    public void testDeleteNeed() {
+    void testDeleteNeed() {
         Need need = new Need("UFund", 5, "Testing Ex1");
 
         Need result = assertDoesNotThrow(() -> cupboardFileDAO.createNeed(need),
@@ -137,7 +137,7 @@ public class CupboardFileDAOTest {
     }
 
     @Test
-    public void testDeleteNeedDoesNotExist() {
+    void testDeleteNeedDoesNotExist() {
         Need need = new Need("UFund", 5, "Testing Ex2");
 
         // No need exists with id 5

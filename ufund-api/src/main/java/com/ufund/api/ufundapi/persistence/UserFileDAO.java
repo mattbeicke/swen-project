@@ -2,13 +2,13 @@ package com.ufund.api.ufundapi.persistence;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +32,7 @@ public class UserFileDAO implements UserDAO {
     private static final int KEY_CHARACTERS = 32;
     /// How long a key should last, in seconds, before being invalidated.
     private static final int KEY_EXPIRY_TIME = 3600;
+    private final SecureRandom rand = new SecureRandom();
 
     private Map<Integer, User> users; // Provides a local cache of the user objects
     // so that we don't need to read from the file each time
@@ -128,6 +129,7 @@ public class UserFileDAO implements UserDAO {
     public User removeFromBasket(User user, int needId) throws IOException {
         synchronized (users) {
             user.removeFromBasket(needId);
+            save();
             return user;
         }
     }
@@ -193,9 +195,7 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(),
-                    user.getSecurityQuestion(),
-                    user.getSecurityAnswer(), user.getContributions());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(), user.getSecurityAnswer(), user.getContributions(), user.getBanned());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -261,12 +261,11 @@ public class UserFileDAO implements UserDAO {
      ** {@inheritDoc}
      */
     private String createLoginKey() {
-        Random rand = new Random();
-        String key = "";
+        StringBuilder key = new StringBuilder();
         for (int i = 0; i < KEY_CHARACTERS; i++) {
-            key = key + Integer.toHexString(rand.nextInt(16));
+            key.append(Integer.toHexString(rand.nextInt(16)));
         }
-        return key;
+        return key.toString();
     }
 
     /**
@@ -337,11 +336,31 @@ public class UserFileDAO implements UserDAO {
     /**
      * {@inheritDoc}
      */
+    public boolean isBanned(User user) {
+        return user.getBanned();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void toggleBan(User user) throws IOException {
+        synchronized (users) {
+            user.toggleBanStatus();
+            save();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User[] getUsers() {
         return getUsers(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getQuestion(User user) throws IOException {
         return user.getSecurityQuestion();
     }
@@ -379,6 +398,9 @@ public class UserFileDAO implements UserDAO {
         return userArray;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);
     }

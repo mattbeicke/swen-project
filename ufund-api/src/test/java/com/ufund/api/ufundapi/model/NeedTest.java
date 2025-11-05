@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("Model-tier")
-public class NeedTest {
+class NeedTest {
     @Test
-    public void testCreation() {
+    void testCreation() {
         String name = "U-Fund Testing";
         int id = 123;
         String description = "Requires that someone dedicate time to test.";
@@ -21,7 +21,7 @@ public class NeedTest {
     }
 
     @Test
-    public void testUpdateNeed() {
+    void testUpdateNeed() {
         String name = "U-Fund Testing";
         int id = 123;
         String description = "Requires that someone dedicate time to test.";
@@ -38,7 +38,7 @@ public class NeedTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         String name = "UFund";
         int id = 124;
         String description = "TestDesc";

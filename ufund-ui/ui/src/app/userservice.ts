@@ -15,6 +15,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   private userURL = 'http://localhost:8080/user';
+  private managerURL = 'http://localhost:8080/manager';
 
   /**
    * Handles HTTP request to get all Users
@@ -53,5 +54,16 @@ export class UserService {
    */
   getTopNUsers(n: number): Observable<User[]> {
     return this.http.get<User[]>(this.userURL + '/top/' + n, { responseType: 'json' });
+  }
+
+  /**
+   * Handles HTTP request to toggle the ban state of a user
+   * 
+   * @param username username of user to toggle ban
+   * @param key api key of manager running http request
+   * @returns the updated user as we had to return something
+   */
+  toggleBan(username: string, key: string): Observable<User> {
+    return this.http.post<User>(this.managerURL + '/toggle', username, { responseType: 'json', 'headers': { 'key': key } });
   }
 }

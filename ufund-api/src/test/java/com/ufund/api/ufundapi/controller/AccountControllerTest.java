@@ -24,7 +24,7 @@ import com.ufund.api.ufundapi.persistence.UserDAO;
  * @author Ricardo Lopez
  */
 @Tag("Controller-tier")
-public class AccountControllerTest {
+class AccountControllerTest {
     private AccountController accountController;
     private UserDAO mockUserDAO;
 
@@ -33,13 +33,13 @@ public class AccountControllerTest {
      * a mock Need DAO
      */
     @BeforeEach
-    public void setupAccountController() {
+    void setupAccountController() {
         mockUserDAO = mock(UserDAO.class);
         accountController = new AccountController(mockUserDAO);
     }
 
     @Test
-    public void testValidLogin() throws IOException {
+    void testValidLogin() throws IOException {
         String username = "user1";
         String password = "password";
         when(mockUserDAO.verifyLogin(username, password)).thenReturn(true);
@@ -53,7 +53,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testInvalidLogin() throws IOException {
+    void testInvalidLogin() throws IOException {
         String username = "user1";
         String password = "password";
         when(mockUserDAO.verifyLogin(username, password)).thenReturn(false);
@@ -67,7 +67,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testLoginHandleException() throws IOException {
+    void testLoginHandleException() throws IOException {
         String username = "user1";
         String password = "password";
         doThrow(new IOException()).when(mockUserDAO).verifyLogin(username, password);
@@ -81,7 +81,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testValidLogout() throws IOException {
+    void testValidLogout() throws IOException {
         String username = "user1";
         String key = "key";
         when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
@@ -94,7 +94,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testValidLogoutNoAuth() throws IOException {
+    void testValidLogoutNoAuth() throws IOException {
         String username = "user1";
         String key = "key";
         when(mockUserDAO.verifyKey(username, key)).thenReturn(false);
@@ -107,7 +107,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testLogoutHandleException() throws IOException {
+    void testLogoutHandleException() throws IOException {
         String username = "user1";
         doThrow(new IOException()).when(mockUserDAO).attemptLogout(username);
         String key = "irrelevant";
@@ -121,7 +121,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testTestValidKey() throws IOException {
+    void testTestValidKey() throws IOException {
         String username = "user1";
         String key = "key";
         when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
@@ -134,7 +134,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testTestInvalidKey() throws IOException {
+    void testTestInvalidKey() throws IOException {
         String username = "user1";
         String key = "key";
         when(mockUserDAO.verifyKey(username, key)).thenReturn(false);
@@ -147,7 +147,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testTestHandleException() throws IOException {
+    void testTestHandleException() throws IOException {
         String username = "user1";
         String key = "key";
         doThrow(new IOException()).when(mockUserDAO).verifyKey(username, key);
@@ -160,12 +160,12 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testGetInfo() throws IOException {
+    void testGetInfo() throws IOException {
         String username = "user1";
         String key = "key";
         int id = 1;
         when(mockUserDAO.verifyKey(username, key)).thenReturn(true);
-        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User(id, username, "", "", "", 0));
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User(id, username, "", "", "", 0, false));
         HashMap<String, String> headers = new HashMap<>();
         headers.put("key", key);
 
@@ -179,7 +179,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testGetInfoNoAuth() throws IOException {
+    void testGetInfoNoAuth() throws IOException {
         // This also happens when the given user does not exist.
         String username = "user1";
         String key = "key";
@@ -193,7 +193,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testGetInfoHandleException() throws IOException {
+    void testGetInfoHandleException() throws IOException {
         String username = "user1";
         String key = "key";
         doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
@@ -207,10 +207,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testForgotPassword() throws IOException {
+    void testForgotPassword() throws IOException {
         String username = "user";
         String question = "quest";
-        User user = new User(0, username, "", question, "", 0);
+        User user = new User(0, username, "", question, "", 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.getQuestion(user)).thenReturn(question);
 
@@ -221,7 +221,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testForgotPasswordNotFound1() throws IOException {
+    void testForgotPasswordNotFound1() throws IOException {
         String username = "user";
         when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
 
@@ -231,10 +231,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testForgotPasswordNotFound2() throws IOException {
+    void testForgotPasswordNotFound2() throws IOException {
         String username = "user";
         String question = "quest";
-        User user = new User(0, username, "", question, "", 0);
+        User user = new User(0, username, "", question, "", 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.getQuestion(user)).thenReturn(null);
 
@@ -244,10 +244,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testForgotPasswordHandleException() throws IOException {
+    void testForgotPasswordHandleException() throws IOException {
         String username = "user";
         String question = "quest";
-        User user = new User(0, username, "", question, "", 0);
+        User user = new User(0, username, "", question, "", 0, false);
         doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
         when(mockUserDAO.getQuestion(user)).thenReturn(null);
 
@@ -257,11 +257,11 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testVerifyUser() throws IOException {
+    void testVerifyUser() throws IOException {
         String username = "user";
         String question = "quest";
         String answer = "yeah";
-        User user = new User(0, username, "", question, answer, 0);
+        User user = new User(0, username, "", question, answer, 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.verifyAnswer(user, answer)).thenReturn(true);
 
@@ -272,7 +272,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testVerifyUserNotFound() throws IOException {
+    void testVerifyUserNotFound() throws IOException {
         String username = "user";
         String answer = "yeah";
         when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
@@ -283,11 +283,11 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testVerifyUserIncorrect() throws IOException {
+    void testVerifyUserIncorrect() throws IOException {
         String username = "user";
         String question = "quest";
         String answer = "yeah";
-        User user = new User(0, username, "", question, answer, 0);
+        User user = new User(0, username, "", question, answer, 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.verifyAnswer(user, answer)).thenReturn(false);
 
@@ -297,11 +297,11 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testVerifyUserHandleException() throws IOException {
+    void testVerifyUserHandleException() throws IOException {
         String username = "user";
         String question = "quest";
         String answer = "yeah";
-        User user = new User(0, username, "", question, answer, 0);
+        User user = new User(0, username, "", question, answer, 0, false);
         doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
         when(mockUserDAO.getQuestion(user)).thenReturn(null);
 
@@ -311,12 +311,12 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testResetPassword() throws IOException {
+    void testResetPassword() throws IOException {
         String username = "user";
         String password = "pass";
         String password2 = "pass2";
-        User user = new User(0, username, password, "", "", 0);
-        User user2 = new User(0, username, password2, "", "", 0);
+        User user = new User(0, username, password, "", "", 0, false);
+        User user2 = new User(0, username, password2, "", "", 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.updateUser(user)).thenReturn(user2);
 
@@ -327,10 +327,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testResetPasswordNotFound() throws IOException {
+    void testResetPasswordNotFound() throws IOException {
         String username = "user";
         String password = "pass";
-        User user = new User(0, username, password, "", "", 0);
+        User user = new User(0, username, password, "", "", 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
 
         ResponseEntity<User> response = accountController.resetPassword(user);
@@ -339,10 +339,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testResetPasswordFailure() throws IOException {
+    void testResetPasswordFailure() throws IOException {
         String username = "user";
         String password = "pass";
-        User user = new User(0, username, password, "", "", 0);
+        User user = new User(0, username, password, "", "", 0, false);
         when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
         when(mockUserDAO.updateUser(user)).thenReturn(null);
 
@@ -352,10 +352,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void testResetPasswordHandleException() throws IOException {
+    void testResetPasswordHandleException() throws IOException {
         String username = "user";
         String password = "pass";
-        User user = new User(0, username, password, "", "", 0);
+        User user = new User(0, username, password, "", "", 0, false);
         doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
         when(mockUserDAO.getQuestion(user)).thenReturn(null);
 
