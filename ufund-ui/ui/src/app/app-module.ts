@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
+import { Home } from './home/home';
 import { Thanks } from './thanks/thanks';
 import { Leaderboard } from './leaderboard/leaderboard';
 
@@ -24,6 +25,7 @@ import { Leaderboard } from './leaderboard/leaderboard';
     BasketTab,
     UsersTab,
     ForgotPassword,
+    Home,
     Thanks,
     Leaderboard
   ],

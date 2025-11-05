@@ -8,22 +8,13 @@
   min-height: 100vh;
 }
 
-.sidebar {
-  width: 150px;
-}
-
 .sidebarr {
   margin-left: 75px;
   width: 150px;
 }
 
-.search {
-  position: sticky;
-  top: 50px;
-}
-
-.create {
-  position: sticky;
+.checkout {
+  position: fixed;
   top: 75px
 }
 
