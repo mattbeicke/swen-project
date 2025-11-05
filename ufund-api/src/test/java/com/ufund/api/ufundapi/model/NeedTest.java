@@ -26,29 +26,29 @@ class NeedTest {
         int id = 123;
         String description = "Requires that someone dedicate time to test.";
 
-        String updated_name = "Tested U-Fund";
-        String updated_description = "Will require tests to be added.";
+        String updatedName = "Tested U-Fund";
+        String updatedDescription = "Will require tests to be added.";
 
         Need need = new Need(name, id, description);
-        need.updateNeed(updated_name, updated_description);
+        need.updateNeed(updatedName, updatedDescription);
 
-        assertEquals(updated_name, need.getName());
-        assertEquals(updated_description, need.getDescription());
+        assertEquals(updatedName, need.getName());
+        assertEquals(updatedDescription, need.getDescription());
     }
 
     @Test
-    public void testUpdateNeed2() {
+    void testUpdateNeed2() {
         String name = "U-Fund Testing";
         int id = 123;
         String description = "Requires that someone dedicate time to test.";
 
-        String updated_description = "Will require tests to be added.";
+        String updatedDescription = "Will require tests to be added.";
 
         Need need = new Need(name, id, description);
-        need.updateNeed(null, updated_description);
+        need.updateNeed(null, updatedDescription);
 
         assertEquals(name, need.getName());
-        assertEquals(updated_description, need.getDescription());
+        assertEquals(updatedDescription, need.getDescription());
     }
 
     @Test

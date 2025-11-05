@@ -29,9 +29,9 @@ import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 @RequestMapping("cupboard")
 public class CupboardController {
     private static final Logger LOG = Logger.getLogger(CupboardController.class.getName());
-    private CupboardDAO cupboardDAO;
-    private CompletedNeedDAO completedNeedDAO;
-    private UserDAO userDAO;
+    private final CupboardDAO cupboardDAO;
+    private final CompletedNeedDAO completedNeedDAO;
+    private final UserDAO userDAO;
 
     private static final int PAGE_SIZE = 30;
 
@@ -46,8 +46,6 @@ public class CupboardController {
      *                         perform CRUD operations
      * @param userDAO          The {@link UserDAO User Data Access Object} to
      *                         perform CRUD operations
-     * @param development_mode true if developer tasks should be enabled, false if
-     *                         it should return a FORBIDDEN error code instead
      */
     public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO, UserDAO userDAO) {
         this.cupboardDAO = cupboardDAO;
@@ -112,10 +110,26 @@ public class CupboardController {
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
         LOG.info("GET /cupboard/?name=" + name);
         try {
-            return new ResponseEntity<Need[]>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
+            return new ResponseEntity<>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Updates the display name of a contributor. This is only used to display the latest version of a name.
+     * @param comp The CompletedNeed object to be updated.
+     * @throws IOException
+     */
+    private void updateDisplayName(CompletedNeed comp) throws IOException {
+        User contributor = userDAO.getUser(comp.getContributorID());
+        if (contributor == null) {
+            comp.setContributorUsername("Deleted Account");
+        } else if (false) { // To be implemented soon: Security option to hide your account
+            comp.setContributorUsername("Private Account");
+        } else {
+            comp.setContributorUsername(contributor.getUsername());
         }
     }
 
@@ -134,14 +148,7 @@ public class CupboardController {
         try {
             CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds();
             for (CompletedNeed comp : completedNeeds) {
-                User contributor = userDAO.getUser(comp.getContributorID());
-                if (contributor == null) {
-                    comp.setContributorUsername("Deleted Account");
-                } else if (false) { // TODO: Security option to hide your account
-                    comp.setContributorUsername("Private Account");
-                } else {
-                    comp.setContributorUsername(contributor.getUsername());
-                }
+                updateDisplayName(comp);
             } // update each of the usernames to their current ones
             return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
         } catch (IOException e) {
@@ -162,7 +169,7 @@ public class CupboardController {
      */
     @GetMapping("/completed/{page}")
     public ResponseEntity<CompletedNeed[]> getCompletedNeedsPage(@PathVariable int page) {
-        LOG.info("GET /completed/" + page);
+        LOG.info(() -> "GET /completed/" + page);
         if (page <= 0) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -170,14 +177,7 @@ public class CupboardController {
             // [0, PAGE_SIZE) most recent on page 1
             CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds(PAGE_SIZE, (page - 1) * PAGE_SIZE);
             for (CompletedNeed comp : completedNeeds) {
-                User contributor = userDAO.getUser(comp.getContributorID());
-                if (contributor == null) {
-                    comp.setContributorUsername("Deleted Account");
-                } else if (false) { // TODO: Security option to hide your account
-                    comp.setContributorUsername("Private Account");
-                } else {
-                    comp.setContributorUsername(contributor.getUsername());
-                }
+                updateDisplayName(comp);
             } // update each of the usernames to their current ones
             return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
         } catch (IOException e) {

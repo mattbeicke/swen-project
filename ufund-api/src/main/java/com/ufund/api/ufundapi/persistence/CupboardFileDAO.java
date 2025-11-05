@@ -49,7 +49,7 @@ public class CupboardFileDAO implements CupboardDAO {
      * 
      * @return The next id
      */
-    private synchronized static int nextId() {
+    private static synchronized int nextId() {
         int id = nextId;
         ++nextId;
         return id;
@@ -177,7 +177,7 @@ public class CupboardFileDAO implements CupboardDAO {
     @Override
     public Need updateNeed(Need need) throws IOException {
         synchronized (needs) {
-            if (needs.containsKey(need.getId()) == false) {
+            if (!needs.containsKey(need.getId())) {
                 return null; // need does not exist
             }
             needs.put(need.getId(), need);

@@ -7,17 +7,17 @@ public class CompletedNeed {
     private Need need;
     @JsonProperty("contributor")
     private int contributorID;
-    /// The contributor's known username: can be changed by request 
+    // The contributor's known username: can be changed by request
     @JsonProperty("contributor_name")
     private String contributorUsername;
     @JsonProperty("timestamp")
     private long timestamp;
 
     public CompletedNeed(@JsonProperty("need") Need need, @JsonProperty("contributor") int contributor,
-                        @JsonProperty("contributor_name") String contributor_name, @JsonProperty("timestamp") long timestamp) {
+                        @JsonProperty("contributor_name") String contributorName, @JsonProperty("timestamp") long timestamp) {
         this.need = need;
         this.contributorID = contributor;
-        this.contributorUsername = contributor_name;
+        this.contributorUsername = contributorName;
         this.timestamp = timestamp;
     }
 
