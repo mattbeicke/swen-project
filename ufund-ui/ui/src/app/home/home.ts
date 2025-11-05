@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NeedService } from '../needservice';
+import { CompletedService } from '../completedservice';
+import { CompletedNeed } from '../completedneed';
 
 @Component({
   selector: 'app-home',
@@ -9,23 +11,27 @@ import { NeedService } from '../needservice';
   styleUrl: './home.css'
 })
 export class Home {
-  constructor(private needService: NeedService, private router: Router) { }
+  constructor(private completedService: CompletedService, private router: Router) { }
 
-  recent?: string;
+    recents: CompletedNeed[] = [];
 
+
+  padInt(n: number) {
+    return ((n < 10) ? "0" : "") + n;
+  }
+
+  toDate(millisecond: number): string {
+    let date = new Date(millisecond*1000); // JS takes in millisecond, API returns seconds
+    let format = `${date.getMonth()+1}/${this.padInt(date.getDate())}/${date.getFullYear()} at ${date.getHours()%12}:${this.padInt(date.getMinutes())} ${date.getHours() >= 12 ? "PM" : "AM"}`
+    return format;
+  }
+  
   ngOnInit(): void {
     if (localStorage.getItem('username')) { // username is present => force redirect to cupboard 
       this.router.navigate(['/cupboard']);
     }
-
-    //get 5 most recent contributions and format them and display them
-    this.recent = "Thank you + username + for fulfilling + need name"
-    this.recent += "\nThank you + username + for fulfilling + need name"
-    this.recent += "\nThank you + username + for fulfilling + need name"
-    this.recent += "\nThank you + username + for fulfilling + need name"
-    this.recent += "\nThank you + username + for fulfilling + need name"
-    
-    this.recent = this.recent.replace(/\n/g, '<br/>');
+    this.completedService.getCompletedNeedsPage(1)
+      .subscribe(completed => this.recents = completed.slice(0, 5));
   }
 
   login(): void {
