@@ -447,6 +447,34 @@ class UserControllerTest {
     }
 
     @Test
+    void testAddNeedToBasketBanned() throws IOException { // addNeedToBasket may throw IOException
+        // Setup
+        int needId = 10;
+        User user = new User(99, "uname", "pword", "", "", true);
+        User user2 = new User(99, "uname2", "pword", "", "", false);
+        user2.addToBasket(needId);
+
+        // when addNeedToBasket is called, return a Need object simulating successful
+        // update and save
+        when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
+        when(mockUserDAO.addToBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
+        when(mockUserDAO.isBanned(user)).thenReturn(true);
+
+        // Invoke
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.addNeedToBasket(map, header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
     void testAddNeedToBasketNotFound1() throws IOException { // addNeedToBasket may throw IOException
         // Setup
         int needId = 10;
@@ -639,6 +667,34 @@ class UserControllerTest {
     }
 
     @Test
+    void testRemoveNeedFromBasketBanned() throws IOException { // removeNeedFromBasket may throw IOException
+        // Setup
+        int needId = 10;
+        User user = new User(99, "uname", "pword", "", "", true);
+        user.addToBasket(needId);
+        User user2 = new User(99, "uname2", "pword", "", "", true);
+
+        // when removeNeedFromBasket is called, return a Need object simulating success
+        // update and save
+        when(mockCupboardDAO.getNeed(needId)).thenReturn(new Need("name", needId, "desc"));
+        when(mockUserDAO.removeFromBasket(user, needId)).thenReturn(user2);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
+         when(mockUserDAO.isBanned(user)).thenReturn(true);
+
+        // Invoke
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("userID", user.getId());
+        map.put("needID", needId);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        ResponseEntity<User> response = userController.removeNeedFromBasket(map, header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
     void testRemoveNeedFromBasketNotFound1() throws IOException { // removeNeedFromBasket may throw IOException
         // Setup
         int needId = 10;
@@ -819,6 +875,29 @@ class UserControllerTest {
 
         // Analyze
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+    }
+
+    @Test
+    void testCheckoutBanned() throws IOException { // checkout may throw IOException
+        // Setup
+        int needId = 10;
+        User user = new User(99, "uname", "pword", "", "", true);
+        user.addToBasket(needId);
+
+        // when checkout is called, return true simulating successful
+        // update and save
+        when(mockUserDAO.checkout(user)).thenReturn(true);
+        when(mockUserDAO.getUser(user.getId())).thenReturn(user);
+        when(mockUserDAO.verifyKey(user.getId(), "valid")).thenReturn(true);
+        when(mockUserDAO.isBanned(user)).thenReturn(true);
+
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+        // Invoke
+        ResponseEntity<User> response = userController.checkout(user.getId(), header);
+
+        // Analyze
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
