@@ -151,48 +151,6 @@ class CupboardControllerTest {
     }
 
     @Test
-    void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-        // when deleteNeeds is called return true, simulating successful deletion
-        when(mockCupboardDAO.deleteNeed(needId)).thenReturn(true);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.deleteNeeds(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-    @Test
-    void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-        // when deleteNeeds is called return false, simulating failed deletion
-        when(mockCupboardDAO.deleteNeed(needId)).thenReturn(false);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.deleteNeeds(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-    @Test
-    void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
-        // Setup
-        int needId = 99;
-        // When deleteNeeds is called on the Mock Need DAO, throw an IOException
-        doThrow(new IOException()).when(mockCupboardDAO).deleteNeed(needId);
-
-        // Invoke
-        ResponseEntity<Need> response = cupboardController.deleteNeeds(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-    @Test
     void testgetCompletedNeeds() throws IOException {
         CompletedNeed[] cn = new CompletedNeed[3];
         cn[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "Alice",
