@@ -1,0 +1,36 @@
+.overall {
+  display: grid;
+  grid-template-columns: 159px 60rem 150px;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}   
+
+.create {
+  position: sticky;
+  top: 75px
+}
+
+.content {
+  margin-left: 75px;
+  width: 60rem;
+}
+
+.stick {
+  position: sticky;
+  top: 0;
+  width: 60rem;
+  background-color: white;
+  z-index: 10
+}
+
+.needs {
+  margin: 0 0 2em 0;
+  width: 60rem;
+}
+
+td {
+  padding: 0.2em;
+}

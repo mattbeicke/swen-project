@@ -115,9 +115,8 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             User user = userDAO.getUserByUsername(username);
-            User user_copy = new User(user.getId(), user.getUsername(), "", "", "", user.getBanned());
+            User user_copy = new User(user.getId(), user.getUsername(), "", "", "", 0, user.getBanned());
             return new ResponseEntity<>(user_copy, HttpStatus.OK);
-
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

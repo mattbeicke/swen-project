@@ -1,0 +1,38 @@
+import { Injectable } from '@angular/core';
+import { CompletedNeed } from './completedneed';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+/**
+ * Does the HTTP requests for all completed need related tasks
+ *
+ * @author Anthony Ficalora
+ */
+@Injectable({
+  providedIn: 'root'
+})
+export class CompletedService {
+
+  constructor(private http: HttpClient) { }
+
+  private completedNeedsURL = 'http://localhost:8080/cupboard/completed';
+
+  /**
+   * Handles HTTP request to get all Completed Needs
+   *
+   * @returns List of all Completed Needs
+   */
+  getCompletedNeeds(): Observable<CompletedNeed[]> {
+    return this.http.get<CompletedNeed[]>(this.completedNeedsURL)
+  }
+
+  /**
+   * Handles HTTP request to get all Completed Needs
+   *
+   * @param page Number of page (30 completed needs) to recieve, must be >= 1
+   * @returns List of all Completed Needs
+   */
+  getCompletedNeedsPage(page: number): Observable<CompletedNeed[]> {
+    return this.http.get<CompletedNeed[]>(this.completedNeedsURL + "/" + page) 
+  }
+}

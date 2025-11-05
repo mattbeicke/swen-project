@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
@@ -37,18 +38,22 @@ public class UserController {
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
     private UserDAO userDAO;
     private CupboardDAO cupboardDAO;
+    private CompletedNeedDAO completedNeedDAO;
 
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param userDAO     The {@link userDAO User Data Access Object} to
+     * @param userDAO     The {@link UserDAO User Data Access Object} to
      *                    perform CRUD operations
      * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
      *                    perform CRUD operations
+     * @param completedNeedDAO The {@link CompletedNeedDAO Cupboard Data Access Object} to
+     *                    perform CRUD operations
      */
-    public UserController(UserDAO userDAO, CupboardDAO cupboardDAO) {
+    public UserController(UserDAO userDAO, CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO) {
         this.userDAO = userDAO;
         this.cupboardDAO = cupboardDAO;
+        this.completedNeedDAO = completedNeedDAO;
     }
 
     /**
@@ -80,6 +85,10 @@ public class UserController {
             }
             if (userDAO.userIsManager(userID)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
             if (cupboardDAO.getNeed(needID) != null) {
@@ -136,6 +145,10 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
 
                 User newuser = userDAO.removeFromBasket(user, needID);
@@ -186,8 +199,12 @@ public class UserController {
             if (userDAO.userIsManager(id)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
+                completedNeedDAO.completeNeed(cupboardDAO.getNeed(need), user);
                 cupboardDAO.deleteNeed(need);
             }
             if (userDAO.checkout(user)) {
@@ -388,7 +405,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<User[]> getUsers(@RequestHeader Map<String, String> headers) {
         try {
-            User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);
+            User user = userDAO.getUserByUsername(User.MANAGER_USERNAME);
             String key = headers.get("key");
             if (!userDAO.verifyKey(user.getId(), key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -406,7 +423,7 @@ public class UserController {
     public ResponseEntity<User[]> searchUsers(@RequestParam String username,
             @RequestHeader Map<String, String> headers) {
         try {
-            User user = userDAO.getUserByUsername(Manager.MANAGER_USERNAME);
+            User user = userDAO.getUserByUsername(User.MANAGER_USERNAME);
             String key = headers.get("key");
             if (!userDAO.verifyKey(user.getId(), key)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -414,6 +431,26 @@ public class UserController {
 
             User[] users = userDAO.searchUsers(username);
             return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/max")
+    public ResponseEntity<Integer> getMaxUsers() {
+        try {
+            return new ResponseEntity<>(userDAO.getMaxUsers(), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/top/{n}")
+    public ResponseEntity<User[]> getTopNUsers(@PathVariable int n) {
+        try {
+            return new ResponseEntity<>(userDAO.getTopNUsers(n), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
