@@ -1,4 +1,13 @@
 <h1>Thanks to our most recent contributors:</h1>
-<div class="thanks"[innerHTML]="recent"></div>
+<div class="thanks">
+    <table class="needs">
+        <tbody>
+            <tr *ngFor="let completed of recents">
+                <td>{{completed.need.name}} was fulfilled by {{completed.contributor_name}} on
+                    {{toDate(completed.timestamp)}}.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <button (click)="login()">Login</button>
