@@ -60,7 +60,7 @@ class CupboardFileDAOTest {
     void testSearchNeeds() {
         Need[] needs = cupboardFileDAO.searchNeeds("Second"); // "Second .." and "Second .., Continued"
 
-        assertEquals(needs.length, 2);
+        assertEquals(2, needs.length);
         assertEquals(needs[0], testNeeds[1]);
         assertEquals(needs[1], testNeeds[2]);
     }
@@ -104,8 +104,8 @@ class CupboardFileDAOTest {
                 "Unexpected exception thrown");
 
         assertNotNull(newResult);
-        assertEquals(newResult.getName(), newName);
-        assertEquals(newResult.getDescription(), newDescription);
+        assertEquals(newName, newResult.getName());
+        assertEquals(newDescription, newResult.getDescription());
     }
 
     @Test

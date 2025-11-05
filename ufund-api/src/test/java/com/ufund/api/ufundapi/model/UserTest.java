@@ -162,7 +162,7 @@ class UserTest {
         int newId = 1002;
         user.setId(newId);
 
-        assertEquals(user.getId(), newId);
+        assertEquals(newId, user.getId());
     }
 
     @Test
@@ -173,7 +173,7 @@ class UserTest {
         User user = new User(id, name, password, "", "", 0, false);
 
         boolean response = user.checkout();
-        assertEquals(response, false);
+        assertFalse(response);
     }
 
     @Test
@@ -185,7 +185,7 @@ class UserTest {
         User user = new User(id, name, password, "", answer, 0, false);
 
         boolean response = user.verifyAnswer(answer);
-        assertEquals(response, true);
+        assertTrue(response);
     }
 
     @Test

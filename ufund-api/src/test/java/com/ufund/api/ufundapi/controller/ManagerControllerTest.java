@@ -297,11 +297,11 @@ class ManagerControllerTest {
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
-        ResponseEntity<Need> response = managerController.editNeed(need, header);
+        managerController.editNeed(need, header);
         need.updateNeed("Soup", null);
 
         // Invoke
-        response = managerController.editNeed(need, header);
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -320,11 +320,11 @@ class ManagerControllerTest {
 
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
-        ResponseEntity<Need> response = managerController.editNeed(need, header);
+        managerController.editNeed(need, header);
         need.updateNeed("", null);
 
         // Invoke
-        response = managerController.editNeed(need, header);
+        ResponseEntity<Need> response = managerController.editNeed(need, header);
 
         // Analyze
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());

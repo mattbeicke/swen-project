@@ -294,11 +294,11 @@ class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
 
-        ResponseEntity<User> response = userController.updateUser(user, header);
+        userController.updateUser(user, header);
         user.updateUser("Soup", null);
 
         // Invoke
-        response = userController.updateUser(user, header);
+        ResponseEntity<User> response = userController.updateUser(user, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -319,11 +319,11 @@ class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
 
-        ResponseEntity<User> response = userController.updateUser(user, header);
+        userController.updateUser(user, header);
         user.updateUser("Soup", null);
 
         // Invoke
-        response = userController.updateUser(user, header);
+        ResponseEntity<User> response = userController.updateUser(user, header);
 
         // Analyze
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
@@ -382,11 +382,11 @@ class UserControllerTest {
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "invalid");
 
-        ResponseEntity<User> response = userController.updateUser(user, header);
+        userController.updateUser(user, header);
         user.updateUser("Soup", null);
 
         // Invoke
-        response = userController.updateUser(user, header);
+        ResponseEntity<User> response = userController.updateUser(user, header);
 
         // Analyze
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());

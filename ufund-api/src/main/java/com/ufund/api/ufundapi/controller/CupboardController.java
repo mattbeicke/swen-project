@@ -64,7 +64,7 @@ public class CupboardController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
-        LOG.info("GET /cupboard/" + id);
+        LOG.info(() -> "GET /cupboard/" + id);
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
@@ -108,7 +108,7 @@ public class CupboardController {
      */
     @GetMapping("/")
     public ResponseEntity<Need[]> searchNeeds(@RequestParam String name) {
-        LOG.info("GET /cupboard/?name=" + name);
+        LOG.info(() -> "GET /cupboard/?name=" + name);
         try {
             return new ResponseEntity<>(cupboardDAO.searchNeeds(name), HttpStatus.OK);
         } catch (IOException e) {

@@ -114,7 +114,7 @@ class UserFileDAOTest {
         assertDoesNotThrow(() -> userFileDAO.checkout(result),
                 "Unexpected exception thrown");
 
-        assertEquals(result.getBasket(), new ArrayList<>());
+        assertEquals(new ArrayList<>(), result.getBasket());
     }
 
     @Test
@@ -168,7 +168,7 @@ class UserFileDAOTest {
                 "Unexpected exception thrown");
 
         assertNotNull(newResult);
-        assertEquals(newResult.getUsername(), newUsername);
+        assertEquals(newUsername, newResult.getUsername());
         assertTrue(BCrypt.checkpw(newPassword, newResult.getPassword()));
     }
 
@@ -411,14 +411,14 @@ class UserFileDAOTest {
 
         boolean response = assertDoesNotThrow(() -> userFileDAO.verifyAnswer(user, "hello"),
                 "Create user failed (Unexpected exception)");
-        assertEquals(true, response);
+        assertTrue(response);
     }
 
     @Test
     void testGetAllUsers() {
         User[] users = userFileDAO.getUsers();
 
-        assertEquals(users.length, 3);
+        assertEquals(3, users.length);
         for (int i = 0; i < 3; ++i) {
             assertEquals(users[i], testUsers[i]);
         }
@@ -428,7 +428,7 @@ class UserFileDAOTest {
     void testSearchUsers() {
         User[] users = userFileDAO.searchUsers("ame2");
 
-        assertEquals(users.length, 2);
+        assertEquals(2, users.length);
         assertEquals(users[0], testUsers[1]);
         assertEquals(users[1], testUsers[2]);
     }
@@ -470,8 +470,8 @@ class UserFileDAOTest {
 
     @Test
     void testIsBanned() {
-        assertEquals(true, userFileDAO.isBanned(testUsers[2]));
-        assertEquals(false, userFileDAO.isBanned(testUsers[0]));
+        assertTrue(userFileDAO.isBanned(testUsers[2]));
+        assertFalse(userFileDAO.isBanned(testUsers[0]));
     }
 
     @Test
@@ -479,6 +479,6 @@ class UserFileDAOTest {
         assertDoesNotThrow(() -> userFileDAO.toggleBan(testUsers[0]),
                 "Create user failed (Unexpected exception)");
 
-        assertEquals(true, userFileDAO.isBanned(testUsers[0]));
+        assertTrue(userFileDAO.isBanned(testUsers[0]));
     }
 }
