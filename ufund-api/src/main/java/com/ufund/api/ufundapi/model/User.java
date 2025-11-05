@@ -126,7 +126,7 @@ public class User {
     /**
      * Returns the user's basket
      * 
-     * @return which is an {@link List List} of {@link Need Need} objects
+     * @return which is an {@link ArrayList ArrayList} of {@link Need Need} objects
      */
     public ArrayList<Integer> getBasket() {
         return basket;

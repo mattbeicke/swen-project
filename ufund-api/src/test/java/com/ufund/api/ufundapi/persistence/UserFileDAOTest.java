@@ -23,7 +23,6 @@ import org.mockito.MockedStatic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ufund.api.ufundapi.model.User;
 import java.io.File;
-import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -85,7 +84,7 @@ class UserFileDAOTest {
                 "Unexpected exception thrown");
         assertNotNull(result);
         result.addToBasket(10);
-        List<Integer> b2 = assertDoesNotThrow(
+        ArrayList<Integer> b2 = assertDoesNotThrow(
                 () -> userFileDAO.viewBasket(userFileDAO.getUser(result.getId())),
                 "Unexpected exception thrown");
 
