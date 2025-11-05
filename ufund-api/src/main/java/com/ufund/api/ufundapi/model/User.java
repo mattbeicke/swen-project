@@ -29,6 +29,7 @@ public class User {
     private boolean banned; // if the user is banned or not
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
+    public static final String MANAGER_USERNAME = "admin";
 
     /**
      * Super mega constructor for a {@link User user}
@@ -182,7 +183,7 @@ public class User {
      * @return true if a manager, false if not
      */
     public boolean isManager() {
-        return username.equals(Manager.MANAGER_USERNAME);
+        return username.equals(MANAGER_USERNAME);
     }
 
     /**

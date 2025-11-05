@@ -1,0 +1,17 @@
+<div class="overall">
+
+    <app-sidebar></app-sidebar>
+
+    <div class="content">
+        <button type="button" (click)="shiftPage(-1)">&lt;&lt;&lt;</button>
+        <button type="button" (click)="shiftPage(1)">&gt;&gt;&gt;</button>
+        <h1 class="stick">Recently Satisfied Needs</h1>
+        <table class="needs">
+            <tbody>
+                <tr *ngFor="let completed of completedNeeds$">
+                    <td>{{completed.need.name}} was fulfilled by {{completed.contributor_name}} on {{toDate(completed.timestamp)}}. Thank you for your help!</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

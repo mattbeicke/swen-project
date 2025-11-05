@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.User;
 
 /**
@@ -195,7 +193,8 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(), user.getSecurityAnswer(), user.getContributions(), user.getBanned());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(),
+                    user.getSecurityQuestion(), user.getSecurityAnswer(), user.getContributions(), user.getBanned());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -385,7 +384,7 @@ public class UserFileDAO implements UserDAO {
         ArrayList<User> userArrayList = new ArrayList<>();
 
         for (User user : users.values()) {
-            if (user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+            if (user.getUsername().equals(User.MANAGER_USERNAME)) {
                 continue;
             }
             if (containsText == null || user.getUsername().toLowerCase().contains(containsText.toLowerCase())) {
@@ -420,7 +419,7 @@ public class UserFileDAO implements UserDAO {
 
         List<User> userList = new ArrayList<>();
         for (User user : users.values()) {
-            if (!user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+            if (!user.getUsername().equals(User.MANAGER_USERNAME)) {
                 userList.add(user);
             }
         }

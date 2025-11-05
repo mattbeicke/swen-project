@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.ufund.api.ufundapi.model.Manager;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
@@ -226,7 +225,7 @@ class ManagerControllerTest {
         // Invoke
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
+        ResponseEntity<User> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -244,7 +243,7 @@ class ManagerControllerTest {
         // Invoke
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
+        ResponseEntity<User> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -262,7 +261,7 @@ class ManagerControllerTest {
         // Invoke
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
+        ResponseEntity<User> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -280,7 +279,7 @@ class ManagerControllerTest {
         // Invoke
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "INVALID KEY");
-        ResponseEntity<Manager> response = managerController.deleteNeed(needId, header);
+        ResponseEntity<User> response = managerController.deleteNeed(needId, header);
 
         // Analyze
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -394,7 +393,7 @@ class ManagerControllerTest {
         User user = new User(0, username, "", "", "", 0, banned);
         User user2 = new User(0, username, "", "", "", 0, !banned);
 
-        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(true);
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
 
@@ -410,7 +409,7 @@ class ManagerControllerTest {
     void testToggleNoAuth() throws IOException {
         String username = "uname";
 
-        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(false);
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(false);
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
 
@@ -423,7 +422,7 @@ class ManagerControllerTest {
     void testToggleNotFound() throws IOException {
         String username = "uname";
 
-        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(true);
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
 
@@ -440,7 +439,7 @@ class ManagerControllerTest {
         boolean banned = false;
         User user = new User(0, username, "", "", "", 0, banned);
 
-        when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(true);
         HashMap<String, String> header = new HashMap<>();
         header.put("key", "valid");
 

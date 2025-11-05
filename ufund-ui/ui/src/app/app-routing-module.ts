@@ -6,6 +6,7 @@ import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
+import { Thanks } from './thanks/thanks';
 import { Leaderboard } from './leaderboard/leaderboard';
 
 const routes: Routes = [
@@ -14,9 +15,10 @@ const routes: Routes = [
   { path: 'account', component: Account },
   { path: 'basket', component: BasketTab },
   { path: 'users', component: UsersTab },
+  { path: 'thanks', component: Thanks },
   { path: 'forgotpassword', component: ForgotPassword },
   { path: 'leaderboard', component: Leaderboard },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({

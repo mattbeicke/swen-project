@@ -1,1 +1,1 @@
-[{"id":1,"username":"admin","password":"$2a$10$smhlpCfnKXroFGM6iGS5d.5AJVQvYIRXwlDVErodlU3MsaPgMCJ8.","manager":true,"basket":[]}]
+[{"id":1,"username":"admin","password":"$2a$10$smhlpCfnKXroFGM6iGS5d.5AJVQvYIRXwlDVErodlU3MsaPgMCJ8.","securityQuestion":null,"securityAnswer":null,"manager":true,"basket":[]},{"id":3,"username":"dave","password":"$2a$10$tuJf7c9.JJUfk2qcl1Cu6OmcK9EntvRJlNhUBBsIYE29jQJmmNyri","securityQuestion":"dav","securityAnswer":"mode","manager":false,"basket":[]}]

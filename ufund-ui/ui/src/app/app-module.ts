@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
+import { Thanks } from './thanks/thanks';
 import { Leaderboard } from './leaderboard/leaderboard';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { Leaderboard } from './leaderboard/leaderboard';
     BasketTab,
     UsersTab,
     ForgotPassword,
+    Thanks,
     Leaderboard
   ],
   imports: [
@@ -30,7 +32,7 @@ import { Leaderboard } from './leaderboard/leaderboard';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
