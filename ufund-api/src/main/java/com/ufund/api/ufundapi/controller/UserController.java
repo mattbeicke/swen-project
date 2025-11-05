@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +83,10 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
                 User newuser = userDAO.addToBasket(user, needID);
                 if (newuser == null) {
@@ -136,6 +141,10 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
 
                 User newuser = userDAO.removeFromBasket(user, needID);
@@ -185,6 +194,9 @@ public class UserController {
             }
             if (userDAO.userIsManager(id)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
