@@ -189,7 +189,7 @@ class UserTest {
     }
 
     @Test
-    public void testToggleBanStatus1() {
+    void testToggleBanStatus1() {
         String name = "John Doe";
         String password = "hunter2";
         boolean banned = false;
@@ -202,7 +202,7 @@ class UserTest {
     }
 
     @Test
-    public void testToggleBanStatus2() {
+    void testToggleBanStatus2() {
         String name = "John Doe";
         String password = "hunter2";
         boolean banned = true;

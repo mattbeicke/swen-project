@@ -1133,7 +1133,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetMaxUsers() throws IOException {
+    void testGetMaxUsers() throws IOException {
         User[] users = new User[3];
         users[0] = new User(0, "", "", "", "", 0, false);
         users[1] = new User(0, "", "", "", "", 0, false);
@@ -1148,7 +1148,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetMaxUsersHandleException() throws IOException {
+    void testGetMaxUsersHandleException() throws IOException {
         doThrow(new IOException()).when(mockUserDAO).getMaxUsers();
 
         ResponseEntity<Integer> response = userController.getMaxUsers();
@@ -1157,7 +1157,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetTopNUsers() throws IOException {
+    void testGetTopNUsers() throws IOException {
         int n = 2;
         User[] users = new User[3];
         users[0] = new User(0, "", "", "", "", 0, false);
@@ -1177,7 +1177,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testGetTopNUsersHandleException() throws IOException {
+    void testGetTopNUsersHandleException() throws IOException {
         int n = 2;
 
         doThrow(new IOException()).when(mockUserDAO).getTopNUsers(n);

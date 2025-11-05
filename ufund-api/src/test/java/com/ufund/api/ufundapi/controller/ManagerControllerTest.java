@@ -388,7 +388,7 @@ class ManagerControllerTest {
     }
 
     @Test
-    public void testToggle() throws IOException {
+    void testToggle() throws IOException {
         String username = "uname";
         boolean banned = false;
         User user = new User(0, username, "", "", "", 0, banned);
@@ -407,7 +407,7 @@ class ManagerControllerTest {
     }
 
     @Test
-    public void testToggleNoAuth() throws IOException {
+    void testToggleNoAuth() throws IOException {
         String username = "uname";
 
         when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(false);
@@ -420,7 +420,7 @@ class ManagerControllerTest {
     }
 
     @Test
-    public void testToggleNotFound() throws IOException {
+    void testToggleNotFound() throws IOException {
         String username = "uname";
 
         when(mockUserDAO.verifyKey(Manager.MANAGER_USERNAME, "valid")).thenReturn(true);
@@ -435,7 +435,7 @@ class ManagerControllerTest {
     }
 
     @Test
-    public void testToggleHandleException() throws IOException {
+    void testToggleHandleException() throws IOException {
         String username = "uname";
         boolean banned = false;
         User user = new User(0, username, "", "", "", 0, banned);
