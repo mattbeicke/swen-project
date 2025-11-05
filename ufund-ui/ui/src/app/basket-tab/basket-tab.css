@@ -60,10 +60,11 @@ table {
 
 th {
   font-size: 25px;
+  font-family: Arial, "Times New Roman", "Comic Sans";
   text-align: left;
   padding-bottom: 10px;
   position: sticky;
   z-index: 1;
   top: 33px;
-  background-color: #ffffff;
+  background-color: #a09d9d;
 }
