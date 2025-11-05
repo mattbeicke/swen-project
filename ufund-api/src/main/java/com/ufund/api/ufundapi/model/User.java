@@ -23,6 +23,8 @@ public class User {
     private String securityQuestion; // User's security question
     @JsonProperty("securityAnswer")
     private String securityAnswer; // Answer to the security question
+    @JsonProperty("contributions")
+    private int contributions; // Number of things a user has checked out
     @JsonProperty("banned")
     private boolean banned; // if the user is banned or not
 
@@ -39,12 +41,13 @@ public class User {
      * @param banned           ban status of user
      */
     public User(int id, String username, String password, String securityQuestion, String securityAnswer,
-            boolean banned) {
+            int contributions, boolean banned) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+        this.contributions = contributions;
         this.banned = banned;
         basket = new ArrayList<>();
     }
@@ -62,8 +65,10 @@ public class User {
      * @return the user, now with an encrpyted password
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
-                                    String securityAnswer, boolean banned) {
-      return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer, banned);
+            String securityAnswer, int contributions, boolean banned) {
+        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
+                contributions, banned);
+        return user;
     }
 
     /**
@@ -196,6 +201,14 @@ public class User {
      */
     public String getSecurityAnswer() {
         return securityAnswer;
+    }
+
+    public int getContributions() {
+        return contributions;
+    }
+
+    public void alterContributions(int alter) {
+        contributions += alter;
     }
 
     /**

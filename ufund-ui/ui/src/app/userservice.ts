@@ -39,6 +39,24 @@ export class UserService {
   }
 
   /**
+   * Handles HTTP request for getting the total number of users
+   * 
+   * @returns max number of users
+   */
+  getMaxUsers(): Observable<number> {
+    return this.http.get<number>(this.userURL + '/max');
+  }
+
+  /**
+   * Handles HTTP request for getting the top n contributors
+   * 
+   * @returns top n contributors
+   */
+  getTopNUsers(n: number): Observable<User[]> {
+    return this.http.get<User[]>(this.userURL + '/top/' + n, { responseType: 'json' });
+  }
+
+  /**
    * Handles HTTP request to toggle the ban state of a user
    * 
    * @param username username of user to toggle ban

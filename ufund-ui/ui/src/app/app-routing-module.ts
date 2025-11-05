@@ -6,6 +6,7 @@ import { Account } from './account/account';
 import { BasketTab } from './basket-tab/basket-tab';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
+import { Leaderboard } from './leaderboard/leaderboard';
 
 const routes: Routes = [
   { path: 'cupboard', component: Cupboard },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'basket', component: BasketTab },
   { path: 'users', component: UsersTab },
   { path: 'forgotpassword', component: ForgotPassword },
+  { path: 'leaderboard', component: Leaderboard },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -146,10 +148,21 @@ public class UserFileDAO implements UserDAO {
     @Override
     public boolean checkout(User user) throws IOException {
         synchronized (users) {
+            alterContributions(user, user.getBasket().size());
             boolean retval = user.checkout();
             save();
             return retval;
         }
+    }
+
+    /**
+     * changes the contributions of a user
+     * 
+     * @param user user to alter
+     * @param n    how much to alter by
+     */
+    private void alterContributions(User user, int n) {
+        user.alterContributions(n);
     }
 
     /**
@@ -182,9 +195,7 @@ public class UserFileDAO implements UserDAO {
             if (getUserByUsername(user.getUsername()) != null) {
                 return null;
             }
-            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(),
-                    user.getSecurityQuestion(),
-                    user.getSecurityAnswer(), user.getBanned());
+            User newUser = User.generateUser(nextId(), user.getUsername(), user.getPassword(), user.getSecurityQuestion(), user.getSecurityAnswer(), user.getContributions(), user.getBanned());
             users.put(newUser.getId(), newUser);
             save(); // may throw an IOException
             return newUser;
@@ -392,5 +403,37 @@ public class UserFileDAO implements UserDAO {
      */
     public boolean verifyAnswer(User user, String answer) throws IOException {
         return user.verifyAnswer(answer);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public int getMaxUsers() {
+        return users.size() - 1; // -1 beacuse admin doesnt count
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public User[] getTopNUsers(int n) {
+        User[] top = new User[n];
+
+        List<User> userList = new ArrayList<>();
+        for (User user : users.values()) {
+            if (!user.getUsername().equals(Manager.MANAGER_USERNAME)) {
+                userList.add(user);
+            }
+        }
+
+        userList.sort((u1, u2) -> Integer.compare(u2.getContributions(), u1.getContributions()));
+
+        for (int i = 0; i < n; i++) {
+            top[i] = userList.get(i);
+        }
+
+        if (top[0].getContributions() == 0) {
+            return new User[0];
+        }
+        return top;
     }
 }

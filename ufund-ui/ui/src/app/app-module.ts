@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
+import { Leaderboard } from './leaderboard/leaderboard';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ForgotPassword } from './forgotpassword/forgotpassword';
     Account,
     BasketTab,
     UsersTab,
-    ForgotPassword
+    ForgotPassword,
+    Leaderboard
   ],
   imports: [
     Sidebarmodule,

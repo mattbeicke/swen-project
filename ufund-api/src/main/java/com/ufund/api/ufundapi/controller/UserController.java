@@ -431,4 +431,24 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/max")
+    public ResponseEntity<Integer> getMaxUsers() {
+        try {
+            return new ResponseEntity<>(userDAO.getMaxUsers(), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/top/{n}")
+    public ResponseEntity<User[]> getTopNUsers(@PathVariable int n) {
+        try {
+            return new ResponseEntity<>(userDAO.getTopNUsers(n), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
