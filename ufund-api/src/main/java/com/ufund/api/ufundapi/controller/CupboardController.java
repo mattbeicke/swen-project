@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufund.api.ufundapi.model.Need;
+import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
+import com.ufund.api.ufundapi.persistence.UserDAO;
 import com.ufund.api.ufundapi.model.CompletedNeed;
 import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 
@@ -34,7 +36,9 @@ public class CupboardController {
     private static final Logger LOG = Logger.getLogger(CupboardController.class.getName());
     private CupboardDAO cupboardDAO;
     private CompletedNeedDAO completedNeedDAO;
+    private UserDAO userDAO;
 
+    private static final int PAGE_SIZE = 30;
     private boolean DEVELOPMENT_MODE;
 
     /**
@@ -46,13 +50,16 @@ public class CupboardController {
      * @param completedNeedDAO The {@link CompletedNeedDAO Completed Need Data
      *                         Access Object} to
      *                         perform CRUD operations
+     * @param userDAO          The {@link UserDAO User Data Access Object} to
+     *                         perform CRUD operations
      * @param development_mode true if developer tasks should be enabled, false if
      *                         it should return a FORBIDDEN error code instead
      */
-    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO,
+    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO, UserDAO userDAO,
             @Value("${development-mode}") boolean development_mode) {
         this.cupboardDAO = cupboardDAO;
         this.completedNeedDAO = completedNeedDAO;
+        this.userDAO = userDAO;
         this.DEVELOPMENT_MODE = development_mode;
 
     }
@@ -225,6 +232,16 @@ public class CupboardController {
 
         try {
             CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds();
+            for(CompletedNeed comp : completedNeeds) {
+                User contributor = userDAO.getUser(comp.getContributorID());
+                if(contributor == null) {
+                    comp.setContributorUsername("Deleted Account");
+                } else if(false) { // TODO: Security option to hide your account
+                    comp.setContributorUsername("Private Account");
+                } else {
+                    comp.setContributorUsername(contributor.getUsername());
+                }
+            } // update each of the usernames to their current ones
             return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
@@ -233,7 +250,7 @@ public class CupboardController {
     }
 
     /**
-     * Responds to the GET request for all {@link CompletedNeed completed needs}
+     * Responds to the GET request for one page of {@link CompletedNeed completed needs}
      *
      * @return ResponseEntity with array of {@link CompletedNeed completed need}
      *         objects (may be empty)
@@ -248,9 +265,18 @@ public class CupboardController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds((page - 1) * 30, page * 30); // [0, 30)
-                                                                                                          // most recent
-                                                                                                          // on page 1
+            // [0, PAGE_SIZE) most recent on page 1
+            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds(PAGE_SIZE, (page-1) * PAGE_SIZE);
+            for(CompletedNeed comp : completedNeeds) {
+                User contributor = userDAO.getUser(comp.getContributorID());
+                if(contributor == null) {
+                    comp.setContributorUsername("Deleted Account");
+                } else if(false) { // TODO: Security option to hide your account
+                    comp.setContributorUsername("Private Account");
+                } else {
+                    comp.setContributorUsername(contributor.getUsername());
+                }
+            } // update each of the usernames to their current ones
             return new ResponseEntity<>(completedNeeds, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());

@@ -34,10 +34,10 @@ public class CompletedNeedFileDAOTest {
     public void setupCompletedNeedFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testCN = new CompletedNeed[3];
-        testCN[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, 1000);
-        testCN[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, 1001);
+        testCN[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "alice", 1000);
+        testCN[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, "bob", 1001);
         testCN[2] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
-                3, 1002);
+                3, "charles", 1002);
 
         // When the object mapper is supposed to read from the file
         // the mock object mapper will return the hero array above
@@ -81,10 +81,10 @@ public class CompletedNeedFileDAOTest {
 
         CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds();
 
-        CompletedNeed expected = new CompletedNeed(need, 0, Instant.now().getEpochSecond());
+        CompletedNeed expected = new CompletedNeed(need, 0, "id", Instant.now().getEpochSecond());
 
-        assertEquals(expected.getNeed(), cn[3].getNeed());
-        assertEquals(expected.getContributorID(), cn[3].getContributorID());
-        assertEquals(expected.getTimestamp(), cn[3].getTimestamp());
+        assertEquals(expected.getNeed(), cn[0].getNeed());
+        assertEquals(expected.getContributorID(), cn[0].getContributorID());
+        assertEquals(expected.getTimestamp(), cn[0].getTimestamp());
     }
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
+import com.ufund.api.ufundapi.persistence.UserDAO;
 import com.ufund.api.ufundapi.model.CompletedNeed;
 import com.ufund.api.ufundapi.model.Need;
 
@@ -28,6 +29,7 @@ public class CupboardControllerTest {
     private CupboardController cupboardController, noDevCController;
     private CupboardDAO mockCupboardDAO;
     private CompletedNeedDAO mockCompletedNeedDAO;
+    private UserDAO mockUserDAO;
 
     /**
      * Before each test, create a new CupboardController object and inject
@@ -37,8 +39,9 @@ public class CupboardControllerTest {
     public void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
         mockCompletedNeedDAO = mock(CompletedNeedDAO.class);
-        cupboardController = new CupboardController(mockCupboardDAO, mockCompletedNeedDAO, true);
-        noDevCController = new CupboardController(mockCupboardDAO, mockCompletedNeedDAO, false);
+        mockUserDAO = mock(UserDAO.class);
+        cupboardController = new CupboardController(mockCupboardDAO, mockCompletedNeedDAO, mockUserDAO, true);
+        noDevCController = new CupboardController(mockCupboardDAO, mockCompletedNeedDAO, mockUserDAO, false); // This line is going to cause a merge conflict, please delete this one.
     }
 
     @Test
@@ -322,10 +325,10 @@ public class CupboardControllerTest {
     @Test
     public void testgetCompletedNeeds() throws IOException {
         CompletedNeed[] cn = new CompletedNeed[3];
-        cn[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, 1000);
-        cn[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, 1001);
+        cn[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "Alice", 1000);
+        cn[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, "Bob", 1001);
         cn[2] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
-                3, 1002);
+                3, "Charlie", 1002);
 
         when(mockCompletedNeedDAO.getRecentNeeds()).thenReturn(cn);
 
@@ -348,12 +351,12 @@ public class CupboardControllerTest {
     public void testgetCompletedNeedsPage() throws IOException {
         int page = 1;
         CompletedNeed[] cn = new CompletedNeed[3];
-        cn[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, 1000);
-        cn[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, 1001);
+        cn[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "Alice", 1000);
+        cn[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, "Bob", 1001);
         cn[2] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
-                3, 1002);
+                3, "Charles", 1002);
 
-        when(mockCompletedNeedDAO.getRecentNeeds((page - 1) * 30, page * 30)).thenReturn(cn);
+        when(mockCompletedNeedDAO.getRecentNeeds(30, (page-1) * 30)).thenReturn(cn);
 
         ResponseEntity<CompletedNeed[]> response = cupboardController.getCompletedNeedsPage(page);
 
@@ -373,7 +376,7 @@ public class CupboardControllerTest {
     @Test
     public void testgetCompletedNeedsPageHandleException() throws IOException {
         int page = 1;
-        doThrow(new IOException()).when(mockCompletedNeedDAO).getRecentNeeds((page - 1) * 30, page * 30);
+        doThrow(new IOException()).when(mockCompletedNeedDAO).getRecentNeeds(30, (page-1) * 30);
 
         ResponseEntity<CompletedNeed[]> response = cupboardController.getCompletedNeedsPage(page);
 

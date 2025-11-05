@@ -64,8 +64,8 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
 
     @Override
     public void completeNeed(Need need, User user) throws IOException {
-        CompletedNeed completed = new CompletedNeed(need, user.getId(), Instant.now().getEpochSecond());
-        completedNeeds.add(completed);
+        CompletedNeed completed = new CompletedNeed(need, user.getId(), user.getUsername(), Instant.now().getEpochSecond());
+        completedNeeds.add(0, completed);
         save();
     }
 
