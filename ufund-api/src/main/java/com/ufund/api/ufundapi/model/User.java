@@ -23,6 +23,10 @@ public class User {
     private String securityQuestion; // User's security question
     @JsonProperty("securityAnswer")
     private String securityAnswer; // Answer to the security question
+    @JsonProperty("contributions")
+    private int contributions; // Number of things a user has checked out
+    @JsonProperty("banned")
+    private boolean banned; // if the user is banned or not
 
     static final String STRING_FORMAT = "User [id=%d, username=%s]";
     public static final String MANAGER_USERNAME = "admin";
@@ -35,13 +39,17 @@ public class User {
      * @param password         password of user
      * @param securityQuestion security question of user
      * @param securityAnswer   answer to security question of user
+     * @param banned           ban status of user
      */
-    public User(int id, String username, String password, String securityQuestion, String securityAnswer) {
+    public User(int id, String username, String password, String securityQuestion, String securityAnswer,
+            int contributions, boolean banned) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
+        this.contributions = contributions;
+        this.banned = banned;
         basket = new ArrayList<>();
     }
 
@@ -49,13 +57,18 @@ public class User {
      * Constructor for a {@link User user} for the load() function, preventing
      * reencrypting
      * 
-     * @param id       UserID
-     * @param username User's username
-     * @param password User's password
+     * @param id               UserID
+     * @param username         User's username
+     * @param password         User's username
+     * @param securityQuestion User's security question
+     * @param securityAnswer   User's answer to their security question
+     * @param banned           User's ban status
+     * @return the user, now with an encrpyted password
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
-            String securityAnswer) {
-        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer);
+            String securityAnswer, int contributions, boolean banned) {
+        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
+                contributions, banned);
         return user;
     }
 
@@ -161,7 +174,7 @@ public class User {
      *         false otherwise
      */
     public boolean inBasket(int needId) {
-        return basket.contains((Integer) needId);
+        return basket.contains(needId);
     }
 
     /**
@@ -191,6 +204,30 @@ public class User {
         return securityAnswer;
     }
 
+    public int getContributions() {
+        return contributions;
+    }
+
+    public void alterContributions(int alter) {
+        contributions += alter;
+    }
+
+    /**
+     * gets the ban status of a user
+     * 
+     * @return the ban status of a user
+     */
+    public boolean getBanned() {
+        return banned;
+    }
+
+    /**
+     * toggles the ban status of a user (banned->unbanned or unbanned->banned)
+     */
+    public void toggleBanStatus() {
+        banned = !banned;
+    }
+
     /**
      * checks if the supplied answer to the security question is correct
      * 
@@ -208,6 +245,6 @@ public class User {
      */
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT, id, username, password);
+        return String.format(STRING_FORMAT, id, username);
     }
 }

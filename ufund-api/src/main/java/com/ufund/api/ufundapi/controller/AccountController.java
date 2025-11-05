@@ -115,9 +115,8 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             User user = userDAO.getUserByUsername(username);
-            User user_copy = new User(user.getId(), user.getUsername(), "", "", "");
+            User user_copy = new User(user.getId(), user.getUsername(), "", "", "", 0, user.getBanned());
             return new ResponseEntity<>(user_copy, HttpStatus.OK);
-
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -135,7 +134,7 @@ public class AccountController {
             if (question == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<String>(question, HttpStatus.OK);
+            return new ResponseEntity<>(question, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -150,7 +149,7 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             if (userDAO.verifyAnswer(user, answer)) {
-                return new ResponseEntity<String>("", HttpStatus.OK);
+                return new ResponseEntity<>("", HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } catch (IOException e) {

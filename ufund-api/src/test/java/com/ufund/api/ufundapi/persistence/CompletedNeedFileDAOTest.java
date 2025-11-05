@@ -34,8 +34,10 @@ public class CompletedNeedFileDAOTest {
     public void setupCompletedNeedFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testCN = new CompletedNeed[3];
-        testCN[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "alice", 1000);
-        testCN[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, "bob", 1001);
+        testCN[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "alice",
+                1000);
+        testCN[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, "bob",
+                1001);
         testCN[2] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
                 3, "charles", 1002);
 
@@ -75,7 +77,7 @@ public class CompletedNeedFileDAOTest {
     @Test
     public void testCompleteNeed() {
         Need need = new Need("ned", 1, "desc");
-        User user = new User(0, "uname", "pword", "", "");
+        User user = new User(0, "uname", "pword", "", "", 0, false);
 
         assertDoesNotThrow(() -> completedNeedFileDAO.completeNeed(need, user), "Unexpected exception thrown");
 

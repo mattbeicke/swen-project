@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,6 +87,10 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
                 User newuser = userDAO.addToBasket(user, needID);
                 if (newuser == null) {
@@ -98,7 +103,7 @@ public class UserController {
                         newuser.removeFromBasket(need);
                     }
                 }
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -140,6 +145,10 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
             if (cupboardDAO.getNeed(needID) != null) {
 
                 User newuser = userDAO.removeFromBasket(user, needID);
@@ -153,7 +162,7 @@ public class UserController {
                         newuser.removeFromBasket(need);
                     }
                 }
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -190,13 +199,16 @@ public class UserController {
             if (userDAO.userIsManager(id)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
+            if (userDAO.isBanned(user)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             ArrayList<Integer> basket = user.getBasket();
             for (int need : basket) {
                 completedNeedDAO.completeNeed(cupboardDAO.getNeed(need), user);
                 cupboardDAO.deleteNeed(need);
             }
             if (userDAO.checkout(user)) {
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -220,7 +232,7 @@ public class UserController {
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
-                return new ResponseEntity<Need>(need, HttpStatus.OK);
+                return new ResponseEntity<>(need, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -300,7 +312,7 @@ public class UserController {
             if (newuser == null) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
-            return new ResponseEntity<User>(newuser, HttpStatus.CREATED);
+            return new ResponseEntity<>(newuser, HttpStatus.CREATED);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -419,6 +431,26 @@ public class UserController {
 
             User[] users = userDAO.searchUsers(username);
             return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/max")
+    public ResponseEntity<Integer> getMaxUsers() {
+        try {
+            return new ResponseEntity<>(userDAO.getMaxUsers(), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/top/{n}")
+    public ResponseEntity<User[]> getTopNUsers(@PathVariable int n) {
+        try {
+            return new ResponseEntity<>(userDAO.getTopNUsers(n), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

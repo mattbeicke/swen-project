@@ -13,6 +13,7 @@ import { Sidebarmodule } from './sidebarmodule/sidebarmodule-module';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
 import { Thanks } from './thanks/thanks';
+import { Leaderboard } from './leaderboard/leaderboard';
 
 @NgModule({
   declarations: [
@@ -23,14 +24,15 @@ import { Thanks } from './thanks/thanks';
     BasketTab,
     UsersTab,
     ForgotPassword,
-    Thanks
+    Thanks,
+    Leaderboard
   ],
   imports: [
     Sidebarmodule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

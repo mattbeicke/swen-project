@@ -7,6 +7,7 @@ import { BasketTab } from './basket-tab/basket-tab';
 import { UsersTab } from './userstab/userstab';
 import { ForgotPassword } from './forgotpassword/forgotpassword';
 import { Thanks } from './thanks/thanks';
+import { Leaderboard } from './leaderboard/leaderboard';
 
 const routes: Routes = [
   { path: 'cupboard', component: Cupboard },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'users', component: UsersTab },
   { path: 'thanks', component: Thanks },
   { path: 'forgotpassword', component: ForgotPassword },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'leaderboard', component: Leaderboard },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({

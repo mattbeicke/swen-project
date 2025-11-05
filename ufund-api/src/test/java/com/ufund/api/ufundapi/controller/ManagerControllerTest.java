@@ -26,7 +26,7 @@ import com.ufund.api.ufundapi.persistence.UserDAO;
  * @author Ricardo Lopez
  */
 @Tag("Controller-tier")
-public class ManagerControllerTest {
+class ManagerControllerTest {
     private ManagerController managerController;
     private CupboardDAO mockCupboardDAO;
     private UserDAO mockUserDAO;
@@ -36,7 +36,7 @@ public class ManagerControllerTest {
      * a mock Need DAO
      */
     @BeforeEach
-    public void setupCupboardController() {
+    void setupCupboardController() {
         mockCupboardDAO = mock(CupboardDAO.class);
         mockUserDAO = mock(UserDAO.class);
         managerController = new ManagerController(mockCupboardDAO, mockUserDAO);
@@ -44,7 +44,7 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testGetNeed() throws IOException { // getNeed may throw IOException
+    void testGetNeed() throws IOException { // getNeed may throw IOException
         // Setup
         Need need = new Need("Water Bottles", 99, "plastic, fiji if possible");
         // When the same id is passed in, our mock Need DAO will return the Need object
@@ -59,7 +59,7 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
+    void testGetNeedNotFound() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
         // When the same id is passed in, our mock Need DAO will return null, simulating
@@ -74,7 +74,7 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
+    void testGetNeedHandleException() throws Exception { // createNeed may throw IOException
         // Setup
         int needId = 99;
         // When getNeed is called on the Mock Need DAO, throw an IOException
@@ -88,10 +88,10 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testAddNeed() throws IOException { // createNeed may throw IOException
+    void testAddNeed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Cookies", 99, "chocolate chip");
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         // when createNeed is called, return true simulating successful
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(need);
@@ -108,10 +108,10 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testAddNeedInvalid() throws IOException { // createNeed may throw IOException
+    void testAddNeedInvalid() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("", 99, "chocolate chip");
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         // when createNeed is called, return true simulating successful
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(need);
@@ -128,10 +128,10 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testAddNeedFailed() throws IOException { // createNeed may throw IOException
+    void testAddNeedFailed() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Plates", 99, "paper");
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         // when createNeed is called, return false simulating failed
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(null);
@@ -147,10 +147,10 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testAddNeedHandleException() throws IOException { // createNeed may throw IOException
+    void testAddNeedHandleException() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Bread", 99, "Whole grain loaf");
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         // When createNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).createNeed(need);
         when(mockUserDAO.verifyKey(user.getUsername(), "valid")).thenReturn(true);
@@ -165,10 +165,10 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testAddNeedNoAuth() throws IOException { // createNeed may throw IOException
+    void testAddNeedNoAuth() throws IOException { // createNeed may throw IOException
         // Setup
         Need need = new Need("Cookies", 99, "chocolate chip");
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         // when createNeed is called, return true simulating successful
         // creation and save
         when(mockCupboardDAO.createNeed(need)).thenReturn(need);
@@ -184,7 +184,7 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testBrowseNeeds() throws IOException { // getNeeds may throw IOException
+    void testBrowseNeeds() throws IOException { // getNeeds may throw IOException
         // Setup
         Need[] needs = new Need[2];
         needs[0] = new Need("Pop culture reference 1", 99, "67");
@@ -201,7 +201,7 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testBrowseNeedsHandleException() throws IOException { // getNeeds may throw IOException
+    void testBrowseNeedsHandleException() throws IOException { // getNeeds may throw IOException
         // Setup
         // When getNeeds is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).getNeeds();
@@ -214,9 +214,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeed() throws IOException { // deleteNeeds may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         int needId = 99;
         // when deleteNeeds is called return true, simulating successful deletion
         when(mockCupboardDAO.deleteNeed(needId)).thenReturn(true);
@@ -232,9 +232,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeedNotFound() throws IOException { // deleteNeeds may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         int needId = 99;
         // when deleteNeeds is called return false, simulating failed deletion
         when(mockCupboardDAO.deleteNeed(needId)).thenReturn(false);
@@ -250,9 +250,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeedHandleException() throws IOException { // deleteNeeds may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         int needId = 99;
         // When deleteNeeds is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).deleteNeed(needId);
@@ -268,9 +268,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testDeleteNeedNoAuth() throws IOException { // deleteNeeds may throw IOException
+    void testDeleteNeedNoAuth() throws IOException { // deleteNeeds may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         int needId = 99;
         // when deleteNeeds is called return true, simulating successful deletion
         when(mockCupboardDAO.deleteNeed(needId)).thenReturn(true);
@@ -286,9 +286,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testEditNeed() throws IOException { // updateNeed may throw IOException
+    void testEditNeed() throws IOException { // updateNeed may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         Need need = new Need("Slop", 99, "canned please!");
         // when updateNeed is called, return true simulating successful
         // update and save
@@ -309,9 +309,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testEditNeedInvalid() throws IOException { // updateNeed may throw IOException
+    void testEditNeedInvalid() throws IOException { // updateNeed may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         Need need = new Need("", 99, "canned please!");
         // when updateNeed is called, return true simulating successful
         // update and save
@@ -332,9 +332,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testEditNeedFailed() throws IOException { // updateNeed may throw IOException
+    void testEditNeedFailed() throws IOException { // updateNeed may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         Need need = new Need("Cheerios", 99, "Family sized");
         // when updateNeed is called, return true simulating successful
         // update and save
@@ -351,9 +351,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testEditNeedHandleException() throws IOException { // updateNeed may throw IOException
+    void testEditNeedHandleException() throws IOException { // updateNeed may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         Need need = new Need("Sadness", 99, "More Sadness");
         // When updateNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).updateNeed(need);
@@ -369,9 +369,9 @@ public class ManagerControllerTest {
     }
 
     @Test
-    public void testEditNeedNoAuth() throws IOException { // deleteNeeds may throw IOException
+    void testEditNeedNoAuth() throws IOException { // deleteNeeds may throw IOException
         // Setup
-        User user = new User(69, "admin", "pword", "", "");
+        User user = new User(69, "admin", "pword", "", "", 0, false);
         Need need = new Need("Sadness", 99, "More Sadness");
         // When updateNeed is called on the Mock Need DAO, throw an IOException
         doThrow(new IOException()).when(mockCupboardDAO).updateNeed(need);
@@ -384,5 +384,71 @@ public class ManagerControllerTest {
 
         // Analyze
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    void testToggle() throws IOException {
+        String username = "uname";
+        boolean banned = false;
+        User user = new User(0, username, "", "", "", 0, banned);
+        User user2 = new User(0, username, "", "", "", 0, !banned);
+
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(true);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(!banned, user2.getBanned());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testToggleNoAuth() throws IOException {
+        String username = "uname";
+
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(false);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    void testToggleNotFound() throws IOException {
+        String username = "uname";
+
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(true);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void testToggleHandleException() throws IOException {
+        String username = "uname";
+        boolean banned = false;
+        User user = new User(0, username, "", "", "", 0, banned);
+
+        when(mockUserDAO.verifyKey(User.MANAGER_USERNAME, "valid")).thenReturn(true);
+        HashMap<String, String> header = new HashMap<>();
+        header.put("key", "valid");
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(user);
+
+        doThrow(new IOException()).when(mockUserDAO).toggleBan(user);
+
+        ResponseEntity<User> response = managerController.toggle(username, header);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
 }

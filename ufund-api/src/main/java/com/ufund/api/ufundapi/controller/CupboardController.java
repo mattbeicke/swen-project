@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +38,6 @@ public class CupboardController {
     private UserDAO userDAO;
 
     private static final int PAGE_SIZE = 30;
-    private boolean DEVELOPMENT_MODE;
 
     /**
      * Creates a REST API controller to reponds to requests
@@ -55,13 +53,10 @@ public class CupboardController {
      * @param development_mode true if developer tasks should be enabled, false if
      *                         it should return a FORBIDDEN error code instead
      */
-    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO, UserDAO userDAO,
-            @Value("${development-mode}") boolean development_mode) {
+    public CupboardController(CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO, UserDAO userDAO) {
         this.cupboardDAO = cupboardDAO;
         this.completedNeedDAO = completedNeedDAO;
         this.userDAO = userDAO;
-        this.DEVELOPMENT_MODE = development_mode;
-
     }
 
     /**
@@ -79,7 +74,7 @@ public class CupboardController {
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
-                return new ResponseEntity<Need>(need, HttpStatus.OK);
+                return new ResponseEntity<>(need, HttpStatus.OK);
             else
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IOException e) {
@@ -99,7 +94,7 @@ public class CupboardController {
     public ResponseEntity<Need[]> getNeeds() {
         LOG.info("GET /cupboard");
         try {
-            return new ResponseEntity<Need[]>(cupboardDAO.getNeeds(), HttpStatus.OK);
+            return new ResponseEntity<>(cupboardDAO.getNeeds(), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -142,9 +137,6 @@ public class CupboardController {
     @PostMapping("")
     public ResponseEntity<Need> createNeed(@RequestBody Need need) {
         LOG.info("POST /cupboard " + need);
-        if (!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
 
         try {
             Need new_need = cupboardDAO.createNeed(need);
@@ -173,9 +165,6 @@ public class CupboardController {
     @PutMapping("")
     public ResponseEntity<Need> updateNeed(@RequestBody Need need) {
         LOG.info("PUT /cupboard " + need);
-        if (!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
 
         try {
             Need update = cupboardDAO.updateNeed(need);
@@ -202,9 +191,6 @@ public class CupboardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Need> deleteNeeds(@PathVariable int id) {
         LOG.info("DELETE /cupboard/" + id);
-        if (!DEVELOPMENT_MODE) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
 
         try {
             boolean deleted = cupboardDAO.deleteNeed(id);
@@ -232,11 +218,11 @@ public class CupboardController {
 
         try {
             CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds();
-            for(CompletedNeed comp : completedNeeds) {
+            for (CompletedNeed comp : completedNeeds) {
                 User contributor = userDAO.getUser(comp.getContributorID());
-                if(contributor == null) {
+                if (contributor == null) {
                     comp.setContributorUsername("Deleted Account");
-                } else if(false) { // TODO: Security option to hide your account
+                } else if (false) { // TODO: Security option to hide your account
                     comp.setContributorUsername("Private Account");
                 } else {
                     comp.setContributorUsername(contributor.getUsername());
@@ -250,7 +236,8 @@ public class CupboardController {
     }
 
     /**
-     * Responds to the GET request for one page of {@link CompletedNeed completed needs}
+     * Responds to the GET request for one page of {@link CompletedNeed completed
+     * needs}
      *
      * @return ResponseEntity with array of {@link CompletedNeed completed need}
      *         objects (may be empty)
@@ -266,12 +253,12 @@ public class CupboardController {
         }
         try {
             // [0, PAGE_SIZE) most recent on page 1
-            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds(PAGE_SIZE, (page-1) * PAGE_SIZE);
-            for(CompletedNeed comp : completedNeeds) {
+            CompletedNeed[] completedNeeds = completedNeedDAO.getRecentNeeds(PAGE_SIZE, (page - 1) * PAGE_SIZE);
+            for (CompletedNeed comp : completedNeeds) {
                 User contributor = userDAO.getUser(comp.getContributorID());
-                if(contributor == null) {
+                if (contributor == null) {
                     comp.setContributorUsername("Deleted Account");
-                } else if(false) { // TODO: Security option to hide your account
+                } else if (false) { // TODO: Security option to hide your account
                     comp.setContributorUsername("Private Account");
                 } else {
                     comp.setContributorUsername(contributor.getUsername());
