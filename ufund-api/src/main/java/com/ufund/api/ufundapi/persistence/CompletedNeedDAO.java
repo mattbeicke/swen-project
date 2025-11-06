@@ -12,10 +12,11 @@ import java.io.IOException;
 public interface CompletedNeedDAO {
 
     /**
-     * Retrieves up to the 'count' most recent {@link CompletedNeed completed needs}, sorted by time completed,
+     * Retrieves up to the 'count' most recent {@link CompletedNeed completed
+     * needs}, sorted by time completed,
      * starting at the #'offset' item
      *
-     * @param count The number of needs to request,
+     * @param count  The number of needs to request,
      * @param offset The number of needs to request,
      * @return An array of {@link CompletedNeed need} objects, may be empty
      * @throws IOException if an issue with underlying storage

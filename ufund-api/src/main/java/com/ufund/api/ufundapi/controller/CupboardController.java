@@ -118,7 +118,9 @@ public class CupboardController {
     }
 
     /**
-     * Updates the display name of a contributor. This is only used to display the latest version of a name.
+     * Updates the display name of a contributor. This is only used to display the
+     * latest version of a name.
+     * 
      * @param comp The CompletedNeed object to be updated.
      * @throws IOException
      */
@@ -185,5 +187,4 @@ public class CupboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
