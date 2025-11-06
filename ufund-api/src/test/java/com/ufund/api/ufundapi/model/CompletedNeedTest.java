@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("Model-tier")
-public class CompletedNeedTest {
+class CompletedNeedTest {
     @Test
     void testCreation() {
         int uid = 1;

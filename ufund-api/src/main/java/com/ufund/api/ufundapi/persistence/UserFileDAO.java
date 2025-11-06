@@ -26,9 +26,9 @@ import com.ufund.api.ufundapi.model.User;
 @Component
 public class UserFileDAO implements UserDAO {
 
-    /// The length in characters of a generated key.
+    /** The length in characters of a generated key. */
     private static final int KEY_CHARACTERS = 32;
-    /// How long a key should last, in seconds, before being invalidated.
+    /** How long a key should last, in seconds, before being invalidated. */
     private static final int KEY_EXPIRY_TIME = 3600;
     private final SecureRandom rand = new SecureRandom();
 
@@ -102,7 +102,7 @@ public class UserFileDAO implements UserDAO {
      * 
      * @return The next id
      */
-    private synchronized static int nextId() {
+    private static synchronized int nextId() {
         int id = nextId;
         ++nextId;
         return id;
@@ -207,7 +207,7 @@ public class UserFileDAO implements UserDAO {
     @Override
     public User updateUser(User user) throws IOException {
         synchronized (users) {
-            if (users.containsKey(user.getId()) == false) {
+            if (!users.containsKey(user.getId())) {
                 return null; // user does not exist
             }
 
@@ -277,10 +277,10 @@ public class UserFileDAO implements UserDAO {
             return null;
         if (!verifyLogin(username, password))
             return null;
-        String new_key = createLoginKey();
-        activeLogins.put(user.getId(), new_key);
+        String newKey = createLoginKey();
+        activeLogins.put(user.getId(), newKey);
         loginExpiryTime.put(user.getId(), Instant.now().getEpochSecond());
-        return new_key;
+        return newKey;
     }
 
     private boolean verifyKey(User user, String key) throws IOException {

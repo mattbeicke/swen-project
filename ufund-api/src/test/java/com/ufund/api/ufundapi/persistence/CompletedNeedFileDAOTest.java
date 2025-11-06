@@ -19,7 +19,7 @@ import com.ufund.api.ufundapi.model.CompletedNeed;
 import java.io.File;
 
 @Tag("Persistence-tier")
-public class CompletedNeedFileDAOTest {
+class CompletedNeedFileDAOTest {
     CompletedNeedFileDAO completedNeedFileDAO;
     CompletedNeed[] testCN;
     ObjectMapper mockObjectMapper;
@@ -31,7 +31,7 @@ public class CompletedNeedFileDAOTest {
      * @throws IOException
      */
     @BeforeEach
-    public void setupCompletedNeedFileDAO() throws IOException {
+    void setupCompletedNeedFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
         testCN = new CompletedNeed[3];
         testCN[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "alice",
@@ -50,14 +50,14 @@ public class CompletedNeedFileDAOTest {
     }
 
     @Test
-    public void testGetRecentNeedsOutOfBounds() {
+    void testGetRecentNeedsOutOfBounds() {
         CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds(2, 100);
 
         assertEquals(new CompletedNeed[0].length, cn.length);
     }
 
     @Test
-    public void testGetRecentNeeds1() {
+    void testGetRecentNeeds1() {
         CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds(2, 1);
 
         assertEquals(testCN.length - 1, cn.length);
@@ -66,7 +66,7 @@ public class CompletedNeedFileDAOTest {
     }
 
     @Test
-    public void testGetRecentNeeds2() {
+    void testGetRecentNeeds2() {
         CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds(2, 0);
 
         assertEquals(testCN.length - 1, cn.length);
@@ -75,7 +75,7 @@ public class CompletedNeedFileDAOTest {
     }
 
     @Test
-    public void testCompleteNeed() {
+    void testCompleteNeed() {
         Need need = new Need("ned", 1, "desc");
         User user = new User(0, "uname", "pword", "", "", 0, false);
 

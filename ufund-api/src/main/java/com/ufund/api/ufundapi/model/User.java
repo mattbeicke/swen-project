@@ -1,6 +1,7 @@
 package com.ufund.api.ufundapi.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -63,13 +64,12 @@ public class User {
      * @param securityQuestion User's security question
      * @param securityAnswer   User's answer to their security question
      * @param banned           User's ban status
-     * @return the user, now with an encrpyted password
+     * @return the user, now with an encrypted password
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
             String securityAnswer, int contributions, boolean banned) {
-        User user = new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
+        return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
                 contributions, banned);
-        return user;
     }
 
     /**

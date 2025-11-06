@@ -55,7 +55,7 @@ public class ManagerController {
      */
     @GetMapping("/view/{needID}")
     public ResponseEntity<Need> viewDetails(@PathVariable int needID) {
-        LOG.info("GET /view/" + needID);
+        LOG.info(() -> "GET /view/" + needID);
         try {
             Need need = cupboardDAO.getNeed(needID);
             if (need != null)
@@ -83,7 +83,7 @@ public class ManagerController {
      */
     @PostMapping("/add")
     public ResponseEntity<Need> addNeed(@RequestBody Need need, @RequestHeader Map<String, String> headers) {
-        LOG.info("POST /add" + need.getId());
+        LOG.info(() -> "POST /add" + need.getId());
         try {
             String key = headers.get("key");
             if (!userDAO.verifyKey(User.MANAGER_USERNAME, key)) {
@@ -115,7 +115,7 @@ public class ManagerController {
      */
     @GetMapping("/browse")
     public ResponseEntity<Need[]> browseNeeds() {
-        LOG.info("GET /browse");
+        LOG.info(() -> "GET /browse");
         try {
             Need[] needs = cupboardDAO.getNeeds();
             return new ResponseEntity<>(needs, HttpStatus.OK);
@@ -137,7 +137,7 @@ public class ManagerController {
      */
     @PostMapping("/delete/{id}")
     public ResponseEntity<User> deleteNeed(@PathVariable int id, @RequestHeader Map<String, String> headers) {
-        LOG.info("POST /delete/" + id);
+        LOG.info(() -> "POST /delete/" + id);
         try {
             String key = headers.get("key");
             if (!userDAO.verifyKey(User.MANAGER_USERNAME, key)) {
@@ -171,7 +171,7 @@ public class ManagerController {
      */
     @PutMapping("/edit")
     public ResponseEntity<Need> editNeed(@RequestBody Need need, @RequestHeader Map<String, String> headers) {
-        LOG.info("POST /edit/" + need.getId());
+        LOG.info(() -> "POST /edit/" + need.getId());
         try {
             String key = headers.get("key");
             if (!userDAO.verifyKey(User.MANAGER_USERNAME, key)) {

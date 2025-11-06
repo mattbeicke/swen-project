@@ -46,15 +46,15 @@ class UserTest {
         String password = "hunter2";
         int id = 1001;
 
-        String new_name = "Jane Doe";
-        String new_password = "*******";
+        String newName = "Jane Doe";
+        String newPassword = "*******";
 
         User user = new User(id, name, password, "", "", 0, false); // Password's being overwritten here
 
-        user.updateUser(new_name, new_password);
+        user.updateUser(newName, newPassword);
 
-        assertEquals(new_name, user.getUsername());
-        assertTrue(BCrypt.checkpw(new_password, user.getPassword()));
+        assertEquals(newName, user.getUsername());
+        assertTrue(BCrypt.checkpw(newPassword, user.getPassword()));
     }
 
     @Test
@@ -64,29 +64,29 @@ class UserTest {
         int id = 1001;
         User user = User.generateUser(id, name, password, "", "", 0, false);
 
-        String new_name = "Jane Doe";
-        String new_password = "*******";
+        String newName = "Jane Doe";
+        String newPassword = "*******";
 
-        String newest_name = "Janset Doe";
-        String newest_password = "Something here";
+        String newestName = "Janset Doe";
+        String newestPassword = "Something here";
 
         user.updateUser(null, null); // Change neither
 
         assertEquals(name, user.getUsername());
         assertTrue(BCrypt.checkpw(password, user.getPassword()));
 
-        user.updateUser(new_name, null); // Change only username
+        user.updateUser(newName, null); // Change only username
 
-        assertEquals(new_name, user.getUsername());
+        assertEquals(newName, user.getUsername());
 
-        user.updateUser(null, new_password); // Change only password
+        user.updateUser(null, newPassword); // Change only password
 
-        assertTrue(BCrypt.checkpw(new_password, user.getPassword()));
+        assertTrue(BCrypt.checkpw(newPassword, user.getPassword()));
 
-        user.updateUser(newest_name, newest_password); // Change both
+        user.updateUser(newestName, newestPassword); // Change both
 
-        assertEquals(newest_name, user.getUsername());
-        assertTrue(BCrypt.checkpw(newest_password, user.getPassword()));
+        assertEquals(newestName, user.getUsername());
+        assertTrue(BCrypt.checkpw(newestPassword, user.getPassword()));
     }
 
     @Test
@@ -162,7 +162,7 @@ class UserTest {
         int newId = 1002;
         user.setId(newId);
 
-        assertEquals(user.getId(), newId);
+        assertEquals(newId, user.getId());
     }
 
     @Test
@@ -173,7 +173,7 @@ class UserTest {
         User user = new User(id, name, password, "", "", 0, false);
 
         boolean response = user.checkout();
-        assertEquals(response, false);
+        assertFalse(response);
     }
 
     @Test
@@ -185,7 +185,7 @@ class UserTest {
         User user = new User(id, name, password, "", answer, 0, false);
 
         boolean response = user.verifyAnswer(answer);
-        assertEquals(response, true);
+        assertTrue(response);
     }
 
     @Test

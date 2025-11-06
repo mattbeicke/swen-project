@@ -60,7 +60,7 @@ class CupboardFileDAOTest {
     void testSearchNeeds() {
         Need[] needs = cupboardFileDAO.searchNeeds("Second"); // "Second .." and "Second .., Continued"
 
-        assertEquals(needs.length, 2);
+        assertEquals(2, needs.length);
         assertEquals(needs[0], testNeeds[1]);
         assertEquals(needs[1], testNeeds[2]);
     }
@@ -100,12 +100,12 @@ class CupboardFileDAOTest {
 
         Need updated = new Need(newName, result.getId(), newDescription);
 
-        Need new_result = assertDoesNotThrow(() -> cupboardFileDAO.updateNeed(updated),
+        Need newResult = assertDoesNotThrow(() -> cupboardFileDAO.updateNeed(updated),
                 "Unexpected exception thrown");
 
-        assertNotNull(new_result);
-        assertEquals(new_result.getName(), newName);
-        assertEquals(new_result.getDescription(), newDescription);
+        assertNotNull(newResult);
+        assertEquals(newName, newResult.getName());
+        assertEquals(newDescription, newResult.getDescription());
     }
 
     @Test
@@ -113,10 +113,10 @@ class CupboardFileDAOTest {
         Need need = new Need("UFund", 5, "Testing Ex2");
 
         // No need exists with id 5
-        Need new_result = assertDoesNotThrow(() -> cupboardFileDAO.updateNeed(need),
+        Need newResult = assertDoesNotThrow(() -> cupboardFileDAO.updateNeed(need),
                 "Unexpected exception thrown");
 
-        assertNull(new_result);
+        assertNull(newResult);
     }
 
     @Test
@@ -140,9 +140,9 @@ class CupboardFileDAOTest {
         Need need = new Need("UFund", 5, "Testing Ex2");
 
         // No need exists with id 5
-        boolean new_result = assertDoesNotThrow(() -> cupboardFileDAO.deleteNeed(need.getId()),
+        boolean newResult = assertDoesNotThrow(() -> cupboardFileDAO.deleteNeed(need.getId()),
                 "Unexpected exception thrown");
 
-        assertFalse(new_result);
+        assertFalse(newResult);
     }
 }

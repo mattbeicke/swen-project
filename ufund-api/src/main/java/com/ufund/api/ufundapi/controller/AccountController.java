@@ -27,7 +27,7 @@ import com.ufund.api.ufundapi.persistence.UserDAO;
 @RestController
 @RequestMapping("accounts")
 public class AccountController {
-    private static final Logger LOG = Logger.getLogger(CupboardController.class.getName());
+    private static final Logger LOG = Logger.getLogger(AccountController.class.getName());
     private UserDAO userDAO;
 
     /**
@@ -115,8 +115,8 @@ public class AccountController {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             User user = userDAO.getUserByUsername(username);
-            User user_copy = new User(user.getId(), user.getUsername(), "", "", "", 0, user.getBanned());
-            return new ResponseEntity<>(user_copy, HttpStatus.OK);
+            User userCopy = new User(user.getId(), user.getUsername(), "", "", "", 0, user.getBanned());
+            return new ResponseEntity<>(userCopy, HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

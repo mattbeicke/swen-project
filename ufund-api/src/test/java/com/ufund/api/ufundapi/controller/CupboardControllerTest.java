@@ -188,7 +188,7 @@ class CupboardControllerTest {
         cn[2] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
                 3, "Charles", 1002);
 
-        when(mockCompletedNeedDAO.getRecentNeeds(30, (page - 1) * 30)).thenReturn(cn);
+        when(mockCompletedNeedDAO.getRecentNeeds(30, 0)).thenReturn(cn);
 
         ResponseEntity<CompletedNeed[]> response = cupboardController.getCompletedNeedsPage(page);
 
@@ -197,7 +197,7 @@ class CupboardControllerTest {
     }
 
     @Test
-    void testgetCompletedNeedsPageBadRequest() throws IOException {
+    void testgetCompletedNeedsPageBadRequest() {
         int page = 0;
 
         ResponseEntity<CompletedNeed[]> response = cupboardController.getCompletedNeedsPage(page);
@@ -208,7 +208,7 @@ class CupboardControllerTest {
     @Test
     void testgetCompletedNeedsPageHandleException() throws IOException {
         int page = 1;
-        doThrow(new IOException()).when(mockCompletedNeedDAO).getRecentNeeds(30, (page - 1) * 30);
+        doThrow(new IOException()).when(mockCompletedNeedDAO).getRecentNeeds(30, 0);
 
         ResponseEntity<CompletedNeed[]> response = cupboardController.getCompletedNeedsPage(page);
 

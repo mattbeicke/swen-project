@@ -183,7 +183,7 @@ public class UserController {
      */
     @PostMapping("basket/checkout/{id}")
     public ResponseEntity<User> checkout(@PathVariable int id, @RequestHeader Map<String, String> headers) {
-        LOG.info("POST /user/basket/checkout " + id);
+        LOG.info(() -> "POST /user/basket/checkout " + id);
 
         try {
             User user = userDAO.getUser(id);
@@ -227,7 +227,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Need> getNeed(@PathVariable int id) {
-        LOG.info("GET /view/" + id);
+        LOG.info(() -> "GET /view/" + id);
         try {
             Need need = cupboardDAO.getNeed(id);
             if (need != null)
@@ -254,7 +254,7 @@ public class UserController {
     @GetMapping("/basket/{id}")
     public ResponseEntity<ArrayList<Need>> viewBasket(@PathVariable int id,
             @RequestHeader Map<String, String> headers) {
-        LOG.info("GET /user/basket/" + id);
+        LOG.info(() -> "GET /user/basket/" + id);
 
         try {
             User user = userDAO.getUser(id);
@@ -301,7 +301,7 @@ public class UserController {
      */
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        LOG.info("POST /user " + user);
+        LOG.info(() -> "POST /user " + user);
 
         try {
             if (user.getPassword().isEmpty() || user.getUsername().isEmpty()) {
@@ -336,7 +336,7 @@ public class UserController {
     @PutMapping("")
     public ResponseEntity<User> updateUser(@RequestBody User user,
             @RequestHeader Map<String, String> headers) {
-        LOG.info("PUT /user " + user);
+        LOG.info(() -> "PUT /user " + user);
 
         try {
             if (userDAO.getUser(user.getId()) == null) {
@@ -375,7 +375,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id,
             @RequestHeader Map<String, String> headers) {
-        LOG.info("DELETE /user/" + id);
+        LOG.info(() -> "DELETE /user/" + id);
 
         try {
             if (userDAO.getUser(id) == null) {
