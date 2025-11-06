@@ -363,4 +363,37 @@ class AccountControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    void testUsernameAvailable() throws IOException {
+        String username = "matt";
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<Void> response = accountController.usernameAvailable(username);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testUsernameAvailableConflict() throws IOException {
+        String username = "matt";
+
+        when(mockUserDAO.getUserByUsername(username)).thenReturn(new User(0, username, "", "", "", 0, false));
+
+        ResponseEntity<Void> response = accountController.usernameAvailable(username);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    void testUsernameAvailableHandleException() throws IOException {
+        String username = "matt";
+
+        doThrow(new IOException()).when(mockUserDAO).getUserByUsername(username);
+
+        ResponseEntity<Void> response = accountController.usernameAvailable(username);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }
