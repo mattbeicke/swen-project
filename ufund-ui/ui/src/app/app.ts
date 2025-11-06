@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class App {
   constructor(private accountsService: AccountsService, private router: Router) { }
 
-  private account_paths = ['cupboard', 'accounts', 'basket'];
+  private account_paths = ['cupboard', 'account', 'basket', 'leaderboard', 'user', 'thanks'];
 
   /**
    * Checks on every page if the current session is still valid. 
