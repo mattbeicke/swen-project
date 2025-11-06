@@ -53,6 +53,27 @@ export class Login implements OnInit {
       return;
     }
 
+    this.accountsService.usernameAvailable(this.username).subscribe({
+      next: _ => {
+        this.makeAccount();
+      },
+      error: error => {
+        switch (error.status) {
+          case 409:
+            this.message = "Username already taken!";
+            break;
+          case 500:
+            this.message = "Internal server error";
+            break;
+          default:
+            this.message = "Unknown error, is server online?";
+        }
+        return;
+      }
+    });
+  }
+
+  makeAccount() {
     this.question = prompt("Enter a security question\nOr press cancel to cancel account creation", this.question)!;
     if (this.question == null || this.question.trim() == "") {
       this.question = "";
@@ -70,9 +91,9 @@ export class Login implements OnInit {
     let securityAnswer = this.answer;
     this.accountsService.createAccount({ username, password, securityQuestion, securityAnswer } as User).subscribe({
       next: () => {
-        this.accountsService.login(username, password)
+        this.accountsService.login(username!, password!)
           .subscribe({
-            next: data => (this.finalizeLogin(data, username)),
+            next: data => (this.finalizeLogin(data, username!)),
             error: error => {
               switch (error.status) {
                 case 401:
