@@ -9,9 +9,17 @@
         <table class="needs">
             <tbody>
                 <tr *ngFor="let completed of completedNeeds$">
-                    <td>{{completed.need.name}} was fulfilled by {{completed.contributor_name}} on {{toDate(completed.timestamp)}}. Thank you for your help!</td>
+                    <td>{{completed.need.name}} was fulfilled by {{completed.contributor_name}} on
+                        {{toDate(completed.timestamp)}}. Thank you for your help!</td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <aside class="numbers">
+        <p>Number of needs fulfilled in the past day: {{day}}</p>
+        <p>Number of needs fulfilled in the past week: {{week}}</p>
+        <p>Number of needs fulfilled in the past month: {{month}}</p>
+        <p>Number of needs fulfilled in the past year: {{year}}</p>
+    </aside>
 </div>
