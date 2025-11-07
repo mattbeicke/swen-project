@@ -27,11 +27,11 @@ export class Thanks {
     this.completedService.getNumbers().subscribe({
       next: nums => {
         this.day = nums[0];
-        this.year = nums[1];
+        this.week = nums[1];
         this.month = nums[2];
         this.year = nums[3];
       }
-    })
+    });
   }
 
   shiftPage(n: number) {

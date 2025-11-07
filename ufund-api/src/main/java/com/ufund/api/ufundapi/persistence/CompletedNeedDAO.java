@@ -39,4 +39,12 @@ public interface CompletedNeedDAO {
      * @throws IOException if an issue with underlying storage
      */
     void completeNeed(Need need, User user) throws IOException;
+
+    /**
+     * gets how many Needs were completed in the past day, week, month, and year
+     * 
+     * @return array of integers containing the correspodning values listed above
+     * @throws IOException
+     */
+    int[] getNumbers() throws IOException;
 }
