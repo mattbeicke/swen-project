@@ -120,4 +120,13 @@ export class AccountsService {
   resetPassword(username: string, password: string): Observable<User> {
     return this.http.put<User>(this.accountURL + '/reset', { "username": username, "password": password }, { responseType: 'json' });
   }
+
+  /**
+   * checks if a username exists or not
+   * @param username username to check
+   * @returns status code
+   */
+  usernameAvailable(username: string): Observable<void> {
+    return this.http.get<void>(this.accountURL + '/username/' + username);
+  }
 }

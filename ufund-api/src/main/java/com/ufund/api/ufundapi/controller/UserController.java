@@ -42,12 +42,14 @@ public class UserController {
     /**
      * Creates a REST API controller to reponds to requests
      * 
-     * @param userDAO     The {@link UserDAO User Data Access Object} to
-     *                    perform CRUD operations
-     * @param cupboardDAO The {@link CupboardDAO Cupboard Data Access Object} to
-     *                    perform CRUD operations
-     * @param completedNeedDAO The {@link CompletedNeedDAO Cupboard Data Access Object} to
-     *                    perform CRUD operations
+     * @param userDAO          The {@link UserDAO User Data Access Object} to
+     *                         perform CRUD operations
+     * @param cupboardDAO      The {@link CupboardDAO Cupboard Data Access Object}
+     *                         to
+     *                         perform CRUD operations
+     * @param completedNeedDAO The {@link CompletedNeedDAO Cupboard Data Access
+     *                         Object} to
+     *                         perform CRUD operations
      */
     public UserController(UserDAO userDAO, CupboardDAO cupboardDAO, CompletedNeedDAO completedNeedDAO) {
         this.userDAO = userDAO;
@@ -86,7 +88,7 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
-            if (userDAO.isBanned(user)){
+            if (userDAO.isBanned(user)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -144,7 +146,7 @@ public class UserController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
-            if (userDAO.isBanned(user)){
+            if (userDAO.isBanned(user)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
 
@@ -198,7 +200,7 @@ public class UserController {
             if (userDAO.userIsManager(id)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-            if (userDAO.isBanned(user)){
+            if (userDAO.isBanned(user)) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             ArrayList<Integer> basket = user.getBasket();
