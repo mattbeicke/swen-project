@@ -191,11 +191,7 @@ public class CupboardController {
     @GetMapping("/completed/numbers")
     public ResponseEntity<int[]> getNumbers() {
         try {
-            int[] ret = completedNeedDAO.getNumbers();
-            for (int i : ret) {
-                System.out.println(i);
-            }
-            return new ResponseEntity<>(ret, HttpStatus.OK);
+            return new ResponseEntity<>(completedNeedDAO.getNumbers(), HttpStatus.OK);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
