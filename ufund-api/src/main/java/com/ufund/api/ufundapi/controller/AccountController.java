@@ -183,10 +183,8 @@ public class AccountController {
         try {
             User user = userDAO.getUserByUsername(username);
             if (user == null) {
-                System.out.println("here1");
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
-                System.out.println("here2");
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
         } catch (IOException e) {
