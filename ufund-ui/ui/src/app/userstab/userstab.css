@@ -18,12 +18,14 @@
 }
 
 .search {
-  position: sticky;
-  top: 50px;
+  position: relative;
+  top: 40px;
+  left: 650%;
+  font-size: large;
 }
 
 .content {
-  margin-left: 75px;
+  margin-left: 80%;
   width: 60rem;
 }
 
@@ -46,6 +48,7 @@
   margin: .5em;
   padding: .5em;
   border-radius: 4px;
+  font-weight: bold;
 }
 
 .users button:hover {
@@ -63,11 +66,22 @@ table {
 }
 
 th {
-  font-size: 25px;
+  font-size: 40px;
   text-align: left;
   padding-bottom: 10px;
   position: sticky;
   z-index: 1;
   top: 33px;
   background-color: #ffffff;
+}
+
+tbody {
+  font-size: 30px;
+}
+
+h1 {
+  font-size: 60px;
+  text-decoration-line: underline;
+  text-decoration: underline black;
+  margin-left: 20%;
 }
