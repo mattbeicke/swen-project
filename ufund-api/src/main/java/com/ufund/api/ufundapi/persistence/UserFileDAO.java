@@ -426,7 +426,7 @@ public class UserFileDAO implements UserDAO {
 
         userList.sort((u1, u2) -> Integer.compare(u2.getContributions(), u1.getContributions()));
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < userList.size(); i++) {
             top[i] = userList.get(i);
         }
 
