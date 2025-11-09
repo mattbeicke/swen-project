@@ -43,20 +43,20 @@
 
 .needs button {
   cursor: pointer;
-  background-color: #EEE;
+  background-color: #fbc7c7;
   margin: .5em;
   padding: .5em;
-  border-radius: 4px;
+  border-radius: 7px;
 }
 
 .needs button:hover {
   color: #2c3a41;
-  background-color: #e6e6e6;
+  background-color: #c4b8ff;
 }
 
 .needs button:active {
   background-color: #525252;
-  color: #fafafa;
+  color: #569052;
 }
 
 table {
@@ -65,10 +65,11 @@ table {
 
 th {
   font-size: 25px;
+  font-family: "Times New Roman", Ariel;
   text-align: left;
   padding-bottom: 10px;
   position: sticky;
   z-index: 1;
   top: 33px;
-  background-color: #ffffff;
+  background-color: #e6aaaa;
 }
