@@ -14,6 +14,7 @@ export class Thanks {
 
   completedNeeds$: CompletedNeed[] = [];
   page: number = 1;
+  visiblePage: number = 1;
   styleObject: {[index: string]: any} = {
     "background-image": "conic-gradient(gray)"
   }
@@ -52,6 +53,7 @@ export class Thanks {
           return;
         }
         this.completedNeeds$ = completed;
+        this.visiblePage = this.page;
       });
   }
 

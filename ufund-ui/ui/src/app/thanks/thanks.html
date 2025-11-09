@@ -11,9 +11,18 @@
         <p>{{statement}} </p>
         <hr>
 
+
+        <div class="numbers">
+            <p>Number of needs fulfilled in the past day: {{day}}</p>
+            <p>Number of needs fulfilled in the past week: {{week}}</p>
+            <p>Number of needs fulfilled in the past month: {{month}}</p>
+            <p>Number of needs fulfilled in the past year: {{year}}</p>
+        </div>
+        <hr>
+        <br>
         <button type="button" (click)="shiftPage(-1)">&lt;&lt;&lt;</button>
         <button type="button" (click)="shiftPage(1)">&gt;&gt;&gt;</button>
-        <h1 class="stick">Recently Satisfied Needs</h1>
+        <h1 class="stick">Recently Satisfied Needs - page {{visiblePage}}</h1>
         <table class="needs">
             <tbody>
                 <tr *ngFor="let completed of completedNeeds$">
@@ -23,11 +32,4 @@
             </tbody>
         </table>
     </div>
-
-    <aside class="numbers">
-        <p>Number of needs fulfilled in the past day: {{day}}</p>
-        <p>Number of needs fulfilled in the past week: {{week}}</p>
-        <p>Number of needs fulfilled in the past month: {{month}}</p>
-        <p>Number of needs fulfilled in the past year: {{year}}</p>
-    </aside>
 </div>
