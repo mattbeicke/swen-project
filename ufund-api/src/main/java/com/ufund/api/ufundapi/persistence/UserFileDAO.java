@@ -419,7 +419,7 @@ public class UserFileDAO implements UserDAO {
 
         List<User> userList = new ArrayList<>();
         for (User user : users.values()) {
-            if (!user.getUsername().equals(User.MANAGER_USERNAME)) {
+            if (!user.getUsername().equals(User.MANAGER_USERNAME) && user.getContributions() != 0) {
                 userList.add(user);
             }
         }
@@ -430,9 +430,6 @@ public class UserFileDAO implements UserDAO {
             top[i] = userList.get(i);
         }
 
-        if (top[0].getContributions() == 0) {
-            return new User[0];
-        }
         return top;
     }
 }
