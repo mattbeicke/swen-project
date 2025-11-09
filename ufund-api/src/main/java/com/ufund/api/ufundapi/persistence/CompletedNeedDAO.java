@@ -32,6 +32,18 @@ public interface CompletedNeedDAO {
     CompletedNeed[] getRecentNeeds() throws IOException;
 
     /**
+     * Searches for all {@link CompletedNeed completed needs} whose name contains the given text
+     * 
+     * @param containsText The text to match against
+     * 
+     * @return An array of {@link CompletedNeed completed needs} whose need names contains the given text,
+     *         may be empty
+     * 
+     * @throws IOException if an issue with underlying storage
+     */
+    CompletedNeed[] searchCompletedNeeds(String containsText) throws IOException;
+
+    /**
      * Completes a {@linkplain Need Need} and saves its completion data.
      *
      * @param need A {@link Need need} that has been completed.

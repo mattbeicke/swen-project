@@ -16,6 +16,7 @@ export class CompletedService {
   constructor(private http: HttpClient) { }
 
   private completedNeedsURL = 'http://localhost:8080/cupboard/completed';
+  private completedProportionURL = 'http://localhost:8080/cupboard/completion';
 
   /**
    * Handles HTTP request to get all Completed Needs
@@ -43,5 +44,15 @@ export class CompletedService {
    */
   getNumbers(): Observable<number[]> {
     return this.http.get<number[]>(this.completedNeedsURL + '/numbers');
+  }
+
+  /**
+   * Handles HTTP request to get all Completed Needs
+   *
+   * @param search The search term
+   * @returns Percent of needs matching the search term that have been completed (rounded to nearest percent)
+   */
+  getCompletionProportion(search: string): Observable<number> {
+    return this.http.get<number>(this.completedProportionURL + "/" + search) 
   }
 }
