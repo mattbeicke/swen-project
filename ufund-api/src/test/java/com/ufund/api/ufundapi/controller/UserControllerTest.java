@@ -237,50 +237,6 @@ class UserControllerTest {
     }
 
     @Test
-    void testGetNeed() throws IOException { // getNeed may throw IOException
-        // Setup
-        Need need = new Need("Water Bottles", 99, "plastic, fiji if possible");
-        // When the same id is passed in, our mock Need DAO will return the Need object
-        when(mockCupboardDAO.getNeed(need.getId())).thenReturn(need);
-
-        // Invoke
-        ResponseEntity<Need> response = userController.getNeed(need.getId());
-
-        // Analyze
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(need, response.getBody());
-    }
-
-    @Test
-    void testGetNeedNotFound() throws Exception { // getNeed may throw IOException
-        // Setup
-        int needId = 99;
-        // When the same id is passed in, our mock Need DAO will return null, simulating
-        // no need found
-        when(mockCupboardDAO.getNeed(needId)).thenReturn(null);
-
-        // Invoke
-        ResponseEntity<Need> response = userController.getNeed(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-    @Test
-    void testGetNeedHandleException() throws Exception { // getNeed may throw IOException
-        // Setup
-        int needId = 99;
-        // When getNeed is called on the Mock Need DAO, throw an IOException
-        doThrow(new IOException()).when(mockCupboardDAO).getNeed(needId);
-
-        // Invoke
-        ResponseEntity<Need> response = userController.getNeed(needId);
-
-        // Analyze
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-
-    @Test
     void testUpdateUser() throws IOException { // updateUser may throw IOException
         // Setup
         int userId = 99;

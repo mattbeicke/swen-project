@@ -219,30 +219,6 @@ public class UserController {
     }
 
     /**
-     * Responds to the GET request for a {@link Need need} for the given id
-     * 
-     * @param id The id used to locate the {@link Need need}
-     * 
-     * @return ResponseEntity with {@link Need need} object and HTTP status of OK if
-     *         found. ResponseEntity with HTTP status of NOT_FOUND if not found.
-     *         ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise.
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Need> getNeed(@PathVariable int id) {
-        LOG.info(() -> "GET /view/" + id);
-        try {
-            Need need = cupboardDAO.getNeed(id);
-            if (need != null)
-                return new ResponseEntity<>(need, HttpStatus.OK);
-            else
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (IOException e) {
-            LOG.log(Level.SEVERE, e.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
      * Shows the list of all {@link Need needs} in a {@link User user's} basket
      * 
      * @param id      The ID of the user with needs to view

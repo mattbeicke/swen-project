@@ -128,8 +128,6 @@ public class CupboardController {
         User contributor = userDAO.getUser(comp.getContributorID());
         if (contributor == null) {
             comp.setContributorUsername("Deleted Account");
-        } else if (false) { // To be implemented soon: Security option to hide your account
-            comp.setContributorUsername("Private Account");
         } else {
             comp.setContributorUsername(contributor.getUsername());
         }
