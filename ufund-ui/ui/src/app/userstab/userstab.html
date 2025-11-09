@@ -1,31 +1,28 @@
 <div class="overall">
     <app-sidebar></app-sidebar>
 
-    <div>
-        <div class="content">
-            <h1 class="stick">All Users</h1>
-            <table class="users">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let user of users | async">
-                        <td>{{user.username}}</td>
-                        <td>
-                            <button [class.selected]="user === selectedUser" type="button" (click)="onSelect(user)">{{
-                                user.banned ? 'Unban' : 'Ban' }}</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="content">
+        <h1 class="stick">All Users</h1>
+        <table class="users">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users | async">
+                    <td>{{user.username}}</td>
+                    <td>
+                        <button [class.selected]="user === selectedUser" type="button" (click)="onSelect(user)">{{
+                            user.banned ? 'Unban' : 'Ban' }}</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <aside class="sidebarr">
-        <br><br>
         <input class="search" #searchBox id="search-box" (input)="search(searchBox.value)" placeholder="Search Users">
     </aside>
 </div>
