@@ -3,6 +3,14 @@
     <app-sidebar></app-sidebar>
 
     <div class="content">
+        <input class="search" #searchBox id="search-box" (input)="search(searchBox.value)" placeholder="Check completed needs">
+
+        <br>
+
+        <div class="pie" [ngStyle]="styleObject"></div>
+        <p>{{statement}} </p>
+        <hr>
+
         <button type="button" (click)="shiftPage(-1)">&lt;&lt;&lt;</button>
         <button type="button" (click)="shiftPage(1)">&gt;&gt;&gt;</button>
         <h1 class="stick">Recently Satisfied Needs</h1>

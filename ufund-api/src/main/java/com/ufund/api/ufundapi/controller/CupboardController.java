@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
+import com.ufund.api.ufundapi.persistence.CupboardFileDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 import com.ufund.api.ufundapi.model.CompletedNeed;
 import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;
@@ -186,4 +187,24 @@ public class CupboardController {
         }
     }
 
+    @GetMapping("/completion/{searchTerm}")
+    public ResponseEntity<Integer> getCompletionPercent(@PathVariable String searchTerm) {
+        try {
+            int active = cupboardDAO.searchNeeds(searchTerm).length;
+            int complete = completedNeedDAO.searchCompletedNeeds(searchTerm).length;
+            if(active + complete == 0) {
+                return new ResponseEntity<>(-1, HttpStatus.OK);
+            }
+            double proportion = (1.0 * complete) / (active + complete);
+            return new ResponseEntity<>((int) (proportion * 100), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/completion/")
+    public ResponseEntity<Integer> getTotalCompletionPercent() { 
+        return getCompletionPercent("");
+    }
 }

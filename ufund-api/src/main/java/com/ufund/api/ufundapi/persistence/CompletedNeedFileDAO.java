@@ -63,6 +63,21 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
     }
 
     @Override
+    public CompletedNeed[] searchCompletedNeeds(String containsText) throws IOException {
+        ArrayList<CompletedNeed> completedAL = new ArrayList<>();
+
+        for (CompletedNeed need : completedNeeds) {
+            if (containsText == null || need.getNeed().getName().toLowerCase().contains(containsText.toLowerCase())) {
+                completedAL.add(need);
+            }
+        }
+
+        CompletedNeed[] completedArray = new CompletedNeed[completedAL.size()];
+        completedAL.toArray(completedArray);
+        return completedArray;
+    }
+
+    @Override
     public void completeNeed(Need need, User user) throws IOException {
         CompletedNeed completed = new CompletedNeed(need, user.getId(), user.getUsername(), Instant.now().getEpochSecond());
         completedNeeds.add(0, completed);
