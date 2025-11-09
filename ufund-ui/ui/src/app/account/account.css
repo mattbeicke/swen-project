@@ -4,19 +4,58 @@
 }
 
 .content {
-    flex: 1;
-    margin-left: 250px;
-    position: fixed;
+display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 50%;
+  margin: 0 auto;
+  margin-left: 30%;
+  margin-top: 5%;
 }
 
 button {
     display: block;
-    width: 150px;
+    width: 500px;
+    height: 500px;
     margin-bottom: 30px;
-    margin-left: 400px;
+    margin-left: 4px;
+    font-size: xxx-large;
 }
 
 input {
+    display: flex;
+    margin-left: 10%;
+    width: 400px;
+    height: 50px;
+    font-size: x-large;
+}
+
+.delete {
+    color: red;
+    font-weight: bolder;
+}
+
+.dark-button:hover {
+    background-color: #878787;
+}
+
+.grid-item {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.confirm {
     display: block;
-    margin-left: 400px;
+    width: 500px;
+    height: 450px;
+    margin-bottom: 30px;
+    margin-left: 4px;
+    font-size: xxx-large;
 }
