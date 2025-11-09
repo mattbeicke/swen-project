@@ -14,17 +14,13 @@
         </div>
 
         <div class="grid-item">
-            <button class="dark-button" type="button" *ngIf="!showPassBox" (click)="flipPass()">Change <br> Password</button>\
+            <button class="dark-button" type="button" *ngIf="!showPassBox" (click)="flipPass()">Change <br> Password</button>
             <div *ngIf="showPassBox" class="input-group">
                 <input type="password" [(ngModel)]="password" placeholder="New Password" class="input">
                 <button type="button" class="dark-button confirm" (click)="changePassword()">Confirm</button>
             </div>
         </div>
         
-        <div>
-            <button class="dark-button" type="button" (click)="logout()">Log out</button>
-        </div>
-
         <div>
             <button class="delete dark-button" type="button" *ngIf="isHelper" (click)="deleteUser()">DELETE <br> ACCOUNT</button>
         </div>
