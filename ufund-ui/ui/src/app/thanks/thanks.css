@@ -1,16 +1,18 @@
 .overall {
   display: grid;
-  grid-template-columns: 159px 60rem 150px;
+  grid-template-columns: 159px 60rem auto;
 }
 
 .container {
   display: flex;
   min-height: 100vh;
-}   
+}
 
-.create {
-  position: sticky;
-  top: 75px
+.numbers {
+  position: fixed;
+  right: 0;
+  margin-right: 75px;
+  font-size: larger;
 }
 
 .content {
@@ -21,7 +23,7 @@
 .stick {
   position: sticky;
   top: 0;
-  width: 60rem;
+  width: 50rem;
   background-color: white;
   z-index: 10
 }

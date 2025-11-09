@@ -187,4 +187,14 @@ public class CupboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/completed/numbers")
+    public ResponseEntity<int[]> getNumbers() {
+        try {
+            return new ResponseEntity<>(completedNeedDAO.getNumbers(), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

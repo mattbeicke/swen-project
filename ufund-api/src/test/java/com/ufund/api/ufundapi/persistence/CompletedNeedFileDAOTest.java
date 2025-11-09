@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -33,13 +34,17 @@ class CompletedNeedFileDAOTest {
     @BeforeEach
     void setupCompletedNeedFileDAO() throws IOException {
         mockObjectMapper = mock(ObjectMapper.class);
-        testCN = new CompletedNeed[3];
+        testCN = new CompletedNeed[5];
         testCN[0] = new CompletedNeed((new Need("First Example", 61, "Requires one thing to be correct")), 1, "alice",
-                1000);
+                Instant.now().getEpochSecond());
         testCN[1] = new CompletedNeed((new Need("Second Example", 62, "Requires many things to be correct")), 2, "bob",
-                1001);
+                Instant.now().minus(2, ChronoUnit.DAYS).getEpochSecond());
         testCN[2] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
-                3, "charles", 1002);
+                3, "charles", Instant.now().minus(8, ChronoUnit.DAYS).getEpochSecond());
+        testCN[3] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
+                4, "sad", Instant.now().minus(31, ChronoUnit.DAYS).getEpochSecond());
+        testCN[4] = new CompletedNeed((new Need("Second Example, Continued", 63, "Requires everything to be correct")),
+                5, "chuck", Instant.now().minus(366, ChronoUnit.DAYS).getEpochSecond());
 
         // When the object mapper is supposed to read from the file
         // the mock object mapper will return the hero array above
@@ -58,18 +63,18 @@ class CompletedNeedFileDAOTest {
 
     @Test
     void testGetRecentNeeds1() {
-        CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds(2, 1);
+        CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds(2, 3);
 
-        assertEquals(testCN.length - 1, cn.length);
-        assertEquals(testCN[1], cn[0]);
-        assertEquals(testCN[2], cn[1]);
+        assertEquals(2, cn.length);
+        assertEquals(testCN[3], cn[0]);
+        assertEquals(testCN[4], cn[1]);
     }
 
     @Test
     void testGetRecentNeeds2() {
         CompletedNeed[] cn = completedNeedFileDAO.getRecentNeeds(2, 0);
 
-        assertEquals(testCN.length - 1, cn.length);
+        assertEquals(2, cn.length);
         assertEquals(testCN[0], cn[0]);
         assertEquals(testCN[1], cn[1]);
     }
@@ -88,5 +93,15 @@ class CompletedNeedFileDAOTest {
         assertEquals(expected.getNeed(), cn[0].getNeed());
         assertEquals(expected.getContributorID(), cn[0].getContributorID());
         assertEquals(expected.getTimestamp(), cn[0].getTimestamp());
+    }
+
+    @Test
+    void testGetNums() {
+        int[] nums = assertDoesNotThrow(() -> completedNeedFileDAO.getNumbers(), "Unexpected exception thrown");
+
+        assertEquals(1, nums[0]);
+        assertEquals(2, nums[1]);
+        assertEquals(3, nums[2]);
+        assertEquals(4, nums[3]);
     }
 }
