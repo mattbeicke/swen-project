@@ -235,4 +235,35 @@ class CupboardControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    void testGetTotalCompletionPercentage() throws IOException {
+        when(mockCupboardDAO.searchNeeds("")).thenReturn(new Need[1]);
+        when(mockCompletedNeedDAO.searchCompletedNeeds("")).thenReturn(new CompletedNeed[1]);
+
+        ResponseEntity<Integer> response = cupboardController.getTotalCompletionPercent();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(50, response.getBody());
+    }
+
+    @Test
+    void testGetTotalCompletionPercentageFail() throws IOException {
+        when(mockCupboardDAO.searchNeeds("")).thenReturn(new Need[0]);
+        when(mockCompletedNeedDAO.searchCompletedNeeds("")).thenReturn(new CompletedNeed[0]);
+
+        ResponseEntity<Integer> response = cupboardController.getTotalCompletionPercent();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(-1, response.getBody());
+    }
+
+    @Test
+    void testGetTotalCompletionPercentageHandleException() throws IOException {
+        doThrow(new IOException()).when(mockCupboardDAO).searchNeeds("");
+
+        ResponseEntity<Integer> response = cupboardController.getTotalCompletionPercent();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

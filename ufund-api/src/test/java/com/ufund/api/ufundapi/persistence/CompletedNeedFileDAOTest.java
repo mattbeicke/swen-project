@@ -104,4 +104,30 @@ class CompletedNeedFileDAOTest {
         assertEquals(3, nums[2]);
         assertEquals(4, nums[3]);
     }
+
+    @Test
+    void testSearchCompletedNeeds() {
+        String term = "tin";
+
+        CompletedNeed[] cn = assertDoesNotThrow(() -> completedNeedFileDAO.searchCompletedNeeds(term),
+                "Unexpected exception thrown");
+
+        assertEquals(3, cn.length);
+        assertEquals(testCN[2], cn[0]);
+        assertEquals(testCN[3], cn[1]);
+        assertEquals(testCN[4], cn[2]);
+    }
+
+    @Test
+    void testSearchCompletedNeedsNull() {
+        String term = null;
+
+        CompletedNeed[] cn = assertDoesNotThrow(() -> completedNeedFileDAO.searchCompletedNeeds(term),
+                "Unexpected exception thrown");
+
+        assertEquals(testCN.length, cn.length);
+        for (int i = 0; i < testCN.length; i++) {
+            assertEquals(testCN[i], cn[i]);
+        }
+    }
 }

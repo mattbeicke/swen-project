@@ -188,7 +188,7 @@ public class CupboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-  
+
     @GetMapping("/completed/numbers")
     public ResponseEntity<int[]> getNumbers() {
         try {
@@ -204,19 +204,19 @@ public class CupboardController {
         try {
             int active = cupboardDAO.searchNeeds(searchTerm).length;
             int complete = completedNeedDAO.searchCompletedNeeds(searchTerm).length;
-            if(active + complete == 0) {
+            if (active + complete == 0) {
                 return new ResponseEntity<>(-1, HttpStatus.OK);
             }
             double proportion = (1.0 * complete) / (active + complete);
             return new ResponseEntity<>((int) (proportion * 100), HttpStatus.OK);
-          } catch (IOException e) {
+        } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/completion/")
-    public ResponseEntity<Integer> getTotalCompletionPercent() { 
+    public ResponseEntity<Integer> getTotalCompletionPercent() {
         return getCompletionPercent("");
     }
 }
