@@ -419,20 +419,17 @@ public class UserFileDAO implements UserDAO {
 
         List<User> userList = new ArrayList<>();
         for (User user : users.values()) {
-            if (!user.getUsername().equals(User.MANAGER_USERNAME)) {
+            if (!user.getUsername().equals(User.MANAGER_USERNAME) && user.getContributions() != 0) {
                 userList.add(user);
             }
         }
 
         userList.sort((u1, u2) -> Integer.compare(u2.getContributions(), u1.getContributions()));
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < userList.size(); i++) {
             top[i] = userList.get(i);
         }
 
-        if (top[0].getContributions() == 0) {
-            return new User[0];
-        }
         return top;
     }
 }
