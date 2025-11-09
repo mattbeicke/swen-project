@@ -214,4 +214,25 @@ class CupboardControllerTest {
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
+
+    @Test
+    void testGetNumbers() throws IOException {
+        int[] ret = new int[4];
+
+        when(mockCompletedNeedDAO.getNumbers()).thenReturn(ret);
+
+        ResponseEntity<int[]> response = cupboardController.getNumbers();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ret.length, response.getBody().length);
+    }
+
+    @Test
+    void testGetNumbersHandleException() throws IOException {
+        doThrow(new IOException()).when(mockCompletedNeedDAO).getNumbers();
+
+        ResponseEntity<int[]> response = cupboardController.getNumbers();
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

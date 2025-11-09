@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +42,9 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
         load(); // load the needs from the file
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public CompletedNeed[] getRecentNeeds(int count, int offset) {
         if (offset >= completedNeeds.size()) {
@@ -55,6 +59,9 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
         return needArray;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public CompletedNeed[] getRecentNeeds() {
         CompletedNeed[] items = new CompletedNeed[completedNeeds.size()];
@@ -62,6 +69,9 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
         return items;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public void completeNeed(Need need, User user) throws IOException {
         CompletedNeed completed = new CompletedNeed(need, user.getId(), user.getUsername(),
@@ -101,5 +111,33 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
         CompletedNeed[] needArray = objectMapper.readValue(new File(filename), CompletedNeed[].class);
         completedNeeds.addAll(Arrays.asList(needArray));
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public int[] getNumbers() throws IOException {
+        int[] nums = new int[4];
+
+        long yearAgo = Instant.now().minus(365, ChronoUnit.DAYS).getEpochSecond();
+        long monthAgo = Instant.now().minus(30, ChronoUnit.DAYS).getEpochSecond();
+        long weekAgo = Instant.now().minus(7, ChronoUnit.DAYS).getEpochSecond();
+        long yesterday = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
+
+        for (CompletedNeed cn : completedNeeds) {
+            if (cn.getTimestamp() >= yearAgo) {
+                nums[3]++;
+                if (cn.getTimestamp() >= monthAgo) {
+                    nums[2]++;
+                    if (cn.getTimestamp() >= weekAgo) {
+                        nums[1]++;
+                        if (cn.getTimestamp() >= yesterday) {
+                            nums[0]++;
+                        }
+                    }
+                }
+            }
+        }
+        return nums;
     }
 }
