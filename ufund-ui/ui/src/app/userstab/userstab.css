@@ -1,11 +1,6 @@
 .overall {
   display: grid;
-  grid-template-columns: 159px 60rem 150px;
-}
-
-.container {
-  display: flex;
-  min-height: 100vh;
+  grid-template-columns: 159px 60em 150px;
 }
 
 .sidebar {
@@ -13,26 +8,23 @@
 }
 
 .sidebarr {
-  margin-left: 75px;
+  margin-right: 75px;
   width: 150px;
 }
 
 .search {
-  position: relative;
+  position: absolute;
   top: 40px;
-  left: 650%;
   font-size: large;
 }
 
 .content {
-  margin-left: 80%;
-  width: 60rem;
+  margin-left: 100px;
 }
 
 .stick {
   position: sticky;
   top: 0;
-  width: 60rem;
   background-color: white;
   z-index: 10
 }
@@ -80,7 +72,7 @@ tbody {
 }
 
 h1 {
-  font-size: 60px;
+  font-size: 40px;
   text-decoration-line: underline;
   text-decoration: underline black;
   margin-left: 20%;
