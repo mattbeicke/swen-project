@@ -34,7 +34,16 @@ export class CompletedService {
    * @returns List of all Completed Needs
    */
   getCompletedNeedsPage(page: number): Observable<CompletedNeed[]> {
-    return this.http.get<CompletedNeed[]>(this.completedNeedsURL + "/" + page) 
+    return this.http.get<CompletedNeed[]>(this.completedNeedsURL + "/" + page)
+  }
+
+  /**
+   * Handles HTTP request to get number of needs completed
+   * 
+   * @returns List with those numbers
+   */
+  getNumbers(): Observable<number[]> {
+    return this.http.get<number[]>(this.completedNeedsURL + '/numbers');
   }
 
   /**

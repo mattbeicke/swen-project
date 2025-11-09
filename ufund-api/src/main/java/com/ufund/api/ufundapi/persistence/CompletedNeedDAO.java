@@ -12,10 +12,11 @@ import java.io.IOException;
 public interface CompletedNeedDAO {
 
     /**
-     * Retrieves up to the 'count' most recent {@link CompletedNeed completed needs}, sorted by time completed,
+     * Retrieves up to the 'count' most recent {@link CompletedNeed completed
+     * needs}, sorted by time completed,
      * starting at the #'offset' item
      *
-     * @param count The number of needs to request,
+     * @param count  The number of needs to request,
      * @param offset The number of needs to request,
      * @return An array of {@link CompletedNeed need} objects, may be empty
      * @throws IOException if an issue with underlying storage
@@ -50,4 +51,12 @@ public interface CompletedNeedDAO {
      * @throws IOException if an issue with underlying storage
      */
     void completeNeed(Need need, User user) throws IOException;
+
+    /**
+     * gets how many Needs were completed in the past day, week, month, and year
+     * 
+     * @return array of integers containing the correspodning values listed above
+     * @throws IOException
+     */
+    int[] getNumbers() throws IOException;
 }

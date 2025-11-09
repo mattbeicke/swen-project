@@ -14,7 +14,7 @@ public class CompletedNeed {
     private long timestamp;
 
     public CompletedNeed(@JsonProperty("need") Need need, @JsonProperty("contributor") int contributor,
-                        @JsonProperty("contributor_name") String contributorName, @JsonProperty("timestamp") long timestamp) {
+            @JsonProperty("contributor_name") String contributorName, @JsonProperty("timestamp") long timestamp) {
         this.need = need;
         this.contributorID = contributor;
         this.contributorUsername = contributorName;

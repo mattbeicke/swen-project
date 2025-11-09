@@ -119,7 +119,9 @@ public class CupboardController {
     }
 
     /**
-     * Updates the display name of a contributor. This is only used to display the latest version of a name.
+     * Updates the display name of a contributor. This is only used to display the
+     * latest version of a name.
+     * 
      * @param comp The CompletedNeed object to be updated.
      * @throws IOException
      */
@@ -186,6 +188,16 @@ public class CupboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+  
+    @GetMapping("/completed/numbers")
+    public ResponseEntity<int[]> getNumbers() {
+        try {
+            return new ResponseEntity<>(completedNeedDAO.getNumbers(), HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/completion/{searchTerm}")
     public ResponseEntity<Integer> getCompletionPercent(@PathVariable String searchTerm) {
@@ -197,7 +209,7 @@ public class CupboardController {
             }
             double proportion = (1.0 * complete) / (active + complete);
             return new ResponseEntity<>((int) (proportion * 100), HttpStatus.OK);
-        } catch (IOException e) {
+          } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
