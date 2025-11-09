@@ -25,20 +25,20 @@
 
 .content {
   margin-left: 75px;
-  width: 63rem;
+  width: 60rem;
 }
 
 .stick {
   position: sticky;
   top: 0;
-  width: 63rem;
+  width: 60rem;
   background-color: white;
   z-index: 10
 }
 
 .needs {
   margin: 0 0 2em 0;
-  width: 63rem;
+  width: 60rem;
 }
 
 .needs button {
@@ -65,7 +65,7 @@ table {
 
 th {
   font-size: 25px;
-  font-family: "Times New Roman", Ariel ;
+  font-family: "Times New Roman", Ariel;
   text-align: left;
   padding-bottom: 10px;
   position: sticky;
