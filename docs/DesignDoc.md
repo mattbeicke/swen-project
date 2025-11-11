@@ -143,7 +143,7 @@ User Controller - Provides API functionality to for all Helper and mass user rel
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Controller UML Diagram](Controller-UML.png)
+![Controller UML Diagram](controller.png)
 
 ### Model Tier
 
@@ -155,12 +155,7 @@ UserDAO: The UserDAO provides functions to store and edit users.<br>
 CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.<br>
 CompletedNeedDAO: Provides functions to store and edit the completedneed catalog.
 
-
 In this tier, interaction with the raw data is done and manipulated. The methods in the classes here are used in the Controllers to accomplish their goals.
-
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
 
 ![Model UML Diagram](model.png)
 
