@@ -67,8 +67,8 @@ public class User {
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
             String securityAnswer, int contributions, boolean banned) {
-        return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, securityAnswer,
-                contributions, banned);
+        return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, 
+                        BCrypt.hashpw(securityAnswer, BCrypt.gensalt()), contributions, banned);
     }
 
     /**
@@ -234,7 +234,7 @@ public class User {
      * @return true if answer is correct, false if not
      */
     public boolean verifyAnswer(String answer) {
-        return securityAnswer.equals(answer);
+        return BCrypt.checkpw(answer, securityAnswer);
     }
 
     /**

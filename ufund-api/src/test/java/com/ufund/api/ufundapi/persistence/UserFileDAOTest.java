@@ -406,8 +406,7 @@ class UserFileDAOTest {
         String username = "user";
         String password = "pass";
         String answer = "hello";
-        User user = new User(15, username, password, "", answer, 0, false);
-
+        User user = User.generateUser(15, username, password, "", answer, 0, false);
         boolean response = assertDoesNotThrow(() -> userFileDAO.verifyAnswer(user, "hello"),
                 "Create user failed (Unexpected exception)");
         assertTrue(response);

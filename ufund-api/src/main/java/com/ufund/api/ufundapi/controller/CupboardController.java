@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufund.api.ufundapi.model.Need;
 import com.ufund.api.ufundapi.model.User;
 import com.ufund.api.ufundapi.persistence.CupboardDAO;
-import com.ufund.api.ufundapi.persistence.CupboardFileDAO;
 import com.ufund.api.ufundapi.persistence.UserDAO;
 import com.ufund.api.ufundapi.model.CompletedNeed;
 import com.ufund.api.ufundapi.persistence.CompletedNeedDAO;

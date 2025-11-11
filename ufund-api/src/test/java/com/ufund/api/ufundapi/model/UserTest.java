@@ -182,7 +182,8 @@ class UserTest {
         String password = "hunter2";
         String answer = "test";
         int id = 1001;
-        User user = new User(id, name, password, "", answer, 0, false);
+        
+        User user = User.generateUser(id, name, password, "", answer, 0, false);
 
         boolean response = user.verifyAnswer(answer);
         assertTrue(response);
