@@ -195,7 +195,7 @@ Information Expert: Each class has its own DAO file and cannot access the other 
 
 <!--List how many user stories we have and for them how many acceptance criteria pass and how many fail (and give reason why)-->
 
-By the end of Sprint 2 we have 39 User stories.<br>
+By the end of Sprint 3 we have 60 User stories.<br>
 Currently, for the acceptance criteria we have, all stories pass.
 
 <!--What issues are/were there-->
@@ -204,9 +204,9 @@ The only issues that would arise were from faulty code. These would be fixed dur
 ### Unit Testing and Code Coverage
 
 Our strategy for unit testing was ensure everything is covered, all possible cases.
-Currently (end of Sprint 2) our code coverage is the following:
+Currently (end of Sprint 3) our code coverage is the following:
 
-![Code Coverage](cc.png)
+![Code Coverage Report](codecoverage.png)
 
 <!--List anomolies in the cc report here if there are any-->
 
@@ -215,7 +215,10 @@ Currently (end of Sprint 2) our code coverage is the following:
 2025/10/19: Sprint 2<br>
 Main programming for Sprint 2 is now complete, merged, and mostly tested (still need to do the actual acceptance testing writeup but).
 
-2025/10/21: Sprint2<br>
+2025/10/21: Sprint 2<br>
 All programming tasks, testing, documentation, demo planning has been completed at this time.
+
+2025/11/9: Sprint 3<br>
+All programming for this sprint has been completed at this time, just documentation, demo, and acceptance testing left
 
 <!--Add more stuff here following above format as it happens such as 'team decisions or design milestones/changes and corresponding justification'-->
