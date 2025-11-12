@@ -1,1 +1,92 @@
-[{"id":1,"username":"admin","password":"$2a$10$smhlpCfnKXroFGM6iGS5d.5AJVQvYIRXwlDVErodlU3MsaPgMCJ8.","securityQuestion":null,"securityAnswer":null,"contributions":0,"banned":false,"manager":true,"basket":[]},{"id":3,"username":"dave","password":"$2a$10$tuJf7c9.JJUfk2qcl1Cu6OmcK9EntvRJlNhUBBsIYE29jQJmmNyri","securityQuestion":"dav","securityAnswer":"mode","contributions":0,"banned":false,"manager":false,"basket":[]},{"id":4,"username":"matt","password":"$2a$10$psaF3H0.lsyLGjLiHcfx/eDZ81sPPX2LVug5PRJ9Nvukevuno/gAq","securityQuestion":"dog name","securityAnswer":"luke","contributions":0,"banned":false,"manager":false,"basket":[]}]
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "$2a$10$smhlpCfnKXroFGM6iGS5d.5AJVQvYIRXwlDVErodlU3MsaPgMCJ8.",
+        "securityQuestion": null,
+        "securityAnswer": null,
+        "contributions": 0,
+        "banned": false,
+        "manager": true,
+        "basket": []
+    },
+    {
+        "id": 2,
+        "username": "matt",
+        "password": "$2a$10$7pq6SK2REXl95seBsdxEzOe01B8lmsskn9id8sLfpBByxemRFY/8C",
+        "securityQuestion": "dog name",
+        "securityAnswer": "$2a$10$MKIPDCjirwF2mQ4hPbWh3.R7X59N7fZS5RZhiAqTSHB4NvmgYtkda",
+        "contributions": 10,
+        "banned": false,
+        "manager": false,
+        "basket": []
+    },
+    {
+        "id": 3,
+        "username": "anthony",
+        "password": "$2a$10$DACixEep6U0e7lYX7ax7VuWytPrK1Wkbs9GObiXoRH6Y1G3SYC5qK",
+        "securityQuestion": "last name",
+        "securityAnswer": "$2a$10$4g.71rUfSl102XLUqiw0ieFUsEMn.51ss/KUkH9yZ9lhUmMuAl5Py",
+        "contributions": 0,
+        "banned": false,
+        "manager": false,
+        "basket": []
+    },
+    {
+        "id": 4,
+        "username": "zach",
+        "password": "$2a$10$e1A7HXExeuA9coR5tLkC4.0IFlR3LM9Aq8tcq92gb7juISlLWmO.S",
+        "securityQuestion": "last name",
+        "securityAnswer": "$2a$10$9o76LVmUu91Ga.zkLMrpi.jWxB9zpUu4aPVVKHQ7DVZTYbZlSn3O6",
+        "contributions": 1,
+        "banned": true,
+        "manager": false,
+        "basket": []
+    },
+    {
+        "id": 5,
+        "username": "ricardo",
+        "password": "$2a$10$U7uCY1TXiylxVj1cMAp7ceEaS3d25pklJigQjof9tmkZnGF9h0jdC",
+        "securityQuestion": "last name",
+        "securityAnswer": "$2a$10$/j0sB8nxYI95ZQ5R78G46esDfKS2ZwgbOrM6rSA7TEj0S9hvcN8oG",
+        "contributions": 2,
+        "banned": false,
+        "manager": false,
+        "basket": []
+    },
+    {
+        "id": 6,
+        "username": "fake1",
+        "password": "$2a$10$hX3Ut9JDCATVuCHpR2Jd.eI3KneWS6o66h6J6i6dDjDw4sdsRorGy",
+        "securityQuestion": "no",
+        "securityAnswer": "$2a$10$IYEgIDaflYSPLeP0pY8wEu4v1d5CcIo1U5nC6ZAcMu.bwcZrwEM7e",
+        "contributions": 3,
+        "banned": false,
+        "manager": false,
+        "basket": [
+            2
+        ]
+    },
+    {
+        "id": 7,
+        "username": "fake2",
+        "password": "$2a$10$FSDxAgewd9w7IEhqkpuydO5sf.f8ju8WVVxXdbw0gJwOEEjSRUscy",
+        "securityQuestion": "no",
+        "securityAnswer": "$2a$10$6AXmt6sXdFg6ihHbMvq.Y.zZINI5CiFwZoeKNtIfM1RuLyiEK07qS",
+        "contributions": 4,
+        "banned": true,
+        "manager": false,
+        "basket": []
+    },
+    {
+        "id": 8,
+        "username": "fake3",
+        "password": "$2a$10$1vC7Mf4dJI2Ew8E8mHjW9eDNk5FvDvJxVFaGNGnX.bumJjW1IBpxS",
+        "securityQuestion": "1",
+        "securityAnswer": "$2a$10$rw/8W6nI7k6ovAOSRPdOKOvwqAivVlhBSJ5eVF/BhXoYQVH9HBBjy",
+        "contributions": 1,
+        "banned": false,
+        "manager": false,
+        "basket": []
+    }
+]
