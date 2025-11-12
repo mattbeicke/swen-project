@@ -28,6 +28,9 @@ This project aims to enable organizations to have their most important needs sat
 | SPA | Single Page Application |
 | User | Anyone who uses the system (either a helper or a manager) |
 | Session | An instance of a user being logged in with an API key. |
+| Helper | Someone who completes needs from the Cupboard. |
+| Manager | Someone who modifies the cupboard and administrates users. Cannot complete Needs. |
+| Cupboard | The full list of uncompleted needs which can be completed, modified, or removed. | 
 
 
 ## Requirements
@@ -164,7 +167,7 @@ In this tier, interaction with the raw data is done and manipulated. The methods
 Single Responsibility: We made sure that each class was small and only is responsible for themselves.<br>
 Open/Closed: We have made it so only authorized users can access and edit data as needed.<br>
 Information Expert: We made sure that each class has enough responsibility to access the information needed for its responsibility.<br>
-Dependency Inversion/Injection: We use interfaces for the dependancies.<br>
+Dependency Inversion/Injection: The various Controllers take as input the interface DAO, instead of the FileDAO implementation. On the web side, each of the components take in Services in their constructors meaning they can be easily swapped out for another implementation.<br>
 Controller: We implemented controllers for each object.<br>
 Pure Fabrication: We have created DAO files.
 
@@ -175,7 +178,7 @@ Pure Fabrication: Each Object has its own DAO file for each instance of said obj
 Single Responsibility: The User, Cupboard, and Manager objects have their own Controllers. Along with that, the Needs, User, Cupboard, and Manager objects only interact with themselves, and will not attempt to alter any other object.<br>
 Information Expert: Each class has its own DAO file and cannot access the other DAO files.<br>
 
-> _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
+<!-- > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_ -->
 
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
