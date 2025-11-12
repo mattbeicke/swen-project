@@ -1,1 +1,502 @@
-[{"name":"Rice","id":2,"description":"5 lb bags, white or brown"},{"name":"Canned Soup","id":3,"description":"10 cans, low sodium preferred"},{"name":"Peanut Butter","id":5,"description":"4 jars, creamy or crunchy"},{"name":"Macaroni and Cheese","id":7,"description":"10 boxes, Kraft or store brand"},{"name":"Spaghetti","id":10,"description":"6 packs, 1 lb each"},{"name":"Canned Chili","id":11,"description":"8 cans, with or without beans"},{"name":"Granola Bars","id":13,"description":"4 boxes, assorted flavors"},{"name":"Shelf-Stable Milk","id":14,"description":"6 cartons, 1 quart each"},{"name":"Instant Noodles","id":15,"description":"12 packs, ramen or similar"},{"name":"Cooking Oil","id":16,"description":"3 bottles, vegetable or canola"},{"name":"Sugar","id":17,"description":"4 bags, white granulated, 4 lb"},{"name":"Flour","id":18,"description":"4 bags, all-purpose, 5 lb"},{"name":"Salt","id":19,"description":"2 containers, iodized"},{"name":"Crackers","id":21,"description":"5 boxes, saltines or multigrain"},{"name":"Applesauce","id":22,"description":"6 jars or packs, unsweetened"},{"name":"Canned Potatoes","id":23,"description":"5 cans, whole or sliced"},{"name":"Pasta Sauce","id":24,"description":"6 jars, tomato-based"},{"name":"Canned Chicken","id":25,"description":"8 cans, 12.5 oz each"},{"name":"Beans (Dry)","id":26,"description":"5 bags, black or pinto"},{"name":"Jelly","id":27,"description":"4 jars, grape or strawberry"},{"name":"Tortillas","id":28,"description":"3 packs, 10-inch flour"},{"name":"Lentils","id":29,"description":"4 bags, 1 lb each"},{"name":"Canned Spinach","id":30,"description":"6 cans, chopped or leaf"},{"name":"Tomato Paste","id":31,"description":"6 cans, 6 oz each"},{"name":"Tea Bags","id":32,"description":"2 boxes, 100-count"},{"name":"Coffee","id":33,"description":"3 cans, ground, 1 lb"},{"name":"Spices (Pepper)","id":34,"description":"4 shakers, black ground pepper"},{"name":"Spices (Garlic Powder)","id":35,"description":"4 containers, any brand"},{"name":"Spices (Chili Powder)","id":36,"description":"4 jars, mild or hot"},{"name":"Hot Sauce","id":37,"description":"3 bottles, 12 oz each"},{"name":"Canned Stew","id":38,"description":"8 cans, Dinty Moore or similar"},{"name":"Instant Potatoes","id":39,"description":"5 boxes, Idahoan brand preferred"},{"name":"Canned Meat (Beef)","id":40,"description":"6 cans, corned beef or roast beef"},{"name":"Powdered Milk","id":41,"description":"4 boxes, nonfat dry milk"},{"name":"Frozen Vegetables","id":42,"description":"Variety packs, 1 lb each"},{"name":"Canned Tomato Soup","id":43,"description":"6 cans, Campbell's or store brand"},{"name":"Rice Mixes","id":44,"description":"6 boxes, flavored or plain"},{"name":"Canned Beef Stew","id":45,"description":"6 cans, hearty style"},{"name":"Tuna Helper","id":46,"description":"4 boxes, any flavor"},{"name":"Pancake Mix","id":47,"description":"4 boxes, complete mix"},{"name":"Instant Rice","id":48,"description":"5 boxes, Minute Rice or similar"},{"name":"Baking Powder","id":49,"description":"2 cans, double-acting"},{"name":"Canned Mushrooms","id":50,"description":"6 cans, sliced or pieces & stems"}]
+[
+    {
+        "id": 1,
+        "name": "Blankets",
+        "description": "Donate new or gently used blankets to keep guests warm."
+    },
+    {
+        "id": 2,
+        "name": "Meal Server",
+        "description": "Help serve dinner during evening meal hours."
+    },
+    {
+        "id": 3,
+        "name": "Toiletry Kits",
+        "description": "Assemble small kits with soap, toothpaste, and shampoo."
+    },
+    {
+        "id": 4,
+        "name": "Clothing Donations",
+        "description": "Provide clean socks, jackets, or shirts for guests."
+    },
+    {
+        "id": 5,
+        "name": "Laundry Volunteer",
+        "description": "Assist with washing and folding donated clothing."
+    },
+    {
+        "id": 6,
+        "name": "Driver for Supply Pickup",
+        "description": "Transport donated goods from local collection sites."
+    },
+    {
+        "id": 7,
+        "name": "Cleaning Help",
+        "description": "Assist with light cleaning of common areas."
+    },
+    {
+        "id": 8,
+        "name": "Lunch Prep",
+        "description": "Prepare sandwiches or simple lunches for distribution."
+    },
+    {
+        "id": 9,
+        "name": "Front Desk Volunteer",
+        "description": "Greet guests and help with basic check-in tasks."
+    },
+    {
+        "id": 10,
+        "name": "Pet Food Donations",
+        "description": "Bring small bags of pet food for guests with animals."
+    },
+    {
+        "id": 11,
+        "name": "Bedding Donations",
+        "description": "Provide sheets, pillowcases, or sleeping bags."
+    },
+    {
+        "id": 12,
+        "name": "Children’s Activity Helper",
+        "description": "Assist with games and crafts for kids during family hours."
+    },
+    {
+        "id": 13,
+        "name": "Hand Sanitizer Supply",
+        "description": "Donate bottles of sanitizer for public areas."
+    },
+    {
+        "id": 14,
+        "name": "Shower Supplies",
+        "description": "Provide towels and small hygiene kits for shower use."
+    },
+    {
+        "id": 15,
+        "name": "Haircuts",
+        "description": "Offer free haircuts to guests needing grooming support."
+    },
+    {
+        "id": 16,
+        "name": "Winter Coats",
+        "description": "Donate warm coats for adults and children."
+    },
+    {
+        "id": 17,
+        "name": "Job Application Help",
+        "description": "Assist guests with writing resumes or online applications."
+    },
+    {
+        "id": 18,
+        "name": "Bus Pass Donations",
+        "description": "Provide transit passes for guests needing transportation."
+    },
+    {
+        "id": 19,
+        "name": "Snack Packs",
+        "description": "Prepare bags with snacks like granola bars and fruit."
+    },
+    {
+        "id": 20,
+        "name": "Fundraiser Organizer",
+        "description": "Plan a small community fundraiser to support the shelter."
+    },
+    {
+        "id": 21,
+        "name": "Gardening Help",
+        "description": "Assist with maintaining the shelter’s small outdoor garden."
+    },
+    {
+        "id": 22,
+        "name": "Book Donations",
+        "description": "Donate gently used books for the reading room."
+    },
+    {
+        "id": 23,
+        "name": "Computer Tutor",
+        "description": "Teach guests basic computer or email skills."
+    },
+    {
+        "id": 24,
+        "name": "Arts & Crafts Donations",
+        "description": "Provide art supplies for recreation and creativity."
+    },
+    {
+        "id": 25,
+        "name": "Phone Charging Cables",
+        "description": "Donate extra chargers for guests’ phones."
+    },
+    {
+        "id": 26,
+        "name": "Music Night Helper",
+        "description": "Help organize or play music for a community evening."
+    },
+    {
+        "id": 27,
+        "name": "Coffee Supplies",
+        "description": "Bring coffee, sugar, and creamer for morning service."
+    },
+    {
+        "id": 28,
+        "name": "First Aid Kits",
+        "description": "Assemble small first aid kits for staff and guests."
+    },
+    {
+        "id": 29,
+        "name": "Volunteer Photographer",
+        "description": "Take photos for shelter events or newsletters."
+    },
+    {
+        "id": 30,
+        "name": "Repair Assistance",
+        "description": "Help with small maintenance or repair tasks on-site."
+    },
+    {
+        "id": 31,
+        "name": "Holiday Meal Volunteer",
+        "description": "Assist with special holiday meal preparation."
+    },
+    {
+        "id": 32,
+        "name": "School Supply Donations",
+        "description": "Bring backpacks, pencils, and notebooks for kids."
+    },
+    {
+        "id": 33,
+        "name": "Translation Support",
+        "description": "Assist with translation for non-English-speaking guests."
+    },
+    {
+        "id": 34,
+        "name": "Bicycle Repair",
+        "description": "Help fix donated bikes for guests’ transportation needs."
+    },
+    {
+        "id": 35,
+        "name": "Phone Call Assistance",
+        "description": "Support guests in making calls for job or housing inquiries."
+    },
+    {
+        "id": 36,
+        "name": "Donation Sorting",
+        "description": "Organize incoming donations by category."
+    },
+    {
+        "id": 37,
+        "name": "Cooking Class Helper",
+        "description": "Assist in teaching simple, low-cost meal prep."
+    },
+    {
+        "id": 38,
+        "name": "Baby Supplies",
+        "description": "Donate diapers, wipes, and baby formula."
+    },
+    {
+        "id": 39,
+        "name": "Yoga Instructor",
+        "description": "Lead a short relaxation or yoga session for guests."
+    },
+    {
+        "id": 40,
+        "name": "Mail Organizer",
+        "description": "Sort and distribute mail for registered guests."
+    },
+    {
+        "id": 41,
+        "name": "Socks Donation",
+        "description": "Provide new socks, a constant high-need item."
+    },
+    {
+        "id": 42,
+        "name": "Writing Supplies",
+        "description": "Donate notebooks, pens, and envelopes."
+    },
+    {
+        "id": 43,
+        "name": "Volunteer Coordinator Assistant",
+        "description": "Help track volunteer hours and signups."
+    },
+    {
+        "id": 44,
+        "name": "Evening Security Monitor",
+        "description": "Support staff by monitoring entrances at night."
+    },
+    {
+        "id": 45,
+        "name": "Birthday Celebration Helper",
+        "description": "Organize small monthly birthday gatherings."
+    },
+    {
+        "id": 46,
+        "name": "Donor Outreach",
+        "description": "Call or email potential donors with updates."
+    },
+    {
+        "id": 47,
+        "name": "Kitchen Cleanup Crew",
+        "description": "Assist with dishwashing and sanitizing after meals."
+    },
+    {
+        "id": 48,
+        "name": "Hairbrush Donations",
+        "description": "Bring combs, brushes, and hair ties."
+    },
+    {
+        "id": 49,
+        "name": "Storytime Reader",
+        "description": "Read aloud to children in the family section."
+    },
+    {
+        "id": 50,
+        "name": "Gardening Tool Donations",
+        "description": "Provide gloves, trowels, or soil for the garden."
+    },
+    {
+        "id": 51,
+        "name": "Volunteer Cook",
+        "description": "Prepare a simple homemade meal for 20–30 guests."
+    },
+    {
+        "id": 52,
+        "name": "Blanket Folding",
+        "description": "Help fold and organize clean bedding."
+    },
+    {
+        "id": 53,
+        "name": "Mentorship Program Helper",
+        "description": "Assist in connecting guests with community mentors."
+    },
+    {
+        "id": 54,
+        "name": "Donation Pickup Driver",
+        "description": "Pick up donations from drop-off locations."
+    },
+    {
+        "id": 55,
+        "name": "Recreation Night Host",
+        "description": "Organize board games or trivia for guests."
+    },
+    {
+        "id": 56,
+        "name": "Lost Item Organizer",
+        "description": "Manage and label lost-and-found items."
+    },
+    {
+        "id": 57,
+        "name": "Weather Gear Donations",
+        "description": "Bring rain ponchos, gloves, and umbrellas."
+    },
+    {
+        "id": 58,
+        "name": "Website Updates",
+        "description": "Assist staff in keeping shelter info current online."
+    },
+    {
+        "id": 59,
+        "name": "Social Media Assistant",
+        "description": "Help post updates and volunteer opportunities online."
+    },
+    {
+        "id": 60,
+        "name": "Donation Inventory Tracker",
+        "description": "Record incoming and outgoing supplies in a spreadsheet."
+    },
+    {
+        "id": 61,
+        "name": "Light Painting Help",
+        "description": "Touch up walls and doors with fresh paint."
+    },
+    {
+        "id": 62,
+        "name": "Pillow Donations",
+        "description": "Donate new pillows for beds and rest areas."
+    },
+    {
+        "id": 63,
+        "name": "Event Setup Help",
+        "description": "Assist with chairs, tables, and decorations for events."
+    },
+    {
+        "id": 64,
+        "name": "Volunteer Orientation Assistant",
+        "description": "Help new volunteers get oriented to shelter operations."
+    },
+    {
+        "id": 65,
+        "name": "Donation Drive Host",
+        "description": "Organize a small drive for high-need items."
+    },
+    {
+        "id": 66,
+        "name": "Health Workshop Helper",
+        "description": "Assist with setting up educational health sessions."
+    },
+    {
+        "id": 67,
+        "name": "Community Outreach Helper",
+        "description": "Distribute flyers about available shelter resources."
+    },
+    {
+        "id": 68,
+        "name": "Holiday Decoration Setup",
+        "description": "Help decorate the shelter for holidays."
+    },
+    {
+        "id": 69,
+        "name": "Story Collection Volunteer",
+        "description": "Gather positive stories from guests for newsletters."
+    },
+    {
+        "id": 70,
+        "name": "Curtain Donations",
+        "description": "Provide new curtains for private rooms or windows."
+    },
+    {
+        "id": 71,
+        "name": "Recycling Coordinator",
+        "description": "Help sort recyclables and reduce shelter waste."
+    },
+    {
+        "id": 72,
+        "name": "Volunteer Chef Assistant",
+        "description": "Support head cook during meal prep."
+    },
+    {
+        "id": 73,
+        "name": "Technology Donations",
+        "description": "Bring working laptops or tablets for guests to use."
+    },
+    {
+        "id": 74,
+        "name": "Lost ID Replacement Helper",
+        "description": "Assist guests with obtaining replacement identification."
+    },
+    {
+        "id": 75,
+        "name": "Weekend Cleanup Crew",
+        "description": "Help clean common areas on weekends."
+    },
+    {
+        "id": 76,
+        "name": "Phone Card Donations",
+        "description": "Provide prepaid phone cards for guest communication."
+    },
+    {
+        "id": 77,
+        "name": "Music Equipment Donations",
+        "description": "Donate small instruments or speakers for recreation."
+    },
+    {
+        "id": 78,
+        "name": "Craft Night Helper",
+        "description": "Assist with hosting a simple craft evening."
+    },
+    {
+        "id": 79,
+        "name": "Community Meal Driver",
+        "description": "Deliver cooked meals to outreach sites."
+    },
+    {
+        "id": 80,
+        "name": "Evening Greeter",
+        "description": "Welcome guests and provide check-in guidance."
+    },
+    {
+        "id": 81,
+        "name": "Fitness Equipment Donations",
+        "description": "Bring yoga mats or resistance bands for exercise space."
+    },
+    {
+        "id": 82,
+        "name": "Shelter Tour Guide",
+        "description": "Lead short tours for new volunteers or donors."
+    },
+    {
+        "id": 83,
+        "name": "Bulletin Board Organizer",
+        "description": "Update community board with local resources."
+    },
+    {
+        "id": 84,
+        "name": "Senior Guest Assistant",
+        "description": "Provide help and companionship to older guests."
+    },
+    {
+        "id": 85,
+        "name": "Kitchen Supply Donations",
+        "description": "Bring utensils, pans, and kitchen towels."
+    },
+    {
+        "id": 86,
+        "name": "Evening Story Sharer",
+        "description": "Host an informal storytelling or poetry night."
+    },
+    {
+        "id": 87,
+        "name": "Linen Organizer",
+        "description": "Sort and store clean sheets and towels."
+    },
+    {
+        "id": 88,
+        "name": "Outdoor Cleanup Volunteer",
+        "description": "Help tidy up the shelter grounds and walkways."
+    },
+    {
+        "id": 89,
+        "name": "Donation Labeling Helper",
+        "description": "Label and date incoming donations for tracking."
+    },
+    {
+        "id": 90,
+        "name": "Care Package Assembly",
+        "description": "Assemble small care packages for guests in need."
+    },
+    {
+        "id": 91,
+        "name": "Book Club Leader",
+        "description": "Host a casual reading group for guests."
+    },
+    {
+        "id": 92,
+        "name": "Community Art Display Helper",
+        "description": "Set up and maintain artwork displays by guests."
+    },
+    {
+        "id": 93,
+        "name": "Volunteer Scheduler",
+        "description": "Help coordinate volunteer sign-up schedules."
+    },
+    {
+        "id": 94,
+        "name": "Evening Snack Prep",
+        "description": "Prepare light snacks for guests before curfew."
+    },
+    {
+        "id": 95,
+        "name": "Children’s Book Donations",
+        "description": "Provide age-appropriate books for kids’ reading time."
+    },
+    {
+        "id": 96,
+        "name": "Music Playlist Curator",
+        "description": "Create calm, uplifting playlists for communal spaces."
+    },
+    {
+        "id": 97,
+        "name": "Volunteer Appreciation Helper",
+        "description": "Assist with thank-you cards or small volunteer events."
+    },
+    {
+        "id": 98,
+        "name": "Shelter Newsletter Writer",
+        "description": "Write short updates about shelter programs."
+    },
+    {
+        "id": 99,
+        "name": "Donation Bin Builder",
+        "description": "Construct or decorate collection bins for drives."
+    },
+    {
+        "id": 100,
+        "name": "Morning Coffee Helper",
+        "description": "Serve coffee and greet guests during breakfast."
+    }
+]
