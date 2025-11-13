@@ -136,7 +136,6 @@ If a manager presses on the "Users" tab on the sidebar they can see a list of al
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
 Cupboard Controller - Provides API functionality to access Need and CompletedNeed objects<br>
-Manager Controller - Provides API functionality to for all Manager related tasks<br>
 User Controller - Provides API functionality to for all Helper and mass user related tasks
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
@@ -150,7 +149,6 @@ User Controller - Provides API functionality to for all Helper and mass user rel
 
 ### Model Tier
 
-Manager: A manager adds and removes needs from the cupboard.<br>
 Need: A need is some item that a manager needs funded.<br>
 CompletedNeed: A Need that was fulfilled, containing the timestamp of fulfillment and user who did the fulfilling.
 User: A user can help support a manager by funding a need.<br>
@@ -165,10 +163,10 @@ In this tier, interaction with the raw data is done and manipulated. The methods
 ## OO Design Principles
 
 Design Principles in our code:<br>
-- Single Responsibility: The User, Cupboard, and Manager objects have their own Controllers. Along with that, the Need and User objects only interact with themselves, and will not attempt to alter any other object. Each of the controllers only do what they alone need to do, such as UserController _only_ determining which DAOs will be activated, and UserDAO _only_ modifing the User objects that need to be edited, and not modifying any other objects (i.e. completing a Need, which is CupboardDAO's responsibility)<br>
+- Single Responsibility: The User and Need objects have their own Controllers. Along with that, the Need and User objects only interact with themselves, and will not attempt to alter any other object. Each of the controllers only do what they alone need to do, such as UserController _only_ determining which DAOs will be activated, and UserDAO _only_ modifing the User objects that need to be edited, and not modifying any other objects (i.e. completing a Need, which is CupboardDAO's responsibility)<br>
 - Open/Closed: We created DAO (e.g. CupboardDAO) interfaces and FileDAO (e.g. CupboardFileDAO) classes. Of these, CupboardDAO is closed for modification since exactly all of its functionality must be implemented, while CupboardFileDAO is open to include more features such as internal functions needed to save data to disk. This can be clearly seen in the Model Tier diagram, where UserFileDAO has many more functions than UserDAO had.
 - Dependency Injection: The various Controllers take as input the interface DAO, instead of the FileDAO implementation. On the web side, each of the components take in Services in their constructors meaning they can be easily swapped out for another implementation.<br>
-- Controller: The User, Cupboard, and Manager objects all have their own Controllers, which lie as one of the intermediate steps between the user and the backend storage. This can be seen in the Tiers/Layers model where each of the controllers lie between front and backend.<br>
+- Controller: The User and Need objects all have their own Controllers, which lie as one of the intermediate steps between the user and the backend storage. This can be seen in the Tiers/Layers model where each of the controllers lie between front and backend.<br>
 - Information Expert: Each class has its own DAO file and cannot access the other DAO files. Additionally, each piece of necessary information is retrieved from its storage medium instead of being taken from another controller or being haphazardly stored by itself.<br>
 - Low Coupling: Low coupling was difficult to achieve as many functions demanded access to multiple files at once, such as generating the strings for completed needs, requiring a completed need object and a user object, which would otherwise be unnecessary in the CupboardController. However, classes in the same layer were decoupled to not depend on each other - a Controller only ever called a DAO, which then only ever modified some Model. 
 <!-- Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br> I can't think of an example of Pure Fabrication in our code-->  
