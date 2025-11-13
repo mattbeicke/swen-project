@@ -20,7 +20,7 @@ This is a summary of the project.
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
 --->
-This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. Our main goal is for managers to be able to outline requirements, which any user can donate for.
+This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. It will allow organization managers to create a list of things that they do need and allow non-managers to contribute to them by adding them to a 'basket' then checking out that basket. Additionally, the project contains security measures such as encrpyted passwords, security questions (for forgot password), and API Keys. There is also the permission granted to managers to ban/unban a non manager in the event something requires it. The project also displays statistics on who has contributed the most and what proportion of needs are unfulfilled.
 ### Glossary and Acronyms
 
 | Term | Definition |
@@ -28,6 +28,9 @@ This project aims to enable organizations to have their most important needs sat
 | SPA | Single Page Application |
 | User | Anyone who uses the system (either a helper or a manager) |
 | Session | An instance of a user being logged in with an API key. |
+| Helper | Someone who completes needs from the Cupboard. |
+| Manager | Someone who modifies the cupboard and administrates users. Cannot complete Needs. |
+| Cupboard | The full list of uncompleted needs which can be completed, modified, or removed. | 
 
 
 ## Requirements
@@ -35,28 +38,32 @@ This project aims to enable organizations to have their most important needs sat
 This section describes the features of the application.
 
 ### Definition of MVP
-Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization. 
+Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization.<br>What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.<br>Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.<br>Additionally, managers can log in to add, edit, and remove needs.
 
-What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.
-
-
-<!---
-Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.
-
-Additionally, managers can log in to add, edit, and remove needs.
---->
 ### MVP Features
 >  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
 
 ### Enhancements
-Passwords are encrypted on the server, and cannot be retrieved after being created.
+Security Package:
+* Passwords are encrypted on the server, and cannot be retrieved after being created.
+* API keys are assigned to each user upon login making it impossible for the user to complete some actions without it
+* Sessions will expire after one hour
+* Managers can Ban and Unban users if they choose to
+* All users are required to set a security question that can be answered when they forget their password
+
+Thanks:
+* Default page is now the home page that displays the 5 most recently fulfilled needs as well as a button to take you to the login page
+* Thanks page displays the list of all needs fulfilled
+* On the thanks page there is the number of needs that were fulfilled in the past day, week, month, and year
+* Also on the thanks page is a pie chart of fulfilled vs unfulfilled needs that can be sorted by Need name
+* Leaderboard tab that displays the users who have contributed the most
 
 
 ## Application Domain
 
 This section describes the application domain.
 
-![Domain Model](image.png)
+![Domain Model](domainmodel.png)
 
 The donation service has managers that can add needs to a public list called a cupboard. Helpers can then choose from the needs added by managers, and add/remove the need to/from a basket that the helper can manage. The helper can then checkout the needs once they've been fufilled, removing them from both the helper's basket, and the cupboard.
 
@@ -77,21 +84,35 @@ Both the Controller and Model are built using Java and Spring Framework. Details
 
 ### Overview of User Interface
 
-First page a user sees when visiting website is the login. Here they can enter their username and password (of which the password appears as only dots) and then press either login to login or Create Account to create an account with the inputted information.
+The first page the user sees when visiting the website is the home page. Here they can see the 5 most recently fulfilled needs as well as a button that they can press to take them to the login page.
+![Home Page UI](homepageui.png)
+
+Upon pressing the the login button the users are taken to the login page. Here they can enter their username and password (of which the password appears as only dots) and then press either login to login or Create Account to create an account with the inputted information. If the user forgets their password they can press the 'Forgot Password' button and will be prompted to enter their username and then taken to the forgot password page. Finally, the user can return to the home page by pressing 'Home'
 ![Login UI](loginui.png)
 
-After logging in or creating an account a user is taken to the cupboard page, seen here being viewed as a helper. Here a help can search for needs and/or add needs to their basket.
-![Cupboard tab UI as seen by a helper](helperui.png)
+When the user presses the forgot password button on the login page they are taken here, the forgot password page where they first must answer their security question. After getting it correct, they may update their password and are taken back to the login page.
+![Forgot Password UI](forgotpasswordui.png)
 
-If instead the user is a manager they will see this page in which, alongside searching for needs, lets them add, edit, and delete needs.
-![Cupboard tab UI as seen by a manager](managerui.png)
+After successfully logging in or creating an account a user is taken to the cupboard page, seen here being viewed as a helper. Here a help can search for needs and/or add needs to their basket.
+![Cupboard tab UI as seen by a helper](helpercupboardui.png)
 
-If a helper presses on the "Basket" button on the lefthand side they can reach the basket page where they can removing things from their basket and/or checkout their basket.
+If instead the user is logged in as a manager they will see this page in which, alongside searching for needs, lets them add, edit, and delete needs.
+![Cupboard tab UI as seen by a manager](managercupboardui.png)
+
+If a helper presses on the "Basket" button on the sidebar they can reach the basket page where they can removing things from their basket and/or checkout their basket.
 ![Basket tab UI as seen by a helper](basketui.png)
 
-If a user presses on the "Account Management" button on the lefthand side they can reach a page where they can edit their account information such as their username (only if a helper) and password as well as log out and delete their account (only if they are a helper)
-![Account Management tab UI as seen by a helper](amui.png)
+If a user presses on the "Account Management" button on the sidebar they can reach a page where they can edit their account information such as their password and username as well as delete their account (only as a helper for the latter two)
+![Account Management tab UI as seen by a helper](accountmanagementui.png)
 
+If a user presses on the "Leaderboard" button on the sidebar they can reach the page where they can see the users who have contributed the most to this organization. They can also set the max amount of users they wish to see
+![Leaderboard tab UI](leaderboardui.png)
+
+If a user presses on the "Thank you" button on the sidebar they can reach the page where they can see a list of all needs fulfilled, including the user who fulfilled it and the timestamp, a pie chart that displays the proportion of needs currently fulfilled, and the number of needs fulfilled in the past day, week, month, and year.
+![Thank You tab UI](thankyouui.png)
+
+If a manager presses on the "Users" tab on the sidebar they can see a list of all users, can search them by their username, and can ban/unban them.
+![Users tab UI](usersui.png)
 
 ### View Tier
 > _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
@@ -114,9 +135,8 @@ If a user presses on the "Account Management" button on the lefthand side they c
 ### Controller Tier
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
-Cupboard Controller - Provides API functionality to access Need objects<br>
-Manager Controller - Provides API functionality to for all Manager related tasks<br>
-User Controller - Provides API functionality to for all Helper related tasks
+Cupboard Controller - Provides API functionality to access Need and CompletedNeed objects<br>
+User Controller - Provides API functionality to for all Helper and mass user related tasks
 
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
@@ -125,41 +145,33 @@ User Controller - Provides API functionality to for all Helper related tasks
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
 > 
-![Controller UML Diagram](Controller-UML.png)
+![Controller UML Diagram](controller.png)
 
 ### Model Tier
 
-Manager: A manager adds and removes needs from their cupboard.<br>
 Need: A need is some item that a manager needs funded.<br>
-User: A user can help support a manager by funding a need.<br>
+CompletedNeed: A Need that was fulfilled, containing the timestamp of fulfillment and user who did the fulfilling.
+User: Any user, whether it be a Helper or Manager. Both can edit their accounts and have a basket, but Managers cannot modify their own.<br>
 UserDAO: The UserDAO provides functions to store and edit users.<br>
-CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.
+CupboardDAO: The CupboardDAO provides functions to store and edit the cupboard.<br>
+CompletedNeedDAO: Provides functions to store and edit the completedneed catalog.
 
 In this tier, interaction with the raw data is done and manipulated. The methods in the classes here are used in the Controllers to accomplish their goals.
-
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
 
 ![Model UML Diagram](model.png)
 
 ## OO Design Principles
 
-Single Responsibility: We made sure that each class was small and only is responsible for themselves.<br>
-Open/Closed: We have made it so only authorized users can access and edit data as needed.<br>
-Information Expert: We made sure that each class has enough responsibility to access the information needed for its responsibility.<br>
-Dependency Inversion/Injection: We use interfaces for the dependancies.<br>
-Controller: We implemented controllers for each object.<br>
-Pure Fabrication: We have created DAO files.
+Design Principles in our code:<br>
+- Single Responsibility: The User, Need, and CompletedNeed objects have their own Controllers. Along with that, the Need and User objects only interact with themselves, and will not attempt to alter any other object. Each of the controllers only do what they alone need to do, such as UserController _only_ determining which DAOs will be activated, and UserDAO _only_ modifing the User objects that need to be edited, and not modifying any other objects (i.e. completing a Need, which is CupboardDAO's responsibility)<br>
+- Open/Closed: We created DAO (e.g. CupboardDAO) interfaces and FileDAO (e.g. CupboardFileDAO) classes. Of these, CupboardDAO is closed for modification since exactly all of its functionality must be implemented, while CupboardFileDAO is open to include more features such as internal functions needed to save data to disk. This can be clearly seen in the Model Tier diagram, where UserFileDAO has many more functions than UserDAO had.
+- Dependency Injection: The various Controllers take as input the interface DAO, instead of the FileDAO implementation. On the web side, each of the components take in Services in their constructors meaning they can be easily swapped out for another implementation.<br>
+- Controller: The User, Need, and CompletedNeed objects all have their own Controllers, which lie as one of the intermediate steps between the user and the backend storage. This can be seen in the Tiers/Layers model where each of the controllers lie between front and backend.<br>
+- Information Expert: Each class has its own DAO file and cannot access the other DAO files. Additionally, each piece of necessary information is retrieved from its storage medium instead of being taken from another controller or being haphazardly stored by itself.<br>
+- Low Coupling: Low coupling was difficult to achieve as many functions demanded access to multiple files at once, such as generating the strings for completed needs, requiring a completed need object and a user object, which would otherwise be unnecessary in the CupboardController. However, classes in the same layer were decoupled to not depend on each other - a Controller only ever called a DAO, which then only ever modified some Model. 
+<!-- Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br> I can't think of an example of Pure Fabrication in our code-->  
 
-
-Key OO Design Principles:<br>
-Controller: The User, Cupboard, and Manager objects all have their own Controllers.<br>
-Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br>
-Single Responsibility: The User, Cupboard, and Manager objects have their own Controllers. Along with that, the Needs, User, Cupboard, and Manager objects only interact with themselves, and will not attempt to alter any other object.<br>
-Information Expert: Each class has its own DAO file and cannot access the other DAO files.<br>
-
-> _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_
+<!-- > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_ -->
 
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
@@ -174,7 +186,7 @@ Information Expert: Each class has its own DAO file and cannot access the other 
 
 <!--List how many user stories we have and for them how many acceptance criteria pass and how many fail (and give reason why)-->
 
-By the end of Sprint 2 we have 39 User stories.<br>
+By the end of Sprint 3 we have 60 User stories.<br>
 Currently, for the acceptance criteria we have, all stories pass.
 
 <!--What issues are/were there-->
@@ -183,9 +195,9 @@ The only issues that would arise were from faulty code. These would be fixed dur
 ### Unit Testing and Code Coverage
 
 Our strategy for unit testing was ensure everything is covered, all possible cases.
-Currently (end of Sprint 2) our code coverage is the following:
+Currently (end of Sprint 3) our code coverage is the following:
 
-![Code Coverage](cc.png)
+![Code Coverage Report](codecoverage.png)
 
 <!--List anomolies in the cc report here if there are any-->
 
@@ -194,7 +206,13 @@ Currently (end of Sprint 2) our code coverage is the following:
 2025/10/19: Sprint 2<br>
 Main programming for Sprint 2 is now complete, merged, and mostly tested (still need to do the actual acceptance testing writeup but).
 
-2025/10/21: Sprint2<br>
+2025/10/21: Sprint 2<br>
 All programming tasks, testing, documentation, demo planning has been completed at this time.
+
+2025/11/9: Sprint 3<br>
+All programming for this sprint has been completed at this time, just documentation, demo, and acceptance testing left
+
+2025/11/12: Sprint 3<br>
+After these docs are pushed all code for the project should be completed (Sprint 3 is done).
 
 <!--Add more stuff here following above format as it happens such as 'team decisions or design milestones/changes and corresponding justification'-->

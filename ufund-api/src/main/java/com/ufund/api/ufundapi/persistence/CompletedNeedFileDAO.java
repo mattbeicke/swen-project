@@ -87,6 +87,9 @@ public class CompletedNeedFileDAO implements CompletedNeedDAO {
         return completedArray;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     @Override
     public void completeNeed(Need need, User user) throws IOException {
         CompletedNeed completed = new CompletedNeed(need, user.getId(), user.getUsername(),

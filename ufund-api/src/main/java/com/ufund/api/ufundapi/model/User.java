@@ -67,8 +67,8 @@ public class User {
      */
     public static User generateUser(int id, String username, String password, String securityQuestion,
             String securityAnswer, int contributions, boolean banned) {
-        return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion, 
-                        BCrypt.hashpw(securityAnswer, BCrypt.gensalt()), contributions, banned);
+        return new User(id, username, BCrypt.hashpw(password, BCrypt.gensalt()), securityQuestion,
+                BCrypt.hashpw(securityAnswer, BCrypt.gensalt()), contributions, banned);
     }
 
     /**
@@ -195,18 +195,28 @@ public class User {
     }
 
     /**
-     * gets the answer to the security question
+     * Gets the users answer to their security question
      * 
-     * @return answer to the users security question
+     * @return the answer to their security question
      */
     public String getSecurityAnswer() {
         return securityAnswer;
     }
 
+    /**
+     * Gets the number of contributions a user has done
+     * 
+     * @return the users contributions
+     */
     public int getContributions() {
         return contributions;
     }
 
+    /**
+     * alters the contributions of a user by an amount
+     * 
+     * @param alter amount to alter contributions by
+     */
     public void alterContributions(int alter) {
         contributions += alter;
     }

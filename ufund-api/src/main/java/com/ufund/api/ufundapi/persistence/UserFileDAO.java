@@ -380,7 +380,7 @@ public class UserFileDAO implements UserDAO {
      * @param containsText filter text, if null then no filter
      * @return The array of users, may be empty
      */
-    public User[] getUsers(String containsText) { // if containsText == null, no filter
+    private User[] getUsers(String containsText) { // if containsText == null, no filter
         ArrayList<User> userArrayList = new ArrayList<>();
 
         for (User user : users.values()) {
