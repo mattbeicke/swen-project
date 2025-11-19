@@ -148,7 +148,11 @@ User Controller - Provides API functionality to for all Helper and mass user rel
 TODO:
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
-> Tier above._
+> Tier above._ Reminder Below
+> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
+> Describe the types of components in the tier and describe their
+> responsibilities.  This should be a narrative description, i.e. it has
+> a flow or "story line" that the reader can follow._
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
