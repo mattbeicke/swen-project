@@ -200,7 +200,8 @@ TODO: say the part where we didnt have a home page but since we didnt update the
 
 update section below with this info
 -->
-The only issues that would arise were from faulty code. These would be fixed during the testing phase when another team member would analyze their code and figure out what went wrong, collaborate with the creator, and fix it.
+
+we did have an issue where some tests failed, but it was because of how the tests were worded.
 
 ### Unit Testing and Code Coverage
 
