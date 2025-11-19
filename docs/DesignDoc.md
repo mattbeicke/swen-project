@@ -177,9 +177,6 @@ Design Principles in our code:<br>
 - Controller: The User, Need, and CompletedNeed objects all have their own Controllers, which lie as one of the intermediate steps between the user and the backend storage. This can be seen in the Tiers/Layers model where each of the controllers lie between front and backend.<br>
 - Information Expert: Each class has its own DAO file and cannot access the other DAO files. Additionally, each piece of necessary information is retrieved from its storage medium instead of being taken from another controller or being haphazardly stored by itself.<br>
 - Low Coupling: Low coupling was difficult to achieve as many functions demanded access to multiple files at once, such as generating the strings for completed needs, requiring a completed need object and a user object, which would otherwise be unnecessary in the CupboardController. However, classes in the same layer were decoupled to not depend on each other - a Controller only ever called a DAO, which then only ever modified some Model. 
-<!-- Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br> I can't think of an example of Pure Fabrication in our code-->  
-
-<!-- > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_ -->
 
 <!--
 TODO:
