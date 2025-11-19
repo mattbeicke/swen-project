@@ -17,6 +17,7 @@ This is a summary of the project.
 
 ### Purpose
 <!---
+TODO: (finish/finalize)
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
 --->
@@ -40,8 +41,10 @@ This section describes the features of the application.
 ### Definition of MVP
 Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization.<br>What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.<br>Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.<br>Additionally, managers can log in to add, edit, and remove needs.
 
+<!-- 
+TODO:
 ### MVP Features
->  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
+_**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._-->
 
 ### Enhancements
 Security Package:
@@ -114,6 +117,8 @@ If a user presses on the "Thank you" button on the sidebar they can reach the pa
 If a manager presses on the "Users" tab on the sidebar they can see a list of all users, can search them by their username, and can ban/unban them.
 ![Users tab UI](usersui.png)
 
+<!--
+TODO:
 ### View Tier
 > _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
 > Describe the types of components in the tier and describe their
@@ -131,20 +136,23 @@ If a manager presses on the "Users" tab on the sidebar they can see a list of al
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+ -->
 
 ### Controller Tier
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
 Cupboard Controller - Provides API functionality to access Need and CompletedNeed objects<br>
-User Controller - Provides API functionality to for all Helper and mass user related tasks
+User Controller - Provides API functionality to for all Helper and mass user related 
 
+<!--
+TODO:
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
 > Tier above._
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
+-->
 ![Controller UML Diagram](controller.png)
 
 ### Model Tier
@@ -173,6 +181,8 @@ Design Principles in our code:<br>
 
 <!-- > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_ -->
 
+<!--
+TODO:
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
 > **Identify 3-4** areas within your code that have been flagged by the Static Code 
@@ -180,16 +190,19 @@ Design Principles in our code:<br>
 > Include any relevant screenshot(s) with each area._
 
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
+-->
 
 ## Testing
 ### Acceptance Testing
 
-<!--List how many user stories we have and for them how many acceptance criteria pass and how many fail (and give reason why)-->
-
 By the end of Sprint 3 we have 60 User stories.<br>
 Currently, for the acceptance criteria we have, all stories pass.
 
-<!--What issues are/were there-->
+<!--What issues are/were there
+TODO: say the part where we didnt have a home page but since we didnt update the acceptance criteria we got penalized for it
+
+update section below with this info
+-->
 The only issues that would arise were from faulty code. These would be fixed during the testing phase when another team member would analyze their code and figure out what went wrong, collaborate with the creator, and fix it.
 
 ### Unit Testing and Code Coverage
@@ -198,8 +211,6 @@ Our strategy for unit testing was ensure everything is covered, all possible cas
 Currently (end of Sprint 3) our code coverage is the following:
 
 ![Code Coverage Report](codecoverage.png)
-
-<!--List anomolies in the cc report here if there are any-->
 
 ## Ongoing Rationale
 
