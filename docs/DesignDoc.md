@@ -70,6 +70,9 @@ This section describes the application domain.
 
 The donation service has managers that can add needs to a public list called a cupboard. Helpers can then choose from the needs added by managers, and add/remove the need to/from a basket that the helper can manage. The helper can then checkout the needs once they've been fufilled, removing them from both the helper's basket, and the cupboard.
 
+<!-- DISCUSS THE ENTITIES AND THEIR RELATIONSHIPS!!! -->
+
+
 
 ## Architecture and Design
 
