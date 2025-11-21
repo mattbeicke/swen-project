@@ -21,7 +21,8 @@ TODO: (finish/finalize)
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
 --->
-This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. It will allow organization managers to create a list of things that they do need and allow non-managers to contribute to them by adding them to a 'basket' then checking out that basket. Additionally, the project contains security measures such as encrpyted passwords, security questions (for forgot password), and API Keys. There is also the permission granted to managers to ban/unban a non manager in the event something requires it. The project also displays statistics on who has contributed the most and what proportion of needs are unfulfilled.
+This project aims to enable a Homeless Shelter to have their most important needs satisfied via crowdsourcing. It will allow the organizations managers to create a list of things that they do need and allow non-managers to contribute to them by adding them to a 'basket' then checking out that basket. Additionally, the project contains security measures such as encrpyted passwords, security questions (for forgot password), and API Keys. There is also the permission granted to managers to ban/unban a non manager in the event something requires it. The project also displays statistics on who has contributed the most and what proportion of needs are unfulfilled.
+
 ### Glossary and Acronyms
 
 | Term | Definition |
@@ -29,32 +30,37 @@ This project aims to enable organizations to have their most important needs sat
 | SPA | Single Page Application |
 | User | Anyone who uses the system (either a helper or a manager) |
 | Session | An instance of a user being logged in with an API key. |
+| Need | Something that a non-profit organization can get donated |
 | Helper | Someone who completes needs from the Cupboard. |
 | Manager | Someone who modifies the cupboard and administrates users. Cannot complete Needs. |
 | Cupboard | The full list of uncompleted needs which can be completed, modified, or removed. | 
-
 
 ## Requirements
 
 This section describes the features of the application.
 
 ### Definition of MVP
-Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization.<br>What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.<br>Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.<br>Additionally, managers can log in to add, edit, and remove needs.
+Helpers are able to log in to view a searchable list of as of yet unfulfilled needs. Then, they can select any number of needs to add to their basket, remove from their basket, and finally 'check out' when they are ready.<br>Additionally, managers can log in using the username 'admin' to add, edit, and remove needs from the list.
 
-<!-- 
-TODO:
 ### MVP Features
-_**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._-->
+Some of the important User Stories of the MVP were:
+* Login and Logout for Helpers and for Managers
+* Account Creation for Helpers
+* Creating/Editing/Deleting a Need
+* Adding/Removing a Need to/from a Helper's Basket
+* Checking out a Helper's Basket
 
 ### Enhancements
-Security Package:
+Security Package:<br>
+All layers of the application are to be secured i.e. app will only allow you to do things _only_ if you are of a certain role. Additonally, managers can ban/unban helpers and all users can answer a security question to reset their password
 * Passwords are encrypted on the server, and cannot be retrieved after being created.
 * API keys are assigned to each user upon login making it impossible for the user to complete some actions without it
 * Sessions will expire after one hour
 * Managers can Ban and Unban users if they choose to
 * All users are required to set a security question that can be answered when they forget their password
 
-Thanks:
+Thanks:<br>
+App will track who fulfills what needs when and displays that to dedicated tabs alongside statistics on them.
 * Default page is now the home page that displays the 5 most recently fulfilled needs as well as a button to take you to the login page
 * Thanks page displays the list of all needs fulfilled
 * On the thanks page there is the number of needs that were fulfilled in the past day, week, month, and year
@@ -213,6 +219,8 @@ we did have an issue where some tests failed, but it was because of how the test
 ### Unit Testing and Code Coverage
 
 Our strategy for unit testing was ensure everything is covered, all possible cases.
+Since we were unsure what the "ufundapi" tests were for (as there was like 3 lines of code in that java class) we chose to ignore the premade test case. In retrospect we should have asked how to test for that.
+
 Currently (end of Sprint 3) our code coverage is the following:
 
 ![Code Coverage Report](codecoverage.png)
