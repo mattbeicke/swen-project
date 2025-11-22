@@ -126,20 +126,37 @@ If a user presses on the "Thank you" button on the sidebar they can reach the pa
 If a manager presses on the "Users" tab on the sidebar they can see a list of all users, can search them by their username, and can ban/unban them.
 ![Users tab UI](usersui.png)
 
-<!--
-TODO:
 ### View Tier
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
-> of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
-> sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
-> to help illustrate the end-to-end flow._
+When the user is first brought to the site they are taken to the Home Page. Here they can see a button to the login page and a list of already fulfilled needs. 
+<br>Pressing the login button on the home page takes a user to the login page where they can login, create an account, or answer their security question to reset their password.
+<br>If they choose to reset their password they are taken to a page where they answer their security question then can reset their password if they get it right.
+<br>After successfully logging in or creating an account a User is taken to the Needs tab where they can see a searchable list of all unfulfilled needs. If a User is a helper they can add some to their basket. If a User is a manager they can create/edit/delete needs.
+<br>Pressing on the Basket button on the sidebar a Helper is taken to a page where they can see their basket. Here they can remove items from it and check it out.
+<br>Pressing the Account Management button on the sidebar a User can reset their password, delete their account, and reset their username (only if they are a helper for the latter 2).
+<br>Pressing the Thank You! button on the sidebar lets a User see all needs that have been fulfilled as well as the number done in the last day/week/month/year.
+<br>Pressing the Leaderboard button on the sidebar lets a User see who has checked out the most Needs.
+<br>Pressing the Users button on the sidebar lets a manager see a searchable list of all helper accounts and lets them be able to ban or unban any user if they so choose.
+<br>Finally, pressing the Log Out button on the sidebar logs out a User and redirects them back to the Home Page.
 
+In addition to the above components, there are the following services that are responsible for handling the HTTP requests based on their name:
+* Account Service - Does login/logout and account management related tasks
+* Completed Service - Does all things for CompletedNeed objects 
+* Need Service - Does all things that involve Need objects
+* User Service - Does all things for the Users tab such as the banning/unbanning of Users
+
+Below is a Sequence diagram for adding a Need to a Helper's Basket
+![Sequence Diagram for adding a Need to a Helper's Basket](sequencediagram1.png)
+
+Below is a Sequence diagram for Banning/Unbanning a Helper as a Manager
+![Sequence Diagram for Banning/Unbanning a Helper as a Manager](sequencediagram2.png)
+<!--
+> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects of the design that you are describing.  (**For example**, in a shopping experience application you might create a sequence diagram of a customer searching for an item and adding to their cart.)
+> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side to help illustrate the end-to-end flow._
+-->
+
+
+<!--
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
  >* _Class diagrams only apply to the **Controller** and **Model** Tier_
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
