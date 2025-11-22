@@ -17,10 +17,12 @@ This is a summary of the project.
 
 ### Purpose
 <!---
+TODO: (finish/finalize)
 >  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
 > important user group and user goals._
 --->
-This project aims to enable organizations to have their most important needs satisfied via crowdsourcing. It will allow organization managers to create a list of things that they do need and allow non-managers to contribute to them by adding them to a 'basket' then checking out that basket. Additionally, the project contains security measures such as encrpyted passwords, security questions (for forgot password), and API Keys. There is also the permission granted to managers to ban/unban a non manager in the event something requires it. The project also displays statistics on who has contributed the most and what proportion of needs are unfulfilled.
+This project aims to enable a Homeless Shelter to have their most important needs satisfied via crowdsourcing. It will allow the organizations managers to create a list of things that they do need and allow non-managers to contribute to them by adding them to a 'basket' then checking out that basket. Additionally, the project contains security measures such as encrpyted passwords, security questions (for forgot password), and API Keys. There is also the permission granted to managers to ban/unban a non manager in the event something requires it. The project also displays statistics on who has contributed the most and what proportion of needs are unfulfilled.
+
 ### Glossary and Acronyms
 
 | Term | Definition |
@@ -28,30 +30,37 @@ This project aims to enable organizations to have their most important needs sat
 | SPA | Single Page Application |
 | User | Anyone who uses the system (either a helper or a manager) |
 | Session | An instance of a user being logged in with an API key. |
+| Need | Something that a non-profit organization can get donated |
 | Helper | Someone who completes needs from the Cupboard. |
 | Manager | Someone who modifies the cupboard and administrates users. Cannot complete Needs. |
 | Cupboard | The full list of uncompleted needs which can be completed, modified, or removed. | 
-
 
 ## Requirements
 
 This section describes the features of the application.
 
 ### Definition of MVP
-Non-profit groups require many donations to be sustainable, and the problem of requesting and satisfying these needs poses a issue. The large, sweeping demands can dissuade potential donors from helping the organization.<br>What if instead, all of the needs an organization could have were broken down into smaller, more accessible requests? Our project aims to enable prospective supporters to contribute to a greater cause.<br>Users are able to log in to view the list of available needs. Then, they can select any number of needs to add to their basket, and check out when they are ready.<br>Additionally, managers can log in to add, edit, and remove needs.
+Helpers are able to log in to view a searchable list of as of yet unfulfilled needs. Then, they can select any number of needs to add to their basket, remove from their basket, and finally 'check out' when they are ready.<br>Additionally, managers can log in using the username 'admin' to add, edit, and remove needs from the list.
 
 ### MVP Features
->  _**[Sprint 4]** Provide a list of top-level Epics and/or Stories of the MVP._
+Some of the important User Stories of the MVP were:
+* Login and Logout for Helpers and for Managers
+* Account Creation for Helpers
+* Creating/Editing/Deleting a Need
+* Adding/Removing a Need to/from a Helper's Basket
+* Checking out a Helper's Basket
 
 ### Enhancements
-Security Package:
+Security Package:<br>
+All layers of the application are to be secured i.e. app will only allow you to do things _only_ if you are of a certain role. Additonally, managers can ban/unban helpers and all users can answer a security question to reset their password
 * Passwords are encrypted on the server, and cannot be retrieved after being created.
 * API keys are assigned to each user upon login making it impossible for the user to complete some actions without it
 * Sessions will expire after one hour
 * Managers can Ban and Unban users if they choose to
 * All users are required to set a security question that can be answered when they forget their password
 
-Thanks:
+Thanks:<br>
+App will track who fulfills what needs when and displays that to dedicated tabs alongside statistics on them.
 * Default page is now the home page that displays the 5 most recently fulfilled needs as well as a button to take you to the login page
 * Thanks page displays the list of all needs fulfilled
 * On the thanks page there is the number of needs that were fulfilled in the past day, week, month, and year
@@ -66,6 +75,9 @@ This section describes the application domain.
 ![Domain Model](domainmodel.png)
 
 The donation service has managers that can add needs to a public list called a cupboard. Helpers can then choose from the needs added by managers, and add/remove the need to/from a basket that the helper can manage. The helper can then checkout the needs once they've been fufilled, removing them from both the helper's basket, and the cupboard.
+
+<!-- DISCUSS THE ENTITIES AND THEIR RELATIONSHIPS!!! -->
+
 
 
 ## Architecture and Design
@@ -115,36 +127,57 @@ If a manager presses on the "Users" tab on the sidebar they can see a list of al
 ![Users tab UI](usersui.png)
 
 ### View Tier
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects 
-> of the design that you are describing.  (**For example**, in a shopping experience application you might create a 
-> sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side 
-> to help illustrate the end-to-end flow._
+When the user is first brought to the site they are taken to the Home Page. Here they can see a button to the login page and a list of already fulfilled needs. 
+<br>Pressing the login button on the home page takes a user to the login page where they can login, create an account, or answer their security question to reset their password.
+<br>If they choose to reset their password they are taken to a page where they answer their security question then can reset their password if they get it right.
+<br>After successfully logging in or creating an account a User is taken to the Needs tab where they can see a searchable list of all unfulfilled needs. If a User is a helper they can add some to their basket. If a User is a manager they can create/edit/delete needs.
+<br>Pressing on the Basket button on the sidebar a Helper is taken to a page where they can see their basket. Here they can remove items from it and check it out.
+<br>Pressing the Account Management button on the sidebar a User can reset their password, delete their account, and reset their username (only if they are a helper for the latter 2).
+<br>Pressing the Thank You! button on the sidebar lets a User see all needs that have been fulfilled as well as the number done in the last day/week/month/year.
+<br>Pressing the Leaderboard button on the sidebar lets a User see who has checked out the most Needs.
+<br>Pressing the Users button on the sidebar lets a manager see a searchable list of all helper accounts and lets them be able to ban or unban any user if they so choose.
+<br>Finally, pressing the Log Out button on the sidebar logs out a User and redirects them back to the Home Page.
 
+In addition to the above components, there are the following services that are responsible for handling the HTTP requests based on their name:
+* Account Service - Does login/logout and account management related tasks
+* Completed Service - Does all things for CompletedNeed objects 
+* Need Service - Does all things that involve Need objects
+* User Service - Does all things for the Users tab such as the banning/unbanning of Users
+
+Below is a Sequence diagram for adding a Need to a Helper's Basket
+![Sequence Diagram for adding a Need to a Helper's Basket](sequencediagram1.png)
+
+Below is a Sequence diagram for Banning/Unbanning a Helper as a Manager
+![Sequence Diagram for Banning/Unbanning a Helper as a Manager](sequencediagram2.png)
+
+<!--
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
  >* _Class diagrams only apply to the **Controller** and **Model** Tier_
 >* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
  >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
  >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
+ -->
 
 ### Controller Tier
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
 Cupboard Controller - Provides API functionality to access Need and CompletedNeed objects<br>
-User Controller - Provides API functionality to for all Helper and mass user related tasks
+User Controller - Provides API functionality to for all Helper and mass user related 
 
+<!--
+TODO:
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
-> Tier above._
+> Tier above._ Reminder Below
+> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
+> Describe the types of components in the tier and describe their
+> responsibilities.  This should be a narrative description, i.e. it has
+> a flow or "story line" that the reader can follow._
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
-> 
+-->
 ![Controller UML Diagram](controller.png)
 
 ### Model Tier
@@ -169,10 +202,9 @@ Design Principles in our code:<br>
 - Controller: The User, Need, and CompletedNeed objects all have their own Controllers, which lie as one of the intermediate steps between the user and the backend storage. This can be seen in the Tiers/Layers model where each of the controllers lie between front and backend.<br>
 - Information Expert: Each class has its own DAO file and cannot access the other DAO files. Additionally, each piece of necessary information is retrieved from its storage medium instead of being taken from another controller or being haphazardly stored by itself.<br>
 - Low Coupling: Low coupling was difficult to achieve as many functions demanded access to multiple files at once, such as generating the strings for completed needs, requiring a completed need object and a user object, which would otherwise be unnecessary in the CupboardController. However, classes in the same layer were decoupled to not depend on each other - a Controller only ever called a DAO, which then only ever modified some Model. 
-<!-- Pure Fabrication: Each Object has its own DAO file for each instance of said object.<br> I can't think of an example of Pure Fabrication in our code-->  
 
-<!-- > _**[Sprint 3 & 4]** OO Design Principles should span across **all tiers.**_ -->
-
+<!--
+TODO:
 ## Static Code Analysis/Future Design Improvements
 > _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
 > **Identify 3-4** areas within your code that have been flagged by the Static Code 
@@ -180,26 +212,30 @@ Design Principles in our code:<br>
 > Include any relevant screenshot(s) with each area._
 
 > _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
+-->
 
 ## Testing
 ### Acceptance Testing
 
-<!--List how many user stories we have and for them how many acceptance criteria pass and how many fail (and give reason why)-->
-
 By the end of Sprint 3 we have 60 User stories.<br>
 Currently, for the acceptance criteria we have, all stories pass.
 
-<!--What issues are/were there-->
-The only issues that would arise were from faulty code. These would be fixed during the testing phase when another team member would analyze their code and figure out what went wrong, collaborate with the creator, and fix it.
+<!--What issues are/were there
+TODO: say the part where we didnt have a home page but since we didnt update the acceptance criteria we got penalized for it
+
+update section below with this info
+-->
+
+we did have an issue where some tests failed, but it was because of how the tests were worded.
 
 ### Unit Testing and Code Coverage
 
 Our strategy for unit testing was ensure everything is covered, all possible cases.
+Since we were unsure what the "ufundapi" tests were for (as there was like 3 lines of code in that java class) we chose to ignore the premade test case. In retrospect we should have asked how to test for that.
+
 Currently (end of Sprint 3) our code coverage is the following:
 
 ![Code Coverage Report](codecoverage.png)
-
-<!--List anomolies in the cc report here if there are any-->
 
 ## Ongoing Rationale
 
