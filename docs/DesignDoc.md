@@ -150,11 +150,6 @@ Below is a Sequence diagram for adding a Need to a Helper's Basket
 
 Below is a Sequence diagram for Banning/Unbanning a Helper as a Manager
 ![Sequence Diagram for Banning/Unbanning a Helper as a Manager](sequencediagram2.png)
-<!--
-> _**[Sprint 4]** You must  provide at least **2 sequence diagrams** as is relevant to a particular aspects of the design that you are describing.  (**For example**, in a shopping experience application you might create a sequence diagram of a customer searching for an item and adding to their cart.)
-> As these can span multiple tiers, be sure to include an relevant HTTP requests from the client-side to the server-side to help illustrate the end-to-end flow._
--->
-
 
 <!--
 > _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
