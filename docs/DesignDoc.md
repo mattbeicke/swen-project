@@ -16,11 +16,6 @@ geometry: margin=1in
 This is a summary of the project.
 
 ### Purpose
-<!---
-TODO: (finish/finalize)
->  _**[Sprint 2 & 4]** Provide a very brief statement about the project and the most
-> important user group and user goals._
---->
 This project aims to enable a Homeless Shelter to have their most important needs satisfied via crowdsourcing. It will allow the organizations managers to create a list of things that they do need and allow non-managers to contribute to them by adding them to a 'basket' then checking out that basket. Additionally, the project contains security measures such as encrpyted passwords, security questions (for forgot password), and API Keys. There is also the permission granted to managers to ban/unban a non manager in the event something requires it. The project also displays statistics on who has contributed the most and what proportion of needs are unfulfilled.
 
 ### Glossary and Acronyms
@@ -158,14 +153,6 @@ Below is a Sequence diagram for adding a Need to a Helper's Basket
 Below is a Sequence diagram for Banning/Unbanning a Helper as a Manager
 ![Sequence Diagram for Banning/Unbanning a Helper as a Manager](sequencediagram2.png)
 
-<!--
-> _**[Sprint 4]** To adequately show your system, you will need to present the **class diagrams** where relevant in your design. Some additional tips:_
- >* _Class diagrams only apply to the **Controller** and **Model** Tier_
->* _A single class diagram of the entire system will not be effective. You may start with one, but will be need to break it down into smaller sections to account for requirements of each of the Tier static models below._
- >* _Correct labeling of relationships with proper notation for the relationship type, multiplicities, and navigation information will be important._
- >* _Include other details such as attributes and method signatures that you think are needed to support the level of detail in your discussion._
- -->
-
 ### Controller Tier
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
@@ -202,15 +189,6 @@ Design Principles in our code:<br>
 - Information Expert: Each class has its own DAO file and cannot access the other DAO files. Additionally, each piece of necessary information is retrieved from its storage medium instead of being taken from another controller or being haphazardly stored by itself.<br>
 - Low Coupling: Low coupling was difficult to achieve as many functions demanded access to multiple files at once, such as generating the strings for completed needs, requiring a completed need object and a user object, which would otherwise be unnecessary in the CupboardController. However, classes in the same layer were decoupled to not depend on each other - a Controller only ever called a DAO, which then only ever modified some Model. 
 
-<!--
-TODO:
-> _**[Sprint 4]** With the results from the Static Code Analysis exercise, 
-> **Identify 3-4** areas within your code that have been flagged by the Static Code 
-> Analysis Tool (SonarQube) and provide your analysis and recommendations.  
-> Include any relevant screenshot(s) with each area._
-
-> _**[Sprint 4]** Discuss **future** refactoring and other design improvements your team would explore if the team had additional time._
--->
 ## Static Code Analysis/Future Design Improvements
 
 During our first iteration of static code analysis, we had 270 issues. This was whittled down to 12 by the end of Sprint 3.
@@ -253,4 +231,5 @@ All programming for this sprint has been completed at this time, just documentat
 2025/11/12: Sprint 3<br>
 After these docs are pushed all code for the project should be completed (Sprint 3 is done).
 
-<!--Add more stuff here following above format as it happens such as 'team decisions or design milestones/changes and corresponding justification'-->
+2025/11/23: Sprint 4<br>
+Docs for Sprint 4 should be nearly done
