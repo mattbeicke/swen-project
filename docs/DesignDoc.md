@@ -145,17 +145,19 @@ TODO:
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
 Cupboard Controller - Provides API functionality to access Need and CompletedNeed objects<br>
-User Controller - Provides API functionality to for all Helper and mass user related 
+User Controller - Provides API functionality to for all Helper and mass user related<br><br>
+
+When a user clicks on the buttons to add or remove a need from their basket, or to edit their user, an HTTP request is sent from the service to the UserController. From there the Controller calls the DAO to get a User with the updated needs list 
+(provided that the user is verified/logged in, a helper, not banned, and an error doesn't occur with making the updated user). It
+then sends a 200 status code and the updated user data back to the service which then sends it off to update what the User sees.<br>
+
+As with the above described controller, controllers process requests from the view tier, and return the necessary data and status codes depending on the methods called using the different types of http requests.
+
 
 <!--
 TODO:
 > _**[Sprint 4]** Provide a summary of this tier of your architecture. This
 > section will follow the same instructions that are given for the View
-> Tier above._ Reminder Below
-> _**[Sprint 4]** Provide a summary of the View Tier UI of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
 
 > _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
 > static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
