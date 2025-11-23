@@ -74,11 +74,18 @@ This section describes the application domain.
 
 ![Domain Model](domainmodel.png)
 
-The donation service has managers that can add needs to a public list called a cupboard. Helpers can then choose from the needs added by managers, and add/remove the need to/from a basket that the helper can manage. The helper can then checkout the needs once they've been fufilled, removing them from both the helper's basket, and the cupboard.
+Entities:
+* Need - Something that an organization wants to be crowdsourced
+* Manager - Administrates the Cupboard, adding/editing/deleting Needs
+* Helper - Any User who is not a Manager
+* Basket - Unfulfilled Needs that a Helper will fulfill
+* Cupboard - Container for all of the unfulfilled Needs
+* Completed Need - Need that has been fulfilled already
 
-<!-- DISCUSS THE ENTITIES AND THEIR RELATIONSHIPS!!! -->
-
-
+Relationships (that werent listed above):
+* Searches - A Helper can search the Cupboard to refine what Needs they can see
+* Helper-Basket - Each Helper gets 1 basket
+* Basket-Need - Each Basket can have any number of Needs
 
 ## Architecture and Design
 
