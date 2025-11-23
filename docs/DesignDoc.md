@@ -145,9 +145,10 @@ TODO:
 
 Account Controller - Provides API functionality for login, logout, api key verification, etc<br>
 Cupboard Controller - Provides API functionality to access Need and CompletedNeed objects<br>
-User Controller - Provides API functionality to for all Helper and mass user related<br><br>
+User Controller - Provides API functionality to for all Helper and mass user related tasks<br>
+Manager Controller - Provides API functionality for all Manager realted Tasks<br>
 
-When a user clicks on the buttons to add or remove a need from their basket, or to edit their user, an HTTP request is sent from the service to the UserController. From there the Controller calls the DAO to get a User with the updated needs list 
+When a user clicks on the buttons to add or remove a need from their basket, or to edit their user, an HTTP request is sent from the service to the UserController. From there the Controller calls the relevant DAO to get a User with the updated needs list 
 (provided that the user is verified/logged in, a helper, not banned, and an error doesn't occur with making the updated user). It
 then sends a 200 status code and the updated user data back to the service which then sends it off to update what the User sees.<br>
 
