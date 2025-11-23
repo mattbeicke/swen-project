@@ -228,15 +228,8 @@ One design improvement our team would explore given additional time is refactori
 ### Acceptance Testing
 
 By the end of Sprint 3 we have 60 User stories.<br>
-Currently, for the acceptance criteria we have, all stories pass.
+We had an issue in Sprint 2 where some tests failed, but it was because we had decided to not implement the features listed in the acceptance criteria but failed to change them after we decided that. That feature being there was no home page. Besides that however, all acceptance tests do pass however we could have benefitted from having more especially for the fail cases at least for the tests for Sprint 3.
 
-<!--What issues are/were there
-TODO: say the part where we didnt have a home page but since we didnt update the acceptance criteria we got penalized for it
-
-update section below with this info
--->
-
-we did have an issue where some tests failed, but it was because of how the tests were worded.
 
 ### Unit Testing and Code Coverage
 
