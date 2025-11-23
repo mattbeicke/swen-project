@@ -228,7 +228,7 @@ One design improvement our team would explore given additional time is refactori
 ### Acceptance Testing
 
 By the end of Sprint 3 we have 60 User stories.<br>
-Currently, for the acceptance criteria we have, all stories pass.
+Currently, for the acceptance criteria we have, some of the stories failed the test.
 
 <!--What issues are/were there
 TODO: say the part where we didnt have a home page but since we didnt update the acceptance criteria we got penalized for it
