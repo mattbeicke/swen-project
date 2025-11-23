@@ -148,21 +148,10 @@ Cupboard Controller - Provides API functionality to access Need and CompletedNee
 User Controller - Provides API functionality to for all Helper and mass user related tasks<br>
 Manager Controller - Provides API functionality for all Manager realted Tasks<br>
 
-When a user clicks on the buttons to add or remove a need from their basket, or to edit their user, an HTTP request is sent from the service to the UserController. From there the Controller calls the relevant DAO to get a User with the updated needs list 
-(provided that the user is verified/logged in, a helper, not banned, and an error doesn't occur with making the updated user). It
-then sends a 200 status code and the updated user data back to the service which then sends it off to update what the User sees.<br>
+When a user clicks on the buttons to add or remove a need from their basket, or to edit their account, an HTTP request is sent from the service to the UserController. From there the Controller calls the relevant DAO to get a User with the updated needs list (provided that the user is verified/logged in, a helper, not banned, and an error doesn't occur with making the updated user). It then sends a 200 status code and the updated user data back to the service which then sends it off to update what the User sees.
 
-As with the above described controller, controllers process requests from the view tier, and return the necessary data and status codes depending on the methods called using the different types of http requests.
+As with the above described controller, all other controllers also process requests from the view tier, and return the necessary data and status codes depending on the methods called using the different types of HTTP requests.
 
-
-<!--
-TODO:
-> _**[Sprint 4]** Provide a summary of this tier of your architecture. This
-> section will follow the same instructions that are given for the View
-
-> _At appropriate places as part of this narrative provide **one** or more updated and **properly labeled**
-> static models (UML class diagrams) with some details such as associations (connections) between classes, and critical attributes and methods. (**Be sure** to revisit the Static **UML Review Sheet** to ensure your class diagrams are using correct format and syntax.)_
--->
 ![Controller UML Diagram](controller.png)
 
 ### Model Tier
