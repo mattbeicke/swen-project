@@ -201,7 +201,7 @@ Additionally, the duplication section of SonarQube indicated that some of our co
 
 One design improvement our team would explore given additional time is refactoring the CompletedNeeds system. It currently is included within the CupboardController, but the CupboardController class depends on many unrelated pieces of data which could be separated if care is taken. Another consideration could be dividing the different tasks a User can do into separate controllers, since the plentiful actions they can perform are included in one cluttered file. Many of these methods do not need involvement with every DAO at once, meaning there can be less coupling between layers.
 
-For the interface side of things, we ended with 75 open issues. ![Static code analysis for UI: 5 reliability issues, 70 maintainability issues](static_ui.png) A majority of these were because we did not use standalone, often did not implement OnInit, and did not use 'readonly' for any of our service injections.
+On the UI side of things, we ended with 75 open issues. ![Static code analysis for UI: 5 reliability issues, 70 maintainability issues](static_ui.png) A majority of these were because we did not use standalone, often did not implement OnInit, and did not use 'readonly' for any of our service injections.
 ![Static code analysis warning: Should not opt out of standalone, OnInit should be implemented](static_ui1.png)
 ![Static code analysis warning: Should use 'readonly' on unchanged variable](static_ui2.png)
 
