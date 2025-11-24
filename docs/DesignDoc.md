@@ -191,7 +191,7 @@ Design Principles in our code:<br>
 
 ## Static Code Analysis/Future Design Improvements
 
-During our first iteration of static code analysis, we had 270 issues. This was whittled down to 12 by the end of Sprint 3.
+During our first iteration of static code analysis, we had 270 issues for our Java code. This was whittled down to 12 by the end of Sprint 3.
 Some of the our critical fixes were:
 1)  170 of the issues were tagged as "info", since each test case erroneously included the "public" keywords. These were removed to comply with testing standards. ![Static code analysis warning: "Remove this 'public' modifier."](static_removepublic.png)
 2)  Many issues arose as a result of poor standardization. Across almost all of the classes, low and medium severity issues came up about poor formatting, consistency, and repetition. ![Static code analysis warning: Reformat individual lines of code](static_formatting.png)
@@ -200,6 +200,11 @@ Some of the our critical fixes were:
 Additionally, the duplication section of SonarQube indicated that some of our code was duplicated. ![Static code analysis page: UserController.java and CupboardController.java have lots of duplicated code](static_duplication.png) As a result, we decided to remove one of the duplicates as it was no longer being referenced anywhere else in the codebase.
 
 One design improvement our team would explore given additional time is refactoring the CompletedNeeds system. It currently is included within the CupboardController, but the CupboardController class depends on many unrelated pieces of data which could be separated if care is taken. Another consideration could be dividing the different tasks a User can do into separate controllers, since the plentiful actions they can perform are included in one cluttered file. Many of these methods do not need involvement with every DAO at once, meaning there can be less coupling between layers.
+
+On the UI side of things, we ended with 75 open issues. ![Static code analysis for UI: 5 reliability issues, 70 maintainability issues](static_ui.png) A majority of these were because we did not use standalone, often did not implement OnInit, and did not use 'readonly' for any of our service injections.
+![Static code analysis warning: Should not opt out of standalone, OnInit should be implemented](static_ui1.png)
+![Static code analysis warning: Should use 'readonly' on unchanged variable](static_ui2.png)
+
 
 ## Testing
 ### Acceptance Testing
