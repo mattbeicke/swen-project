@@ -1,6 +1,6 @@
 # U-Fund: Goated (Homeless Shelter)
 
-An online U-Fund system built in Java **24** with Spring.
+An online U-Fund system built with Java **21** + Spring, with Angular for frontend.
   
 ## Team
 
@@ -11,8 +11,9 @@ An online U-Fund system built in Java **24** with Spring.
 
 ## Prerequisites
 
-- Java **24** (Make sure to have correct JAVA_HOME setup in your environment)
+- Java 21 (Make sure to have correct JAVA_HOME setup in your environment)
 - Maven
+- Angular 20
 
 
 ## How to run it
